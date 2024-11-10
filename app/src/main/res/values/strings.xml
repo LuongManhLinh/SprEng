@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SprEng</string>
+
+    <!-- String values for content description of home navigation item -->
+    <string name="home_nav_item_home">Home</string>
+    <string name="home_nav_item_revision">Revision</string>
+    <string name="home_nav_item_ranking">Ranking</string>
+    <string name="home_nav_item_info">Information</string>
+    <string name="home_nav_item_setting">Setting</string>
+
+</resources>
