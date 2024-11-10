@@ -1,12 +1,12 @@
-package com.example.spreng.ui.home
+package com.example.spreng.ui.mainscreen
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun InfoScreen(
+fun RevisionScreen(
     modifier: Modifier = Modifier
 ) {
-    Text("This is Info")
+    Text("This is Revision")
 }

@@ -18,11 +18,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.spreng.data.DefaultMainNavItemRepo
 import com.example.spreng.data.MainNavItem
 import com.example.spreng.data.MainNavRoute
-import com.example.spreng.ui.home.HomeScreen
-import com.example.spreng.ui.home.InfoScreen
-import com.example.spreng.ui.home.RankingScreen
-import com.example.spreng.ui.home.RevisionScreen
-import com.example.spreng.ui.home.SettingScreen
+import com.example.spreng.ui.mainscreen.HomeScreen
+import com.example.spreng.ui.mainscreen.InfoScreen
+import com.example.spreng.ui.mainscreen.RankingScreen
+import com.example.spreng.ui.mainscreen.RevisionScreen
+import com.example.spreng.ui.mainscreen.SettingScreen
 
 
 @Composable

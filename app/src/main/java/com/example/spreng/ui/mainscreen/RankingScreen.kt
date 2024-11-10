@@ -1,4 +1,4 @@
-package com.example.spreng.ui.home
+package com.example.spreng.ui.mainscreen
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
