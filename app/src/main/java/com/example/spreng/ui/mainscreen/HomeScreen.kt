@@ -1,8 +1,11 @@
 package com.example.spreng.ui.mainscreen
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,12 +24,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -58,23 +64,13 @@ fun HomeScreen(
         ) {
             items(uiState.lessonList) { lesson ->
 
-                val interactionSource = remember { MutableInteractionSource() }
-                val isPressed = interactionSource.collectIsPressedAsState().value
+                var isPressed by remember { mutableStateOf(false) }
 
                 Row(
                     modifier = Modifier.padding(dimensionResource(R.dimen.medium))
                 ) {
                     Spacer(Modifier.weight(lesson.leftWeight))
 
-                    Button(
-                        onClick = {},
-                        interactionSource = interactionSource,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Transparent
-                        ),
-                        shape = RectangleShape,
-                        contentPadding = PaddingValues(0.dp)
-                    ) {
                         Image(
                             painter = painterResource(
                                 if (isPressed) {
@@ -84,9 +80,16 @@ fun HomeScreen(
                                 }
                             ),
                             contentDescription = null,
+                            modifier = Modifier.pointerInput(Unit) {
+                                detectTapGestures(
+                                    onPress = {
+                                        isPressed = true
+                                        awaitRelease()
+                                        isPressed = false
+                                    }
+                                )
+                            }
                         )
-                    }
-
 
                     Spacer(Modifier.weight(lesson.rightWeight))
                 }
