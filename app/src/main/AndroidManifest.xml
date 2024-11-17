@@ -19,7 +19,15 @@
             android:theme="@style/Theme.SprEng">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".StudyActivity"
+            android:exported="true"
+            android:label="@string/study_activity_title"
+            android:theme="@style/Theme.SprEng">
+            <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

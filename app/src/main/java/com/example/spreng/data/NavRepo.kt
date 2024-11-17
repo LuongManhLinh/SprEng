@@ -1,9 +1,7 @@
 package com.example.spreng.data
 
-import android.media.audiofx.AudioEffect.Descriptor
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.ui.graphics.painter.Painter
 import com.example.spreng.R
 
 

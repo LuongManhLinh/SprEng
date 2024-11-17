@@ -1,6 +1,5 @@
 package com.example.spreng.ui.mainscreen.home
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -51,6 +50,7 @@ import com.example.spreng.R
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
+    onLessonClicked: () -> Unit = { },
     viewModel: HomeViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -100,7 +100,6 @@ fun HomeScreen(
 
                                             if (event.changes.firstOrNull()?.pressed == true && eventPosition != null) {
 
-                                                Log.d("PRESSED", "PRESSED")
                                                 val w = size.width
                                                 val h = size.height
                                                 val eX = eventPosition.x
@@ -123,7 +122,8 @@ fun HomeScreen(
 
                     LessonBox(
                         isShowingBox = isShowingBox,
-                        info = "This is the lesson ${lessonUI.id}"
+                        info = "This is the lesson ${lessonUI.id}",
+                        onLessonClicked = onLessonClicked
                     )
                 }
 
@@ -181,10 +181,12 @@ private fun HomeTopBar(modifier: Modifier = Modifier) {
     }
 }
 
+
 @Composable
 private fun LessonBox(
     isShowingBox: Boolean,
-    info: String
+    info: String,
+    onLessonClicked: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -223,8 +225,8 @@ private fun LessonBox(
         enter = expandVertically(
             animationSpec = spring(
                 dampingRatio = Spring.DampingRatioNoBouncy,
-                stiffness = Spring.StiffnessLow,
-                )
+                stiffness = Spring.StiffnessLow
+            )
         ),
         exit = shrinkVertically(
             animationSpec = tween(
@@ -234,7 +236,8 @@ private fun LessonBox(
         )
     ) {
         LessonContent(
-            info = info
+            info = info,
+            onLessonClicked = onLessonClicked
         )
     }
 }
@@ -243,6 +246,7 @@ private fun LessonBox(
 @Composable
 private fun LessonContent(
     info: String,
+    onLessonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -256,7 +260,7 @@ private fun LessonContent(
         Row {
             Spacer(Modifier.weight(1f))
             Button(
-                onClick = { },
+                onClick = { onLessonClicked() },
                 modifier = Modifier.padding(dimensionResource(R.dimen.small))
             ) {
                 Text("Start lesson")
@@ -282,7 +286,7 @@ private fun LessonCardPreview() {
     ) {
         LessonBox(
             true,
-            "This is a lesson"
+            "This is a lesson",{}
         )
     }
 
