@@ -28,6 +28,10 @@ interface MainNavItemRepo {
     fun getRoute(route: MainNavRoute) : String
 }
 
+enum class RevisionRoute {
+    MISTAKE, VOCAB
+}
+
 
 object DefaultMainNavItemRepo : MainNavItemRepo {
     override fun getItems(): List<MainNavItem> {
