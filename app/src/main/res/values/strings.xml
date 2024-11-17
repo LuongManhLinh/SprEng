@@ -7,5 +7,15 @@
     <string name="home_nav_item_ranking">Ranking</string>
     <string name="home_nav_item_info">Information</string>
     <string name="home_nav_item_setting">Setting</string>
-
+    
+    <string name="bronze_rank">Đồng</string>
+    <string name="description_bronze">Khởi đầu mạnh mẽ, sẵn sàng chinh phục</string>
+    <string name="silver_rank">Bạc</string>
+    <string name="description_silver">Tiến bộ nhanh chóng, vượt qua thử thách.</string>
+    <string name="gold_rank">Vàng</string>
+    <string name="description_gold">Thành công tỏa sáng, đầy tiềm năng.</string>
+    <string name="platinum_rank">Bạch kim</string>
+    <string name="description_platinum">Xuất sắc vượt trội, đứng đầu.</string>
+    <string name="diamond_rank">Kim cương</string>
+    <string name="description_diamond">Huyền thoại sống, hoàn hảo tuyệt đối.</string>
 </resources>

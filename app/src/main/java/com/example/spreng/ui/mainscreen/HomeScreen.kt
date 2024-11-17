@@ -129,7 +129,7 @@ private fun HomeTopBar(modifier: Modifier = Modifier) {
         )
         Spacer(Modifier.weight(1f))
         Image(
-            painter = painterResource(R.drawable.xp),
+            painter = painterResource(R.drawable.sample_avatar),
             contentDescription = null,
             modifier = Modifier
                 .size(dimensionResource(R.dimen.middle_large))

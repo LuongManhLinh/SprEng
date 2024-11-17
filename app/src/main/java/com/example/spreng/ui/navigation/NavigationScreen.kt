@@ -29,11 +29,13 @@ import com.example.spreng.R
 import com.example.spreng.data.DefaultMainNavItemRepo
 import com.example.spreng.data.MainNavItem
 import com.example.spreng.data.MainNavRoute
+import com.example.spreng.data.NavRanking
 import com.example.spreng.ui.mainscreen.HomeScreen
 import com.example.spreng.ui.mainscreen.InfoScreen
-import com.example.spreng.ui.mainscreen.RankingScreen
 import com.example.spreng.ui.mainscreen.RevisionScreen
 import com.example.spreng.ui.mainscreen.SettingScreen
+import com.example.spreng.ui.ranking.AllRankingScreen
+import com.example.spreng.ui.ranking.RankingScreen
 
 
 @Composable
@@ -74,9 +76,11 @@ private fun NavigationScreen(
         }
 
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING)) {
-            RankingScreen()
+            RankingScreen(navController)
         }
-
+        composable(route = NavRanking.AllRank.name) {
+            AllRankingScreen(navController)
+        }
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.INFO)) {
             InfoScreen()
         }

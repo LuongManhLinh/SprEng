@@ -1,7 +1,9 @@
 package com.example.spreng.data
 
+import android.media.audiofx.AudioEffect.Descriptor
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.ui.graphics.painter.Painter
 import com.example.spreng.R
 
 
@@ -17,6 +19,9 @@ enum class MainNavRoute {
     HOME, REVISION, RANKING, INFO, SETTING
 }
 
+enum class NavRanking {
+    AllRank, Profile
+}
 
 interface MainNavItemRepo {
     fun getItems() : List<MainNavItem>
@@ -39,5 +44,21 @@ object DefaultMainNavItemRepo : MainNavItemRepo {
         return route.name
     }
 
+}
+
+class RankCardItem (
+    @DrawableRes val img: Int,
+    @StringRes val nameRank: Int,
+    @StringRes val descriptionRank: Int
+)
+
+fun getRankCardItem(): List<RankCardItem> {
+    return listOf(
+        RankCardItem(R.drawable.bronze, R.string.bronze_rank, R.string.description_bronze),
+        RankCardItem(R.drawable.silver, R.string.silver_rank, R.string.description_silver),
+        RankCardItem(R.drawable.gold, R.string.gold_rank, R.string.description_gold),
+        RankCardItem(R.drawable.platinum, R.string.platinum_rank, R.string.description_platinum),
+        RankCardItem(R.drawable.diamond, R.string.diamond_rank, R.string.description_diamond)
+    )
 }
 
