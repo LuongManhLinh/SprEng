@@ -1,4 +1,4 @@
-package com.example.spreng.ui.ranking
+package com.example.spreng.ui.mainscreen.ranking
 
 import android.media.Image
 import android.widget.Space

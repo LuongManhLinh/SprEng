@@ -1,4 +1,4 @@
-package com.example.spreng.ui.mainscreen
+package com.example.spreng.ui.mainscreen.home
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +17,7 @@ data class HomeUiState(
 
 data class LessonUI(
     val id: Int,
+    val isShowingCard: Boolean = false,
     var leftWeight: Float = 0.5F,
     var rightWeight: Float = 0.5F
 ) {
@@ -43,7 +44,7 @@ data class LessonUI(
             return sample
         }
 
-        private fun map(
+        fun map(
             value: Double,
             oldLeft: Double, oldRight: Double,
             newLeft: Double, newRight: Double

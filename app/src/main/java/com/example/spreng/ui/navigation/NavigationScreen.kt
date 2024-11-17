@@ -30,12 +30,12 @@ import com.example.spreng.data.DefaultMainNavItemRepo
 import com.example.spreng.data.MainNavItem
 import com.example.spreng.data.MainNavRoute
 import com.example.spreng.data.NavRanking
-import com.example.spreng.ui.mainscreen.HomeScreen
-import com.example.spreng.ui.mainscreen.InfoScreen
-import com.example.spreng.ui.mainscreen.RevisionScreen
-import com.example.spreng.ui.mainscreen.SettingScreen
-import com.example.spreng.ui.ranking.AllRankingScreen
-import com.example.spreng.ui.ranking.RankingScreen
+import com.example.spreng.ui.mainscreen.home.HomeScreen
+import com.example.spreng.ui.mainscreen.info.InfoScreen
+import com.example.spreng.ui.mainscreen.revision.RevisionScreen
+import com.example.spreng.ui.mainscreen.setting.SettingScreen
+import com.example.spreng.ui.mainscreen.ranking.AllRankingScreen
+import com.example.spreng.ui.mainscreen.ranking.RankingScreen
 
 
 @Composable

@@ -1,4 +1,4 @@
-package com.example.spreng.ui.ranking
+package com.example.spreng.ui.mainscreen.ranking
 import android.graphics.Paint.Align
 import android.service.carrier.MessagePdu
 import android.util.Log
