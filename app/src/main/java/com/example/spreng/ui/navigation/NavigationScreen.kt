@@ -30,12 +30,15 @@ import com.example.spreng.data.DefaultMainNavItemRepo
 import com.example.spreng.data.MainNavItem
 import com.example.spreng.data.MainNavRoute
 import com.example.spreng.data.NavRanking
+import com.example.spreng.data.RevisionRoute
+import com.example.spreng.ui.mainscreen.revision.ReviewMistakesScreen
+import com.example.spreng.ui.mainscreen.revision.ReviewVocabsScreen
 import com.example.spreng.ui.mainscreen.home.HomeScreen
 import com.example.spreng.ui.mainscreen.info.InfoScreen
-import com.example.spreng.ui.mainscreen.revision.RevisionScreen
 import com.example.spreng.ui.mainscreen.setting.SettingScreen
 import com.example.spreng.ui.mainscreen.ranking.AllRankingScreen
 import com.example.spreng.ui.mainscreen.ranking.RankingScreen
+import com.example.spreng.ui.mainscreen.revivion.RevisionScreen
 
 
 @Composable
@@ -72,7 +75,15 @@ private fun NavigationScreen(
         }
 
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.REVISION)) {
-            RevisionScreen()
+            RevisionScreen(navController)
+        }
+
+        composable(route = RevisionRoute.MISTAKE.name) {
+            ReviewMistakesScreen()
+        }
+
+        composable(route = RevisionRoute.VOCAB.name) {
+            ReviewVocabsScreen(navController)
         }
 
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING)) {
