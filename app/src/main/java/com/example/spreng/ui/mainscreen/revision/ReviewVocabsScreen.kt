@@ -41,13 +41,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.spreng.R
 import com.example.spreng.data.MainNavRoute
 
 
 @Composable
-fun ReviewVocabsScreen(navController: NavController,
+fun ReviewVocabsScreen(navController: NavHostController,
                        modifier: Modifier = Modifier,
                        vocabViewModel: VocabViewModel = viewModel()
 ) {
@@ -79,7 +80,7 @@ fun ReviewVocabsScreen(navController: NavController,
                 modifier = Modifier
                     .padding(dimensionResource(R.dimen.small_medium))
                     .fillMaxWidth()
-                    .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.large)))
+                    .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.medium_large)))
             )
             // Danh sách từ vựng
             LazyColumn(
@@ -105,6 +106,7 @@ fun ReviewVocabsScreen(navController: NavController,
     }
 }
 
+//giao diện hiển thị một từ vựng
 @Composable
 fun VocabItem(
     vocab: Vocab,
@@ -133,9 +135,11 @@ fun VocabItem(
         ) {
             Text(
                 text = vocab.word,
+                fontSize = 22.sp
             )
             Text(
                 text = vocab.transcription,
+                fontSize = 18.sp
             )
         }
         Image(
@@ -148,6 +152,7 @@ fun VocabItem(
     }
 }
 
+//top bar
 @Composable
 fun ReviewVocabTopBar(
     navController: NavController,

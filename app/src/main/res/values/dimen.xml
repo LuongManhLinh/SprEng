@@ -5,7 +5,7 @@
     <dimen name="small">8.dp</dimen>
     <dimen name="small_medium">12.dp</dimen>
     <dimen name="medium">16.dp</dimen>
-    <dimen name="medium_large">24</dimen>
+    <dimen name="medium_large">24.dp</dimen>
     <dimen name="large">32.dp</dimen>
     <dimen name="middle_large">48.dp</dimen>
     <dimen name="very_large">64.dp</dimen>
