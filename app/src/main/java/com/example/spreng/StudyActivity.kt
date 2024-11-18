@@ -6,6 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.spreng.ui.studyscreen.BaseStudyScreen
+import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerFillScreen
+import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerSequenceScreen
 import com.example.spreng.ui.theme.SprEngTheme
 
 class StudyActivity : ComponentActivity() {
@@ -16,11 +18,19 @@ class StudyActivity : ComponentActivity() {
         setContent {
             SprEngTheme {
                 BaseStudyScreen(
+                    0.5F,
+                    onCompleting = {
+                        val mainActivityIntent = Intent(this, MainActivity::class.java)
+                        startActivity(mainActivityIntent)
+                    },
                     onCancelling = {
                         val mainActivityIntent = Intent(this, MainActivity::class.java)
                         startActivity(mainActivityIntent)
                     }
                 ) {
+                    val a = (0..1).random()
+                    if (a == 0) WordPickerFillScreen()
+                    else WordPickerSequenceScreen()
 
                 }
             }

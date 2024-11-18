@@ -39,13 +39,17 @@ import com.example.spreng.R
  */
 @Composable
 fun BaseStudyScreen(
+    learningProgress: Float,
     onCancelling: () -> Unit,
+    onCompleting: () -> Unit,
     modifier: Modifier = Modifier,
     contentComposable: (@Composable () -> Unit)
 ) {
     Scaffold(
-        topBar = { StudyTopBar(onCancelling) },
-        bottomBar = { StudyBottomBar() },
+        topBar = {
+            StudyTopBar(learningProgress, onCancelling)
+        },
+        bottomBar = { StudyBottomBar(onCompleting = onCompleting) },
         modifier = modifier
     ) { innerPadding ->
         Box(
@@ -60,6 +64,7 @@ fun BaseStudyScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun StudyTopBar(
+    learningProgress: Float,
     onCancelling: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -69,7 +74,7 @@ private fun StudyTopBar(
         TopAppBar(
             title = {
                 LinearProgressIndicator(
-                    progress = { 0.5f },
+                    progress = { learningProgress },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(16.dp)
@@ -100,7 +105,8 @@ private fun StudyTopBar(
 
 @Composable
 private fun StudyBottomBar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onCompleting: () -> Unit
 ) {
 
     BottomAppBar(
@@ -113,7 +119,7 @@ private fun StudyBottomBar(
             contentAlignment = Alignment.Center
         ) {
             Button(
-                onClick = { },
+                onClick = { onCompleting() },
                 shape = RoundedCornerShape(dimensionResource(R.dimen.small)),
                 modifier = Modifier.width(300.dp)
             ) {
@@ -127,5 +133,5 @@ private fun StudyBottomBar(
 @Preview(showBackground = true)
 @Composable
 private fun BaseStudyScreenPreview() {
-    BaseStudyScreen(onCancelling = {}, contentComposable = { })
+    BaseStudyScreen(learningProgress = 0.3f, onCancelling = {}, onCompleting = {}, contentComposable = { })
 }

@@ -26,7 +26,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-// นำเข้าที่จำเป็นอื่น ๆ
+
 
 @Composable
 fun InfoScreen() {
@@ -57,6 +57,7 @@ fun InfoScreen() {
         StatsSection()
     }
 }
+
 @Composable
 fun Greetting(name: String, modifier: Modifier=Modifier){
     Text(

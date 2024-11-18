@@ -1,5 +1,7 @@
 package com.example.spreng.ui.navigation
 
+import InfoScreen
+import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,13 +29,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.spreng.R
+import com.example.spreng.StudyActivity
 import com.example.spreng.data.DefaultMainNavItemRepo
 import com.example.spreng.data.MainNavItem
 import com.example.spreng.data.MainNavRoute
 import com.example.spreng.data.NavRanking
 import com.example.spreng.data.RevisionRoute
 import com.example.spreng.ui.mainscreen.home.HomeScreen
-import com.example.spreng.ui.mainscreen.info.InfoScreen
 import com.example.spreng.ui.mainscreen.revision.RevisionScreen
 import com.example.spreng.ui.mainscreen.setting.SettingScreen
 import com.example.spreng.ui.mainscreen.ranking.AllRankingScreen
@@ -65,13 +68,19 @@ private fun NavigationScreen(
     navController : NavHostController,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     NavHost(
         navController = navController,
         startDestination = DefaultMainNavItemRepo.getRoute(MainNavRoute.HOME),
         modifier = modifier,
     ) {
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.HOME)) {
-            HomeScreen()
+            HomeScreen(
+                onLessonClicked = {
+                    val studyIntent = Intent(context, StudyActivity::class.java)
+                    context.startActivity(studyIntent)
+                }
+            )
         }
 
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.REVISION)) {
