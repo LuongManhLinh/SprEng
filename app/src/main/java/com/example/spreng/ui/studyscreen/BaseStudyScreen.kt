@@ -19,6 +19,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -29,21 +30,23 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.spreng.R
 
 /**
  * Base screen for all study screens
- * @param contentComposable is a composable function representing the content of the question
+ * @param content is a composable function representing the content of the question
  */
 @Composable
 fun BaseStudyScreen(
+    modifier: Modifier = Modifier,
     learningProgress: Float,
+    questionTitle: String,
     onCancelling: () -> Unit,
     onCompleting: () -> Unit,
-    modifier: Modifier = Modifier,
-    contentComposable: (@Composable () -> Unit)
+    content: (@Composable () -> Unit)
 ) {
     Scaffold(
         topBar = {
@@ -52,10 +55,21 @@ fun BaseStudyScreen(
         bottomBar = { StudyBottomBar(onCompleting = onCompleting) },
         modifier = modifier
     ) { innerPadding ->
-        Box(
+        Column(
             modifier = Modifier.padding(innerPadding).fillMaxSize()
         ) {
-            contentComposable()
+            Text(
+                text = questionTitle,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier
+                    .padding(
+                        start = dimensionResource(R.dimen.small),
+                        end = dimensionResource(R.dimen.small),
+                        bottom = dimensionResource(R.dimen.small)
+                    )
+
+            )
+            content()
         }
 
     }
@@ -90,7 +104,10 @@ private fun StudyTopBar(
 
             navigationIcon = {
                 IconButton(onClick = onCancelling) {
-                    Icon(Icons.Filled.Close, contentDescription = "Close")
+                    Icon(
+                        Icons.Filled.Close,
+                        contentDescription = stringResource(R.string.cnt_desc_close)
+                    )
                 }
             }
         )
@@ -123,7 +140,9 @@ private fun StudyBottomBar(
                 shape = RoundedCornerShape(dimensionResource(R.dimen.small)),
                 modifier = Modifier.width(300.dp)
             ) {
-                Text("Hoàn thành")
+                Text(
+                    text = stringResource(R.string.button_title_complete)
+                )
             }
         }
     }
@@ -133,5 +152,32 @@ private fun StudyBottomBar(
 @Preview(showBackground = true)
 @Composable
 private fun BaseStudyScreenPreview() {
-    BaseStudyScreen(learningProgress = 0.3f, onCancelling = {}, onCompleting = {}, contentComposable = { })
+    BaseStudyScreen(
+        learningProgress = 0.3f,
+        questionTitle = "Hoàn thiện câu sau",
+        onCancelling = {},
+        onCompleting = {},
+        content = {
+            Column(
+                modifier = Modifier.fillMaxSize().padding(
+                    start = 8.dp,
+                    end = 8.dp
+                )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                        .fillMaxSize()
+                        .weight(1f)
+                        .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(2f)
+                        .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
+                )
+            }
+        }
+    )
 }

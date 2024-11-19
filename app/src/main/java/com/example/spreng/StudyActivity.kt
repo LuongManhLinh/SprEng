@@ -17,22 +17,7 @@ class StudyActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SprEngTheme {
-                BaseStudyScreen(
-                    0.5F,
-                    onCompleting = {
-                        val mainActivityIntent = Intent(this, MainActivity::class.java)
-                        startActivity(mainActivityIntent)
-                    },
-                    onCancelling = {
-                        val mainActivityIntent = Intent(this, MainActivity::class.java)
-                        startActivity(mainActivityIntent)
-                    }
-                ) {
-                    val a = (0..1).random()
-                    if (a == 0) WordPickerFillScreen()
-                    else WordPickerSequenceScreen()
 
-                }
             }
         }
     }

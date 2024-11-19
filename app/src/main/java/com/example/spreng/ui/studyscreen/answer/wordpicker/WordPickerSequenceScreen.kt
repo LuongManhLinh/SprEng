@@ -5,40 +5,34 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun WordPickerSequenceScreen(
     modifier: Modifier = Modifier,
-    viewModel: WordPickerSequenceViewModel = viewModel()
+    unselectedWords: List<UnselectedWord>,
+    selectedWords: List<SelectedWord>,
+    onUnselectedWordClick: (Int) -> Unit,
+    onSelectedWordClick: (SelectedWord) -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-
     BaseWordPickerScreen(
         modifier = modifier,
-        unselectedWords = uiState.unselectedWords,
-        onUnselectedWordClick = { idx ->
-            viewModel.clickUnselectedWord(idx)
-        }
+        unselectedWords = unselectedWords,
+        onUnselectedWordClick = onUnselectedWordClick
     ) { contentModifier ->
         FlowRow(
             modifier = contentModifier
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
-            uiState.selectedWords.forEach { word ->
+            selectedWords.forEach { word ->
                 WordItem(
                     word = word.word,
-                    onClick = {
-                        viewModel.clickSelectedWord(word)
-                    }
+                    onClick = { onSelectedWordClick(word) }
                 )
             }
         }
@@ -51,6 +45,19 @@ fun WordPickerSequenceScreen(
 @Composable
 private fun WordPickerPreview() {
     WordPickerSequenceScreen(
-        viewModel = WordPickerSequenceViewModel()
+        unselectedWords = listOf(
+            UnselectedWord("this"),
+            UnselectedWord("these"),
+            UnselectedWord("an"),
+            UnselectedWord("sentence"),
+            UnselectedWord("expensive"),
+            UnselectedWord("beautiful"),
+        ),
+        selectedWords = listOf(
+            SelectedWord("is", 1),
+            SelectedWord("a", 2)
+        ),
+        onUnselectedWordClick = {},
+        onSelectedWordClick = {}
     )
 }

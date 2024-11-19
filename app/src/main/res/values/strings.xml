@@ -19,4 +19,9 @@
     <string name="description_platinum">Xuất sắc vượt trội, đứng đầu.</string>
     <string name="diamond_rank">Kim cương</string>
     <string name="description_diamond">Huyền thoại sống, hoàn hảo tuyệt đối.</string>
+
+    <string name="progress">Tiến độ</string>
+
+    <string name="button_title_complete">Hoàn thành</string>
+    <string name="cnt_desc_close">Đóng</string>
 </resources>

@@ -1,23 +1,41 @@
 package com.example.spreng.ui.mainscreen.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlin.math.PI
 import kotlin.math.cos
 
 class HomeViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
+
+    fun updateLessonCardState(lessonIdx: Int, newState: LessonCardState) {
+        _uiState.update { state ->
+            val newLessonList = state.lessonList
+            newLessonList[lessonIdx].cardState = newState
+            state.copy(
+                lessonList = newLessonList
+            )
+        }
+    }
+
 }
 
 data class HomeUiState(
-    val lessonList: List<LessonUI> = LessonUI.getSample(20)
+    val lessonList: List<LessonUI> = LessonUI.getSample(20),
+    val userName: String = "",
+    val userXp: Int = 0,
+    val numCompletedLesson: Int = 1,
+    val numTotalLesson: Int = 20
 )
 
 data class LessonUI(
     val id: Int,
-    val isShowingCard: Boolean = false,
+    val description: String = "",
+    var cardState: LessonCardState = LessonCardState.HIDING,
     var leftWeight: Float = 0.5F,
     var rightWeight: Float = 0.5F
 ) {
@@ -55,9 +73,9 @@ data class LessonUI(
     }
 }
 
-fun main() {
-    val a = LessonUI.getSample(10)
-    for (i in a) {
-        println(i)
-    }
+enum class LessonCardState {
+    HIDING,
+    OPENING,
+    SHOWING,
+    CLOSING
 }

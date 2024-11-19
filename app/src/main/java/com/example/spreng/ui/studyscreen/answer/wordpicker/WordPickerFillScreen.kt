@@ -34,19 +34,19 @@ import com.example.spreng.R
 @Composable
 fun WordPickerFillScreen(
     modifier: Modifier = Modifier,
-    viewModel: WordPickerFillViewModel = viewModel()
+    unselectedWords: List<UnselectedWord>,
+    sentenceUI: List<Any?>,
+    onUnselectedWordClick: (Int) -> Unit,
+    onSelectedWordClick: (SelectedWord) -> Unit
 ) {
     var cardMaxHeight by remember { mutableStateOf(40.dp) }
     var cardMaxWidth by remember { mutableStateOf(0.dp) }
     var textHeight by remember { mutableStateOf(0.dp) }
 
-    val uiState by viewModel.uiState.collectAsState()
 
     BaseWordPickerScreen(
-        unselectedWords = uiState.unselectedWords,
-        onUnselectedWordClick = {
-            viewModel.clickUnselectedWord(it)
-        },
+        unselectedWords = unselectedWords,
+        onUnselectedWordClick = onUnselectedWordClick,
         modifier = modifier,
         setCardSize = { width, height ->
             if (width > cardMaxWidth) {
@@ -61,7 +61,7 @@ fun WordPickerFillScreen(
         FlowRow(
             modifier = contentModifier.padding(dimensionResource(R.dimen.small))
         ) {
-            uiState.sentenceUI.forEach { value ->
+            sentenceUI.forEach { value ->
                 when (value) {
 
                     is String -> {
@@ -76,7 +76,7 @@ fun WordPickerFillScreen(
                         WordItem(
                             word = value.word,
                             onClick = {
-                                viewModel.clickSelectedWord(value)
+                                onSelectedWordClick(value)
                             },
                             modifier = Modifier.width(cardMaxWidth)
                         )
@@ -146,5 +146,19 @@ private fun Blank(
 @Preview(showBackground = true)
 @Composable
 private fun WordPickerFillPreview() {
-    WordPickerFillScreen()
+    WordPickerFillScreen(
+        unselectedWords = listOf(
+            UnselectedWord("this"),
+            UnselectedWord("these"),
+            UnselectedWord("an"),
+            UnselectedWord("sentence"),
+            UnselectedWord("expensive"),
+            UnselectedWord("beautiful"),
+        ),
+        sentenceUI = listOf(
+            null, " is ", " a ", null, "sentence"
+        ),
+        onUnselectedWordClick = {},
+        onSelectedWordClick = {}
+    )
 }

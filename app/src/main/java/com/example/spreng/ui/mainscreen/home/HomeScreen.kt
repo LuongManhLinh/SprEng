@@ -1,8 +1,7 @@
 package com.example.spreng.ui.mainscreen.home
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.expandVertically
@@ -10,6 +9,7 @@ import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,17 +20,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -41,11 +43,14 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
+import kotlinx.coroutines.delay
 
 @Composable
 fun HomeScreen(
@@ -58,7 +63,11 @@ fun HomeScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            HomeTopBar()
+            HomeTopBar(
+                userName = uiState.userName,
+                userXp = uiState.userXp.toString(),
+                userProgress = "${uiState.numCompletedLesson}/${uiState.numTotalLesson}"
+            )
         }
     ) { innerPadding ->
         LazyColumn(
@@ -68,10 +77,10 @@ fun HomeScreen(
                 )
                 .fillMaxSize()
         ) {
-            items(uiState.lessonList) { lessonUI ->
+            items(uiState.lessonList.size) { idx ->
+                val lessonUI = uiState.lessonList[idx]
 
                 var isPressed by remember { mutableStateOf(false) }
-                var isShowingBox by remember { mutableStateOf(false) }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -106,7 +115,15 @@ fun HomeScreen(
                                                 val eY = eventPosition.y
 
                                                 isPressed = eX >= 0 && eY >= 0 && eX <= w && eY <= h
-                                                isShowingBox = !isShowingBox
+                                                if (isPressed) {
+                                                    if (lessonUI.cardState == LessonCardState.HIDING) {
+                                                        viewModel.updateLessonCardState(idx, LessonCardState.OPENING)
+                                                    }
+                                                    else if (lessonUI.cardState == LessonCardState.SHOWING) {
+                                                        viewModel.updateLessonCardState(idx, LessonCardState.CLOSING)
+                                                    }
+                                                    Log.d("HomeScreen", "Lesson ${lessonUI.cardState}")
+                                                }
 
                                             } else {
 
@@ -121,9 +138,16 @@ fun HomeScreen(
                     }
 
                     LessonBox(
-                        isShowingBox = isShowingBox,
+                        isShowingBox = lessonUI.cardState == LessonCardState.SHOWING
+                                || lessonUI.cardState == LessonCardState.OPENING,
                         info = "This is the lesson ${lessonUI.id}",
-                        onLessonClicked = onLessonClicked
+                        onLessonClicked = onLessonClicked,
+                        onOpeningCompleted = {
+                            viewModel.updateLessonCardState(idx, LessonCardState.SHOWING)
+                        },
+                        onClosingCompleted = {
+                            viewModel.updateLessonCardState(idx, LessonCardState.HIDING)
+                        }
                     )
                 }
 
@@ -133,11 +157,40 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HomeTopBar(modifier: Modifier = Modifier) {
+private fun HomeTopBar(
+    modifier: Modifier = Modifier,
+    userName: String,
+    userXp: String,
+    userProgress: String
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        HomeTopBarfInfo(
+            userName = userName,
+            userXp = userXp
+        )
+        HomeTopBarProgress(
+            userProgress = userProgress
+        )
+    }
+}
+
+@Composable
+private fun HomeTopBarfInfo(
+    modifier: Modifier = Modifier,
+    userName: String,
+    userXp: String
+) {
     Row(
         modifier = modifier
-            .padding(dimensionResource(R.dimen.tiny))
-            .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.small)))
+            .padding(
+                top = dimensionResource(R.dimen.tiny),
+                start = dimensionResource(R.dimen.tiny),
+                end = dimensionResource(R.dimen.tiny)
+            )
+            .clip(RoundedCornerShape(dimensionResource(R.dimen.small)))
             .background(Color.LightGray)
             .padding(dimensionResource(R.dimen.small))
         ,
@@ -155,14 +208,14 @@ private fun HomeTopBar(modifier: Modifier = Modifier) {
             contentScale = ContentScale.Crop
         )
         Text(
-            text = "User's name",
+            text = userName,
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
             modifier = Modifier.padding(start = dimensionResource(R.dimen.small))
         )
         Spacer(Modifier.weight(1f))
         Image(
-            painter = painterResource(R.drawable.sample_avatar),
+            painter = painterResource(R.drawable.xp),
             contentDescription = null,
             modifier = Modifier
                 .size(dimensionResource(R.dimen.middle_large))
@@ -171,25 +224,79 @@ private fun HomeTopBar(modifier: Modifier = Modifier) {
             contentScale = ContentScale.Crop
         )
         Text(
-            text = "9999",
+            text = userXp,
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
             color = Color(0, 130, 0),
             modifier = Modifier.padding(start = dimensionResource(R.dimen.small))
         )
+    }
+}
 
+@Composable
+private fun HomeTopBarProgress(
+    modifier: Modifier = Modifier,
+    userProgress: String
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .width(200.dp)
+            .clip(
+                RoundedCornerShape(
+                    bottomStart = dimensionResource(R.dimen.small),
+                    bottomEnd = dimensionResource(R.dimen.small)
+                )
+            )
+            .border(
+                width = 1.dp,
+                color = Color.Black,
+                shape = RoundedCornerShape(
+                    bottomStart = dimensionResource(R.dimen.small),
+                    bottomEnd = dimensionResource(R.dimen.small)
+                )
+            )
+            .background(Color.Magenta)
+    ) {
+        Spacer(Modifier.weight(0.1f))
+        Text(
+            text = stringResource(R.string.progress),
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp
+        )
+        Spacer(Modifier.weight(1f))
+        Text(
+            text = userProgress,
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp
+        )
+        Spacer(Modifier.weight(0.1f))
     }
 }
 
 
 @Composable
 private fun LessonBox(
+    modifier: Modifier = Modifier,
     isShowingBox: Boolean,
     info: String,
-    onLessonClicked: () -> Unit
+    onLessonClicked: () -> Unit,
+    onOpeningCompleted: () -> Unit,
+    onClosingCompleted: () -> Unit
 ) {
+
+    LaunchedEffect(isShowingBox) {
+        if (isShowingBox) {
+            delay(800)
+            onOpeningCompleted()
+        } else {
+            delay(600)
+            onClosingCompleted()
+        }
+    }
+
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = if (isShowingBox) {
             Alignment.Start
         } else {
@@ -200,7 +307,7 @@ private fun LessonBox(
             visible = isShowingBox,
             enter = expandHorizontally(
                 animationSpec = tween(
-                    durationMillis = 1000
+                    durationMillis = 800
                 ),
                 expandFrom = Alignment.Start
             ),
@@ -223,15 +330,13 @@ private fun LessonBox(
     AnimatedVisibility(
         visible = isShowingBox,
         enter = expandVertically(
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioNoBouncy,
-                stiffness = Spring.StiffnessLow
+            animationSpec = tween(
+                durationMillis = 700
             )
         ),
         exit = shrinkVertically(
             animationSpec = tween(
-                durationMillis = 500,
-                delayMillis = 100
+                durationMillis = 600
             )
         )
     ) {
@@ -263,7 +368,7 @@ private fun LessonContent(
                 onClick = { onLessonClicked() },
                 modifier = Modifier.padding(dimensionResource(R.dimen.small))
             ) {
-                Text("Start lesson")
+                Text("Bắt đầu")
             }
         }
     }
@@ -271,68 +376,9 @@ private fun LessonContent(
 
 
 
-//@Preview(showBackground = false)
-//@Composable
-//private fun Preview() {
-//    HomeScreen(viewModel = HomeViewModel())
-//}
-
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
-private fun LessonCardPreview() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        LessonBox(
-            true,
-            "This is a lesson",{}
-        )
-    }
-
+private fun Preview() {
+    HomeScreen(viewModel = HomeViewModel())
 }
 
-//@Composable
-//private fun LessonCard(
-//    info: String,
-//    posXdp: Int,
-//    modifier: Modifier = Modifier
-//) {
-//    Card(
-//        colors = CardDefaults.cardColors(
-//            containerColor = Color.Green,
-//        ),
-//        modifier = modifier
-//            .width(360.dp)
-//            .drawBehind {
-//                val trianglePath = Path().apply {
-//                    moveTo(posXdp.dp.toPx() - 16.dp.toPx(), 0f) // Left position
-//                    lineTo(posXdp.dp.toPx() + 2.dp.toPx(), 0f) // Right position
-//                    lineTo(posXdp.dp.toPx(), -16.dp.toPx()) // Top position
-//                    close()
-//                }
-//                drawPath(trianglePath, color = Color.Green)
-//            }
-//    ) {
-//        Text(
-//            text = info,
-//            style = MaterialTheme.typography.headlineSmall,
-//            modifier = Modifier.padding(dimensionResource(R.dimen.small))
-//        )
-//    }
-//
-//}
-//
-//@Composable
-//private fun calLessonCardPos(
-//    cardWidthDp: Int = 360,
-//    lw: Float
-//) : Int {
-//    val scrWdp = LocalConfiguration.current.screenWidthDp
-//    val newRight = cardWidthDp.toDouble() / scrWdp.toDouble()
-//    val newLeft = 1.0 - newRight
-//
-//    val lwd = LessonUI
-//        .map(lw.toDouble(), 0.0, 1.0, newLeft, newRight).toFloat()
-//    return (cardWidthDp * lwd).toInt()
-//}
