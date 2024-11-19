@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,12 +26,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
+import com.example.spreng.ui.studyscreen.SelectedWord
+import com.example.spreng.ui.studyscreen.UnselectedWord
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun WordPickerFillScreen(
+fun WordPickerFillingScreen(
     modifier: Modifier = Modifier,
     unselectedWords: List<UnselectedWord>,
     sentenceUI: List<Any?>,
@@ -146,7 +146,7 @@ private fun Blank(
 @Preview(showBackground = true)
 @Composable
 private fun WordPickerFillPreview() {
-    WordPickerFillScreen(
+    WordPickerFillingScreen(
         unselectedWords = listOf(
             UnselectedWord("this"),
             UnselectedWord("these"),
