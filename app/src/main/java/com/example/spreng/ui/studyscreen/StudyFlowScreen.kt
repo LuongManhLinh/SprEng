@@ -165,8 +165,6 @@ fun StudyFlowScreen(
                         check
                     )
                 }
-                        .background(Color.Black)
-                )
             }
         }
 

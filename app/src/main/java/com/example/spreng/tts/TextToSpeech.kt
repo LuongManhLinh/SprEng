@@ -9,7 +9,7 @@ fun TTS(context: Context, sentence: String) {
     textToSpeech = TextToSpeech(
         context
     ) {
-        if (it == android.speech.tts.TextToSpeech.SUCCESS) {
+        if (it == TextToSpeech.SUCCESS) {
 //            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 //            val volume = (volumeLevel * audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toInt()
 //            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0)
