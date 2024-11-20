@@ -45,9 +45,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun InfoScreen() {
-    val username by remember { mutableStateOf("JohnDoe123") }
-    val fullName by remember { mutableStateOf("John Doe") }
+fun InfoScreen(modifier: Modifier = Modifier) {
+    var username by remember { mutableStateOf("JohnDoe123") }
+    var fullName by remember { mutableStateOf("John Doe") }
 
     Column(
         modifier = Modifier

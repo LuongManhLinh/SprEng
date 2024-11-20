@@ -152,6 +152,21 @@ class StudyFlowViewModel(
             )
         }
     }
+    // Cập nhật câu trả lời dạng viết
+    fun updateAnswerWriting(input: String) {
+        _uiState.update {
+            it.copy(
+                answerUIState = AnswerUIState.TextTyping(answerWriting = input)
+            )
+        }
+    }
+
+    fun checkWritingAnswer(question: String, answer: String): Boolean{
+        val lowQs = question.lowercase().replace("\\s+".toRegex(), "").trim()
+
+        val asQs = answer.lowercase().replace("\\s+".toRegex(), "").trim()
+        return lowQs == asQs
+    }
 
     fun exit(context: Context) {
         context.startActivity(Intent(context, MainActivity::class.java))
@@ -163,8 +178,8 @@ data class StudyFlowUIState(
     val title: String = "",
     val learningProgress: Float = 0F,
     val isDone: Boolean = false,
-    val questionUIState: QuestionUIState = QuestionUIState.Text(),
-    val answerUIState: AnswerUIState = AnswerUIState.WordPickerFilling()
+    val questionUIState: QuestionUIState? = null,
+    val answerUIState: AnswerUIState? = null
 ) {
     companion object {
         fun buildFromChallengeForm(
@@ -174,7 +189,8 @@ data class StudyFlowUIState(
         ) : StudyFlowUIState {
             val questionUIState : QuestionUIState = when (challengeForm.questionType) {
                 QuestionType.TEXT -> QuestionUIState.Text(challengeForm.questionContent)
-                QuestionType.LISTENING -> QuestionUIState.Listening()
+                QuestionType.LISTENING -> QuestionUIState.Listening(challengeForm.questionContent)
+          
             }
 
             val answerUIState : AnswerUIState = when (challengeForm.answerType) {
@@ -206,7 +222,9 @@ data class StudyFlowUIState(
                     ).shuffled().map { UnselectedWord(it) }
                 )
 
-                AnswerType.TYPING -> AnswerUIState.TextTyping()
+                AnswerType.TYPING -> AnswerUIState.TextTyping(
+                    answerWriting = ""
+                )
 
                 AnswerType.TALKING -> AnswerUIState.Talking()
             }
@@ -227,7 +245,7 @@ sealed interface QuestionUIState {
     ) : QuestionUIState
 
     class Listening(
-
+        val questionContent: String = ""
     ) : QuestionUIState
 }
 
@@ -243,7 +261,7 @@ sealed interface AnswerUIState {
     ) : AnswerUIState
 
     class TextTyping(
-
+        val answerWriting: String
     ) : AnswerUIState
 
     class Talking(

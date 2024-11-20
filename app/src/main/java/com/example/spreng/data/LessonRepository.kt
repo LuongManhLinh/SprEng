@@ -28,6 +28,12 @@ class DemoLessonRepository : LessonRepository {
                 answerType = AnswerType.WORD_PICKER_SEQUENCE,
                 answerOptions = listOf("France", "which", "are", "then")
             ),
+            ChallengeForm(
+                title = "Nghe và điền lại câu",
+                questionContent = "How are you",
+                questionType = QuestionType.LISTENING,
+                answerType = AnswerType.TYPING
+            )
         )
     }
 }

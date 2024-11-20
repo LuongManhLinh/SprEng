@@ -4,7 +4,7 @@ data class ChallengeForm(
     val title: String,
     val questionContent: String,
     val questionType: QuestionType,
-    val answer: Any,
+    val answer: Any? = null,
     val answerType: AnswerType,
     val answerOptions: List<String>? = null,
     val maskedAnswer: List<String>? = null

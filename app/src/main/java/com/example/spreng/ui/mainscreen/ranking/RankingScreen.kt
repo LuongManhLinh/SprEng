@@ -31,17 +31,21 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.spreng.R
+import com.example.spreng.data.DefaultMainNavItemRepo
+import com.example.spreng.data.MainNavRoute
 import com.example.spreng.data.NavRanking
 import kotlin.random.Random
 
 @Composable
 fun RankingScreen(
-    navController: NavHostController,
+//    navController: NavHostController,
     modifier: Modifier = Modifier,
+    showInfoUser: () -> Unit,
+    showAllRanking: () -> Unit
 ) {
     val listCard: MutableList<userCard> = mutableListOf()
     Column(modifier = Modifier.fillMaxSize().padding(top = 8.dp)) {
-        TopBar(navController)
+        TopBar(showAllRanking)
         Spacer(Modifier.height(16.dp))
         HorizontalDivider(thickness = 2.dp)
         Spacer(Modifier.height(16.dp))
@@ -56,7 +60,13 @@ fun RankingScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             itemsIndexed(listCard) { index, user ->
-                Card(navController, index + 1, user.userName, user.xp)
+                Card(
+//                    navController,
+                    stt = index + 1,
+                    userName = user.userName,
+                    exp = user.xp,
+                    showInfoUser = {showInfoUser()} ,
+                    )
 //                HorizontalDivider(thickness = 2.dp)
                 if (index + 1 == 10) {
                     Spacer(Modifier.height(8.dp))
@@ -88,16 +98,16 @@ fun RankingScreen(
 }
 
 @Composable
-fun TopBar(navController: NavHostController) {
+fun TopBar(
+//    navController: NavHostController,
+    showAllRanking: () -> Unit
+) {
     Row(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = "Hạng ",
             fontSize = 36.sp,
             modifier = Modifier
                 .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
-//                .clickable {
-//                    navController.navigate(NavRanking.AllRank.name)
-//                }
         )
         Image(
             painter = painterResource(R.drawable.diamond),
@@ -106,7 +116,8 @@ fun TopBar(navController: NavHostController) {
                 .align(Alignment.CenterVertically)
                 .padding(start = 0.dp)
                 .clickable {
-                    navController.navigate(NavRanking.AllRank.name)
+//                    navController.navigate(NavRanking.AllRank.name)
+                    showAllRanking()
                 }
         )
         Spacer(Modifier.width(132.dp))
@@ -125,7 +136,14 @@ fun TopBar(navController: NavHostController) {
 }
 
 @Composable
-fun Card(navController: NavHostController,stt: Int, userName: String, exp: Int) {
+fun Card(
+//    navController: NavHostController,
+    stt: Int,
+    userName: String,
+    exp: Int,
+    showInfoUser: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     var colorIndex: Color
     if (stt <= 10)
         colorIndex = Color(178, 0, 249)
@@ -133,14 +151,15 @@ fun Card(navController: NavHostController,stt: Int, userName: String, exp: Int) 
         colorIndex = Color(88, 95, 99)
     else
         colorIndex = Color(207, 23, 30)
-    Row(modifier = Modifier
+    Row(modifier = modifier
         .fillMaxWidth()
         .height(60.dp)
         .padding(start = 8.dp, end = 8.dp)
         .clip(RoundedCornerShape(16.dp))
         .background(Color(205, 231, 236))
         .clickable{
-            navController.navigate(NavRanking.Profile)
+//            navController.navigate(NavRanking.Profile)
+            showInfoUser()
         },
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -155,9 +174,9 @@ fun Card(navController: NavHostController,stt: Int, userName: String, exp: Int) 
         Image(
             painter = painterResource(R.drawable.time),
             contentDescription = "avt",
-            modifier = Modifier.size(40.dp, 40.dp)
+            modifier = modifier.size(40.dp, 40.dp)
         )
-        Spacer(Modifier.width(8.dp))
+        Spacer(modifier.width(8.dp))
         Text(
             text = userName,
             fontSize = 24.sp,
@@ -176,7 +195,7 @@ fun Card(navController: NavHostController,stt: Int, userName: String, exp: Int) 
 @Preview(showBackground = true)
 @Composable
 fun RankingPre() {
-    RankingScreen(navController = rememberNavController())
+//    RankingScreen(navController = rememberNavController())
 }
 
 data class userCard(
