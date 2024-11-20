@@ -27,6 +27,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.spreng.R
+import com.example.spreng.ui.studyscreen.UnselectedWord
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
