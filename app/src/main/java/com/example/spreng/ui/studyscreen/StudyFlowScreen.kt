@@ -45,6 +45,8 @@ import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerFillingScre
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerSequenceScreen
 import com.example.spreng.ui.studyscreen.answer.writing.BaseWritingScreen
 import java.util.Locale
+import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerFillingScreen
+import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerSequenceScreen
 
 @Composable
 fun StudyFlowScreen(
@@ -163,6 +165,8 @@ fun StudyFlowScreen(
                         check
                     )
                 }
+                        .background(Color.Black)
+                )
             }
         }
 
