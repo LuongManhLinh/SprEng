@@ -64,7 +64,8 @@ fun AllRankingScreen(navController: NavHostController) {
                     }
                 }
             )
-        }
+        },
+        bottomBar = {}
     ) { innerPadding ->
         DisplayRank(modifier = Modifier
             .padding(innerPadding)
