@@ -6,8 +6,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.example.spreng.R
 import com.example.spreng.ui.studyscreen.SelectedWord
 import com.example.spreng.ui.studyscreen.UnselectedWord
 
@@ -29,7 +30,7 @@ fun WordPickerSequenceScreen(
         FlowRow(
             modifier = contentModifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(dimensionResource(R.dimen.small))
         ) {
             selectedWords.forEach { word ->
                 WordItem(

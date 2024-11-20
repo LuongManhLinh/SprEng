@@ -9,4 +9,5 @@
     <dimen name="large">32.dp</dimen>
     <dimen name="middle_large">48.dp</dimen>
     <dimen name="very_large">64.dp</dimen>
+    <dimen name="popup_height">128.dp</dimen>
 </resources>

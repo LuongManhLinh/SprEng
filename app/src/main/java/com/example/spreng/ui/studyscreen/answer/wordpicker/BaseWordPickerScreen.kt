@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.spreng.R
@@ -95,13 +96,16 @@ fun WordItem(
                 onClick()
             },
         wordHolder = word,
-        borderStroke = BorderStroke(1.dp, Color.Gray)
+        borderStroke = BorderStroke(
+            dimensionResource(R.dimen.very_tiny),
+            Color.Gray
+        )
     )
 
 }
 
 @Composable
-fun WordHolder(
+private fun WordHolder(
     modifier: Modifier = Modifier,
     wordHolder: String,
     textAlpha: Float = 1f,
@@ -111,7 +115,9 @@ fun WordHolder(
         modifier = modifier
             .padding(dimensionResource(R.dimen.tiny))
             .clip(RoundedCornerShape(dimensionResource(R.dimen.small_medium)))
-            .background(MaterialTheme.colorScheme.primaryContainer)
+            .background(
+                Color.Green
+            )
             .border(
                 borderStroke?: BorderStroke(0.dp, Color.Transparent),
                 shape = RoundedCornerShape(dimensionResource(R.dimen.small_medium))
@@ -122,10 +128,35 @@ fun WordHolder(
     ) {
        Text(
            text = wordHolder,
-           style = MaterialTheme.typography.bodyLarge,
+           style = MaterialTheme.typography.titleMedium,
            modifier = Modifier
                .padding(dimensionResource(R.dimen.small))
                .alpha(textAlpha)
        )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun BaseWordPickerScreenPreview() {
+    BaseWordPickerScreen(
+        unselectedWords = listOf(
+            UnselectedWord("Hello", false),
+            UnselectedWord("World", false),
+            UnselectedWord("This", false),
+            UnselectedWord("Is", false),
+            UnselectedWord("A", false),
+            UnselectedWord("Test", false),
+            UnselectedWord("For", false),
+            UnselectedWord("Word", false),
+            UnselectedWord("Picker", false),
+            UnselectedWord("Screen", false),
+        ),
+        onUnselectedWordClick = {},
+        content = {
+            Box(
+                modifier = it.border(1.dp, Color.Black, RoundedCornerShape(8.dp)).fillMaxSize()
+            )
+        }
+    )
 }

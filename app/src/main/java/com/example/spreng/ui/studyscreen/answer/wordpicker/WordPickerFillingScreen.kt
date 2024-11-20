@@ -1,11 +1,13 @@
 package com.example.spreng.ui.studyscreen.answer.wordpicker
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -43,7 +45,6 @@ fun WordPickerFillingScreen(
     var cardMaxWidth by remember { mutableStateOf(0.dp) }
     var textHeight by remember { mutableStateOf(0.dp) }
 
-
     BaseWordPickerScreen(
         unselectedWords = unselectedWords,
         onUnselectedWordClick = onUnselectedWordClick,
@@ -59,7 +60,11 @@ fun WordPickerFillingScreen(
         }
     ) { contentModifier ->
         FlowRow(
-            modifier = contentModifier.padding(dimensionResource(R.dimen.small))
+            modifier = contentModifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.small))
+            ,
+            horizontalArrangement = Arrangement.Start
         ) {
             sentenceUI.forEach { value ->
                 when (value) {
@@ -89,6 +94,7 @@ fun WordPickerFillingScreen(
                             length = cardMaxWidth
                         )
                     }
+
                 }
 
             }
@@ -104,13 +110,14 @@ private fun UnmaskedWord(
     setTextHeight: (Dp) -> Unit
 ) {
     val currentDensity = LocalDensity.current
+
     Box(
         modifier = modifier.height(cardHeight),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = word,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.onGloballyPositioned {
                 with(currentDensity) {
                     setTextHeight(it.size.height.toDp())
@@ -118,6 +125,7 @@ private fun UnmaskedWord(
             }
         )
     }
+
 }
 
 @Composable
@@ -155,9 +163,8 @@ private fun WordPickerFillPreview() {
             UnselectedWord("expensive"),
             UnselectedWord("beautiful"),
         ),
-        sentenceUI = listOf(
-            null, " is ", " a ", null, "sentence"
-        ),
+        sentenceUI = listOf(null, ", ", "I ", "went ", "to ", "the ", null,
+            " and ", "bought ", "a ", "very ", "big ", null),
         onUnselectedWordClick = {},
         onSelectedWordClick = {}
     )

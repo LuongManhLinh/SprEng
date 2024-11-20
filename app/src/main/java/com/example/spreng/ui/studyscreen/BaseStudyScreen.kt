@@ -66,7 +66,7 @@ fun BaseStudyScreen(
         ) {
             Text(
                 text = questionTitle,
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier
                     .padding(
                         start = dimensionResource(R.dimen.small),
@@ -117,6 +117,7 @@ private fun StudyTopBar(
                 }
             }
         )
+
         HorizontalDivider(
             thickness = dimensionResource(R.dimen.very_tiny),
             color = Color.Gray
