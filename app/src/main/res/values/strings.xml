@@ -24,4 +24,5 @@
 
     <string name="button_title_complete">Hoàn thành</string>
     <string name="cnt_desc_close">Đóng</string>
+    <string name="button_title_next">Tiếp theo</string>
 </resources>

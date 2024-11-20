@@ -1,10 +1,13 @@
 package com.example.spreng.form
 
-abstract class ChallengeForm(
+data class ChallengeForm(
     val title: String,
     val questionContent: String,
     val questionType: QuestionType,
-    val answer: String,
-    val answerType: AnswerType
+    val answer: Any? = null,
+    val answerType: AnswerType,
+    val answerOptions: List<String>? = null,
+    val maskedAnswer: List<String>? = null
 ) {
+
 }

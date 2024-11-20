@@ -45,7 +45,10 @@ fun Title(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AllRankingScreen(navController: NavHostController) {
+fun AllRankingScreen(
+//    navController: NavHostController,
+    showRankingScreen: () -> Unit
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -55,7 +58,8 @@ fun AllRankingScreen(navController: NavHostController) {
                 ),
                 navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate(MainNavRoute.RANKING.name)
+//                        navController.navigate(MainNavRoute.RANKING.name)
+                        showRankingScreen()
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -129,5 +133,5 @@ fun RankCard(rankCardItem: RankCardItem) {
 @Preview(showBackground = true)
 @Composable
 fun Pre() {
-    AllRankingScreen(navController = rememberNavController())
+//    AllRankingScreen(navController = rememberNavController())
 }

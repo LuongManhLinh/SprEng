@@ -44,15 +44,21 @@ fun BaseStudyScreen(
     modifier: Modifier = Modifier,
     learningProgress: Float,
     questionTitle: String,
+    isDone: Boolean = false,
     onCancelling: () -> Unit,
-    onCompleting: () -> Unit,
+    onBottomButtonPressed: () -> Unit,
     content: (@Composable () -> Unit)
 ) {
     Scaffold(
         topBar = {
             StudyTopBar(learningProgress, onCancelling)
         },
-        bottomBar = { StudyBottomBar(onCompleting = onCompleting) },
+        bottomBar = {
+            StudyBottomBar(
+                isDone = isDone,
+                onBottomButtonPressed = onBottomButtonPressed
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -123,7 +129,8 @@ private fun StudyTopBar(
 @Composable
 private fun StudyBottomBar(
     modifier: Modifier = Modifier,
-    onCompleting: () -> Unit
+    isDone: Boolean,
+    onBottomButtonPressed: () -> Unit,
 ) {
 
     BottomAppBar(
@@ -136,12 +143,15 @@ private fun StudyBottomBar(
             contentAlignment = Alignment.Center
         ) {
             Button(
-                onClick = { onCompleting() },
+                onClick = { onBottomButtonPressed() },
                 shape = RoundedCornerShape(dimensionResource(R.dimen.small)),
                 modifier = Modifier.width(300.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.button_title_complete)
+                    text = stringResource(
+                        if (isDone) R.string.button_title_next
+                        else R.string.button_title_complete
+                    )
                 )
             }
         }
@@ -156,7 +166,7 @@ private fun BaseStudyScreenPreview() {
         learningProgress = 0.3f,
         questionTitle = "Hoàn thiện câu sau",
         onCancelling = {},
-        onCompleting = {},
+        onBottomButtonPressed = {},
         content = {
             Column(
                 modifier = Modifier.fillMaxSize().padding(

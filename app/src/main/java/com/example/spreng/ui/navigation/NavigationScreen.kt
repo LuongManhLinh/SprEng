@@ -39,6 +39,7 @@ import com.example.spreng.ui.mainscreen.home.HomeScreen
 import com.example.spreng.ui.mainscreen.revision.RevisionScreen
 import com.example.spreng.ui.mainscreen.setting.SettingScreen
 import com.example.spreng.ui.mainscreen.ranking.AllRankingScreen
+import com.example.spreng.ui.mainscreen.ranking.InfoUserScreen
 import com.example.spreng.ui.mainscreen.ranking.RankingScreen
 import com.example.spreng.ui.mainscreen.revision.ReviewMistakesScreen
 import com.example.spreng.ui.mainscreen.revision.ReviewVocabsScreen
@@ -92,16 +93,21 @@ private fun NavigationScreen(
         composable(route = RevisionRoute.VOCAB.name) {
             ReviewVocabsScreen(navController)
         }
-        composable(route = NavRanking.AllRank.name) {
-            AllRankingScreen(navController)
-        }
-
-
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING)) {
-            RankingScreen(navController)
+            RankingScreen(
+                showInfoUser = {navController.navigate(NavRanking.Profile.name)},
+                showAllRanking = {navController.navigate(NavRanking.AllRank.name)}
+                )
         }
         composable(route = NavRanking.AllRank.name) {
-            AllRankingScreen(navController)
+            AllRankingScreen(
+                showRankingScreen = {navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING))}
+            )
+        }
+        composable(route = NavRanking.Profile.name) {
+            InfoUserScreen(
+                showRankingScreen = {navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING))}
+            )
         }
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.INFO)) {
             InfoScreen()

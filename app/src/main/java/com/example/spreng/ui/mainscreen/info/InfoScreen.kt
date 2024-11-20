@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 
 @Composable
-fun InfoScreen() {
+fun InfoScreen(modifier: Modifier = Modifier) {
     var username by remember { mutableStateOf("JohnDoe123") }
     var fullName by remember { mutableStateOf("John Doe") }
 

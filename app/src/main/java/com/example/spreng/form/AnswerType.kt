@@ -2,6 +2,7 @@ package com.example.spreng.form
 
 enum class AnswerType {
     TYPING,
-    WORD_SELECTION,
+    WORD_PICKER_FILLING,
+    WORD_PICKER_SEQUENCE,
     TALKING
 }
