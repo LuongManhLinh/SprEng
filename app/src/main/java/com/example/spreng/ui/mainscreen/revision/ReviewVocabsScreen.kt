@@ -1,5 +1,6 @@
 package com.example.spreng.ui.mainscreen.revision
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,8 +21,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.VolumeOff
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +48,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.spreng.R
 import com.example.spreng.data.MainNavRoute
+import com.example.spreng.text2speech.TTS
 
 
 @Composable
@@ -57,6 +58,7 @@ fun ReviewVocabsScreen(navController: NavHostController,
 ) {
     val vocabList by vocabViewModel.vocabList.collectAsState()
     val query by vocabViewModel.query.collectAsState()
+    val context = LocalContext.current
 
     Scaffold(
         modifier = modifier,
@@ -100,6 +102,7 @@ fun ReviewVocabsScreen(navController: NavHostController,
                         // một từ trong list
                         VocabItem(
                             vocab = vocab,
+                            context = context,
                             onToggleCheck = { vocabViewModel.toggleChecked(it) },
                             onToggleVolume = { vocabViewModel.toggleVolume(it) }
                         )
@@ -115,6 +118,7 @@ fun ReviewVocabsScreen(navController: NavHostController,
 @Composable
 fun VocabItem(
     vocab: Vocab,
+    context: Context,
     modifier: Modifier = Modifier,
     onToggleCheck: (Vocab) -> Unit,
     onToggleVolume: (Vocab) -> Unit
@@ -125,11 +129,19 @@ fun VocabItem(
             .fillMaxWidth()
     ) {
         Icon(
-            imageVector = if (vocab.isVolumeOn) Icons.AutoMirrored.Filled.VolumeUp else Icons.AutoMirrored.Filled.VolumeOff,
+            imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+//            imageVector = if (vocab.isVolumeOn) Icons.AutoMirrored.Filled.VolumeUp else Icons.AutoMirrored.Filled.VolumeOff,
             contentDescription = "volumn",
             modifier = modifier
                 .weight(1f)
-                .clickable { onToggleVolume(vocab) }
+                .clickable {
+                    TTS(context = context, sentence = vocab.word)
+//                    if (!vocab.isVolumeOn) {
+//                        TTS(context = context, sentence = vocab.word)
+//                        onToggleVolume(vocab)
+//                    }
+//                    onToggleVolume(vocab)
+                }
         )
         Column(
             modifier = Modifier
