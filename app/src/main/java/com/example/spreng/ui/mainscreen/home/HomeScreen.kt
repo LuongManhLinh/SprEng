@@ -1,6 +1,5 @@
 package com.example.spreng.ui.mainscreen.home
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
@@ -17,15 +16,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,31 +38,38 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
-import com.example.spreng.ui.custom.CustomRoundedBorderBox
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.delay
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    onLessonClicked: () -> Unit = { },
+    onLessonStarted: () -> Unit = { },
     viewModel: HomeViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    var topPadding by remember { mutableStateOf(0.dp) }
+
+//    val systemUiController = rememberSystemUiController()
+//
+//    SideEffect {
+//        systemUiController.setStatusBarColor(
+//            color = Color.Red
+//        )
+//    }
 
     Scaffold(
         modifier = modifier,
@@ -67,8 +78,9 @@ fun HomeScreen(
                 userName = uiState.userName,
                 userXp = uiState.userXp.toString(),
             )
-        }
+        },
     ) { innerPadding ->
+        topPadding = innerPadding.calculateTopPadding()
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -99,7 +111,7 @@ fun HomeScreen(
                                 }
                             ),
                             contentDescription =
-                                stringResource(R.string.lesson_img_cnt_desc, idx + 1),
+                            stringResource(R.string.lesson_img_cnt_desc, idx + 1),
                             modifier = Modifier
                                 .pointerInput(Unit) {
                                     awaitPointerEventScope {
@@ -112,14 +124,14 @@ fun HomeScreen(
                                                     if (lessonUI.cardState
                                                         == LessonCardState.HIDING) {
                                                         viewModel.updateLessonCardState(
-                                                                idx, LessonCardState.OPENING
-                                                            )
+                                                            idx, LessonCardState.OPENING
+                                                        )
                                                     }
                                                     else if (lessonUI.cardState
                                                         == LessonCardState.SHOWING) {
                                                         viewModel.updateLessonCardState(
-                                                                idx, LessonCardState.CLOSING
-                                                            )
+                                                            idx, LessonCardState.CLOSING
+                                                        )
                                                     }
                                                 }
                                             )
@@ -135,7 +147,7 @@ fun HomeScreen(
                         isShowingBox = lessonUI.cardState == LessonCardState.SHOWING
                                 || lessonUI.cardState == LessonCardState.OPENING,
                         info = "This is the lesson ${lessonUI.id}",
-                        onLessonClicked = onLessonClicked,
+                        onLessonStarted = onLessonStarted,
                         onOpeningCompleted = {
                             viewModel.updateLessonCardState(idx, LessonCardState.SHOWING)
                         },
@@ -144,16 +156,20 @@ fun HomeScreen(
                         }
                     )
                 }
-
             }
         }
     }
 
     StudyProgressBar(
+        modifier = Modifier.padding(
+            top = topPadding
+        ),
         numCompletedLesson = uiState.numCompletedLesson,
         numTotalLesson = uiState.lessonList.size
     )
+
 }
+
 
 private fun handlePressAction(
     event: PointerEvent,
@@ -180,126 +196,13 @@ private fun handlePressAction(
     return false
 }
 
-@Composable
-private fun HomeTopBar(
-    modifier: Modifier = Modifier,
-    userName: String,
-    userXp: String
-) {
-    CustomRoundedBorderBox(
-        modifier = modifier
-            .padding(
-                top = dimensionResource(R.dimen.tiny),
-                start = dimensionResource(R.dimen.tiny),
-                end = dimensionResource(R.dimen.tiny)
-            )
-        ,
-        cornerRadius = dimensionResource(R.dimen.small),
-        startBorderWidth = dimensionResource(R.dimen.tiny),
-        bottomBorderWidth = dimensionResource(R.dimen.small),
-        containerColor = Color.LightGray,
-        borderColor = Color.Gray
-    ) {
-        Row(
-            modifier = it.padding(dimensionResource(R.dimen.tiny)),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                painter = painterResource(R.drawable.sample_avatar),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(dimensionResource(R.dimen.middle_large))
-                    .clip(RoundedCornerShape(dimensionResource(R.dimen.large))
-                    )
-                ,
-                contentScale = ContentScale.Crop
-            )
-            Text(
-                text = userName,
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-                modifier = Modifier.padding(start = dimensionResource(R.dimen.small))
-            )
-            Spacer(Modifier.weight(1f))
-            Image(
-                painter = painterResource(R.drawable.xp),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(dimensionResource(R.dimen.middle_large))
-                    .clip(RoundedCornerShape(dimensionResource(R.dimen.large)))
-                ,
-                contentScale = ContentScale.Crop
-            )
-            Text(
-                text = userXp,
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-                color = Color(0, 130, 0),
-                modifier = Modifier.padding(start = dimensionResource(R.dimen.small))
-            )
-        }
-
-    }
-}
-
-@Composable
-private fun StudyProgressBar(
-    modifier: Modifier = Modifier,
-    numCompletedLesson: Int,
-    numTotalLesson: Int,
-) {
-    val smallDimen = dimensionResource(R.dimen.small)
-    CustomRoundedBorderBox(
-        modifier = modifier
-            .padding(
-                top = smallDimen,
-                start = smallDimen,
-                end = smallDimen
-            ),
-        cornerRadius = smallDimen,
-        bottomBorderWidth = dimensionResource(R.dimen.tiny),
-    ) { contentModifier ->
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = contentModifier
-                .fillMaxWidth()
-                .drawBehind {
-                    val size = Size(
-                        width = size.width * numCompletedLesson / numTotalLesson,
-                        height = size.height)
-                    drawRect(
-                        color = Color.Magenta,
-                        size = size,
-                    )
-                }
-        ) {
-            Spacer(Modifier.weight(0.1f))
-            Text(
-                text = stringResource(R.string.progress),
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp
-            )
-            Spacer(Modifier.weight(1f))
-            Text(
-                text = "$numCompletedLesson/$numTotalLesson",
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp
-            )
-            Spacer(Modifier.weight(0.1f))
-        }
-    }
-
-
-
-}
-
 
 @Composable
 private fun LessonBox(
     modifier: Modifier = Modifier,
     isShowingBox: Boolean,
     info: String,
-    onLessonClicked: () -> Unit,
+    onLessonStarted: () -> Unit,
     onOpeningCompleted: () -> Unit,
     onClosingCompleted: () -> Unit
 ) {
@@ -361,7 +264,7 @@ private fun LessonBox(
     ) {
         LessonContent(
             info = info,
-            onLessonClicked = onLessonClicked
+            onLessonClicked = onLessonStarted
         )
     }
 }
@@ -400,4 +303,3 @@ private fun LessonContent(
 private fun Preview() {
     HomeScreen(viewModel = HomeViewModel())
 }
-

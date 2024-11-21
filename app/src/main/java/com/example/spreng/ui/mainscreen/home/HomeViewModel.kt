@@ -1,6 +1,5 @@
 package com.example.spreng.ui.mainscreen.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +13,7 @@ class HomeViewModel : ViewModel() {
 
     fun updateLessonCardState(lessonIdx: Int, newState: LessonCardState) {
         _uiState.update { state ->
-            val newLessonList = state.lessonList
+            val newLessonList = state.lessonList.toMutableList()
             newLessonList[lessonIdx].cardState = newState
             state.copy(
                 lessonList = newLessonList
@@ -61,7 +60,7 @@ data class LessonUI(
             return sample
         }
 
-        fun map(
+        private fun map(
             value: Double,
             oldLeft: Double, oldRight: Double,
             newLeft: Double, newRight: Double

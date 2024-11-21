@@ -78,7 +78,7 @@ private fun NavigationScreen(
     ) {
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.HOME)) {
             HomeScreen(
-                onLessonClicked = {
+                onLessonStarted = {
                     val studyIntent = Intent(context, StudyActivity::class.java)
                     context.startActivity(studyIntent)
                 }

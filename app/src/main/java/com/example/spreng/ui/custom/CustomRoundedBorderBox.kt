@@ -58,11 +58,11 @@ private fun Preview() {
         cornerRadius = 8.dp,
         bottomBorderWidth = 4.dp,
         borderColor = Color.Red
-    ) {
+    ) { contentModifier ->
         Text(
             text = "Hello World",
             fontSize = 20.sp,
-            modifier = it.padding(16.dp)
+            modifier = contentModifier.padding(16.dp)
         )
     }
 }
