@@ -29,6 +29,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.spreng.R
 import com.example.spreng.data.RevisionRoute
+import com.example.spreng.ui.custom.CustomRoundedBorderBox
 
 @Composable
 fun RevisionScreen(
@@ -63,40 +64,52 @@ fun RevisionScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(
-                    onClick = {
-                        navController.navigate(RevisionRoute.MISTAKE.name)
-                    },
-                    modifier = Modifier
-                        .size(240.dp),
-//                        .background(color = Color(199, 210, 254)),
-                    shape = RoundedCornerShape(48.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(199, 210, 254))
+                CustomRoundedBorderBox (
+                    cornerRadius = 8.dp,
+                    bottomBorderWidth = 8.dp,
+                    borderColor = Color.Gray,
+//                    containerColor = Color(199, 210, 254)
                 ) {
-                    Text(
-                        text = "Lỗi sai",
-                        color = Color.Black,
-                        fontSize = 36.sp
-                    )
+                    Button(
+                        onClick = {
+                            navController.navigate(RevisionRoute.MISTAKE.name)
+                        },
+                        modifier = it
+                            .size(240.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(199, 210, 254))
+                    ) {
+                        Text(
+                            text = "Lỗi sai",
+                            color = Color.Black,
+                            fontSize = 36.sp
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                Button(
-                    onClick = {
-                        navController.navigate(RevisionRoute.VOCAB.name)
-                    },
-                    modifier = Modifier
-                        .size(240.dp),
-                    shape = RoundedCornerShape(48.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(199, 210, 254))
-
+                CustomRoundedBorderBox (
+                    cornerRadius = 8.dp,
+                    bottomBorderWidth = 8.dp,
+                    borderColor = Color.Gray
                 ) {
-                    Text(
-                        text = "Từ vựng",
-                        color = Color.Black,
-                        fontSize = 36.sp
-                    )
+                    Button(
+                        onClick = {
+                            navController.navigate(RevisionRoute.VOCAB.name)
+                        },
+                        modifier = it
+                            .size(240.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(199, 210, 254))
+
+                    ) {
+                        Text(
+                            text = "Từ vựng",
+                            color = Color.Black,
+                            fontSize = 36.sp
+                        )
+                    }
                 }
             }
         }
@@ -111,7 +124,7 @@ private fun RevisionTopBar(modifier: Modifier = Modifier) {
             .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.small)))
             .background(Color.LightGray)
             .fillMaxWidth()
-            .height(dimensionResource(R.dimen.middle_large))
+            .height(dimensionResource(R.dimen.very_large))
             .padding(dimensionResource(R.dimen.small)),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
