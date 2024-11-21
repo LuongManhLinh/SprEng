@@ -1,14 +1,12 @@
 package com.example.spreng.ui.studyscreen
 
 import android.content.Context
-import android.speech.tts.TextToSpeech
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,9 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,14 +35,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
-import com.example.spreng.tts.TTS
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerFillingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerSequenceScreen
 import com.example.spreng.ui.studyscreen.answer.writing.BaseWritingScreen
-import java.util.Locale
-import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerFillingScreen
-import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerSequenceScreen
-
+import com.example.spreng.ui.studyscreen.question.listening.BaseListeningQuestionScreen
 @Composable
 fun StudyFlowScreen(
     modifier: Modifier = Modifier,
@@ -125,7 +116,7 @@ fun StudyFlowScreen(
                 is AnswerUIState.TextTyping -> {
                     Log.i("QS", (uiState.questionUIState as QuestionUIState.Listening).questionContent)
                     Log.i("AS", (uiState.answerUIState as AnswerUIState.TextTyping).answerWriting)
-                    QuestionListening(
+                    BaseListeningQuestionScreen(
                         modifier = modifier.fillMaxWidth().weight(0.3f),
                         context = context,
                         sentence = (uiState.questionUIState as QuestionUIState.Listening).questionContent
@@ -193,33 +184,6 @@ private fun QuestionText(
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(dimensionResource(R.dimen.small))
         )
-    }
-}
-
-@Composable
-private fun QuestionListening(
-    modifier: Modifier = Modifier,
-    context: Context,
-    sentence: String
-){
-    Box(modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(
-                onClick = {
-                    TTS(context, sentence)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Call,
-                    contentDescription = "volume"
-                )
-            }
-            Text(
-                "Điền những gì đã nghe được"
-            )
-        }
     }
 }
 @Preview

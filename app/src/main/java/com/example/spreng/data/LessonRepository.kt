@@ -30,7 +30,7 @@ class DemoLessonRepository : LessonRepository {
             ),
             ChallengeForm(
                 title = "Nghe và điền lại câu",
-                questionContent = "How are you",
+                questionContent = "How are you, my name is Alex, nice to meet you",
                 questionType = QuestionType.LISTENING,
                 answerType = AnswerType.TYPING
             )
