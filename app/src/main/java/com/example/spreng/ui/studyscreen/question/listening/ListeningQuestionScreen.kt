@@ -38,18 +38,23 @@ import com.example.spreng.ui.custom.CustomRoundedBorderBox
 fun BaseListeningQuestionScreen(
     modifier: Modifier = Modifier,
     context: Context,
-    sentence: String
+    sentence: String,
 ) {
-    Box(modifier = modifier.fillMaxSize(),
+    Box(
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         CustomRoundedBorderBox(
+            cornerRadius = 8.dp,
             bottomBorderWidth = 4.dp,
             borderColor = Color(108, 126, 225),
-            containerColor = Color(198, 215, 235),
-        ) {
-            Row(modifier = Modifier.padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically) {
+            containerColor = Color(198, 215, 235)
+        )
+        { contentModifier ->
+            Row(
+                modifier = contentModifier.padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Image(
                     painter = painterResource(R.drawable.volume),
                     contentDescription = "volume",
@@ -82,8 +87,6 @@ fun BaseListeningQuestionScreen(
             }
         }
     }
-
-
 }
 
 @Preview(showBackground = true)
