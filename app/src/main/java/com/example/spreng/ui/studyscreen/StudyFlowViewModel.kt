@@ -95,7 +95,9 @@ class StudyFlowViewModel(
                 AnswerType.WORD_PICKER_SEQUENCE -> {
                     (currentLesson.answer as List<*>).joinToString(" ")
                 }
-                AnswerType.TALKING -> TODO()
+                AnswerType.TALKING -> {
+                    currentLesson.answer as String
+                }
             }
         }
 

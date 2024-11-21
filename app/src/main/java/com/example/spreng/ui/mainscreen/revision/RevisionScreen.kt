@@ -39,7 +39,21 @@ fun RevisionScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            RevisionTopBar()
+            CustomRoundedBorderBox(
+                modifier = modifier
+                    .padding(
+                        top = dimensionResource(R.dimen.tiny),
+                        start = dimensionResource(R.dimen.tiny),
+                        end = dimensionResource(R.dimen.tiny)
+                    ),
+                cornerRadius = dimensionResource(R.dimen.small),
+                startBorderWidth = dimensionResource(R.dimen.tiny),
+                bottomBorderWidth = dimensionResource(R.dimen.small),
+//                containerColor = Color.LightGray,
+                borderColor = Color.Gray
+            ) {
+                RevisionTopBar(it)
+            }
         }
     ) { contentPadding ->
         Column(
@@ -120,7 +134,6 @@ fun RevisionScreen(
 private fun RevisionTopBar(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
-            .padding(dimensionResource(R.dimen.tiny))
             .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.small)))
             .background(Color.LightGray)
             .fillMaxWidth()

@@ -49,6 +49,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.spreng.R
 import com.example.spreng.data.MainNavRoute
 import com.example.spreng.text2speech.TTS
+import com.example.spreng.ui.custom.CustomRoundedBorderBox
 
 
 @Composable
@@ -63,10 +64,25 @@ fun ReviewVocabsScreen(navController: NavHostController,
     Scaffold(
         modifier = modifier,
         topBar = {
-            ReviewVocabTopBar(
-                navController = navController,
-                numbOfVocab = vocabList.size
-            )
+            CustomRoundedBorderBox(
+                modifier = modifier
+                    .padding(
+                        top = dimensionResource(R.dimen.tiny),
+                        start = dimensionResource(R.dimen.tiny),
+                        end = dimensionResource(R.dimen.tiny)
+                    ),
+                cornerRadius = dimensionResource(R.dimen.small),
+                startBorderWidth = dimensionResource(R.dimen.tiny),
+                bottomBorderWidth = dimensionResource(R.dimen.small),
+//                containerColor = Color.LightGray,
+                borderColor = Color.Gray
+            ) {
+                ReviewVocabTopBar(
+                    navController = navController,
+                    numbOfVocab = vocabList.size,
+                    modifier = it
+                )
+            }
         }
     ) { contentPadding ->
         Column(
@@ -176,7 +192,6 @@ fun ReviewVocabTopBar(
 ) {
     Box(
         modifier = modifier
-            .padding(dimensionResource(R.dimen.tiny))
             .height(dimensionResource(R.dimen.very_large))
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.primaryContainer)
