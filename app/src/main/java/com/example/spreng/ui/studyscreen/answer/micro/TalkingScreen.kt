@@ -68,7 +68,8 @@ fun TalkingScreen(
             )
         }
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium)))
-        Text(
+        if(inputAnswer.isNotEmpty()) {
+            Text(
                 text = inputAnswer,
                 modifier = Modifier
                     .padding(dimensionResource(R.dimen.small))
@@ -80,7 +81,8 @@ fun TalkingScreen(
                         shape = RoundedCornerShape(dimensionResource(R.dimen.small))
                     )
                     .padding(dimensionResource(R.dimen.small))
-        )
+            )
+        }
     }
 
 }
@@ -88,5 +90,7 @@ fun TalkingScreen(
 //@Preview(showBackground = true)
 //@Composable
 //fun PreviewScreen() {
-//    TalkingScreen()
+//    TalkingScreen(
+//        LocalContext.current, "", {}
+//    )
 //}

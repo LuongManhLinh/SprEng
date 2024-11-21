@@ -37,6 +37,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.spreng.R
 import com.example.spreng.data.MainNavRoute
+import com.example.spreng.ui.custom.CustomRoundedBorderBox
 
 @Composable
 fun ReviewMistakesScreen(
@@ -48,10 +49,25 @@ fun ReviewMistakesScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            ReviewMistakeTopBar(
-                navController = navController,
-                numbOfMistake = mistakeList.size
-            )
+            CustomRoundedBorderBox(
+                modifier = modifier
+                    .padding(
+                        top = dimensionResource(R.dimen.tiny),
+                        start = dimensionResource(R.dimen.tiny),
+                        end = dimensionResource(R.dimen.tiny)
+                    ),
+                cornerRadius = dimensionResource(R.dimen.small),
+                startBorderWidth = dimensionResource(R.dimen.tiny),
+                bottomBorderWidth = dimensionResource(R.dimen.small),
+//                containerColor = Color.LightGray,
+                borderColor = Color.Gray
+            ) {
+                ReviewMistakeTopBar(
+                    modifier = it,
+                    navController = navController,
+                    numbOfMistake = mistakeList.size
+                )
+            }
         }
     ) { contentPadding ->
         //hiển thị các lỗi sai
@@ -118,7 +134,6 @@ fun ReviewMistakeTopBar(
 ) {
     Box(
         modifier = modifier
-            .padding(dimensionResource(R.dimen.tiny))
             .height(dimensionResource(R.dimen.very_large))
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.primaryContainer)
