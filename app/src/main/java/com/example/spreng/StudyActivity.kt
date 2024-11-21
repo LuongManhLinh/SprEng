@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.spreng.ui.studyscreen.BaseStudyScreen
 import com.example.spreng.ui.studyscreen.StudyFlowScreen
+import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerFillingScreen
+import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerSequenceScreen
 import com.example.spreng.ui.studyscreen.answer.writing.BaseWritingScreen
 import com.example.spreng.ui.studyscreen.StudyFlowScreen
 import com.example.spreng.ui.theme.SprEngTheme

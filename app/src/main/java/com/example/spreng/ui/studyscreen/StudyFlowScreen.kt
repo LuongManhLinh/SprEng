@@ -35,7 +35,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
+import com.example.spreng.speech2Text.SpeechRecognizer
 import com.example.spreng.tts.TTS
+import com.example.spreng.ui.studyscreen.answer.micro.TalkingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerFillingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerSequenceScreen
 import com.example.spreng.ui.studyscreen.answer.writing.BaseWritingScreen
@@ -113,7 +115,22 @@ fun StudyFlowScreen(
                     )
                 }
 
-                is AnswerUIState.Talking -> TODO()
+                is AnswerUIState.Talking -> {
+                    QuestionText(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .weight(0.3f),
+                        questionContent = (
+                                uiState.questionUIState as QuestionUIState.Text
+                                ).questionContent,
+                    )
+                    TalkingScreen(
+                        modifier = modifier.fillMaxWidth().weight(0.7f),
+                        context = context,
+                        inputAnswer = (uiState.answerUIState as AnswerUIState.Talking).answerTalking,
+                        saveInputAnswer = {viewModel.updateAnswerTalking(it)}
+                    )
+                }
                 is AnswerUIState.TextTyping -> {
                     QuestionListening(
                         modifier = modifier.fillMaxWidth().weight(0.3f),
@@ -137,8 +154,6 @@ fun StudyFlowScreen(
                 isCorrect = uiState.isCorrect,
                 correctAnswer = uiState.correctAnswer
             )
-
-
         }
 
     }
