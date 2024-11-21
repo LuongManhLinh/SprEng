@@ -2,6 +2,7 @@
 <resources>
     <dimen name="very_tiny">2.dp</dimen>
     <dimen name="tiny">4.dp</dimen>
+    <dimen name="tiny_small">6.dp</dimen>
     <dimen name="small">8.dp</dimen>
     <dimen name="small_medium">12.dp</dimen>
     <dimen name="medium">16.dp</dimen>

@@ -44,6 +44,7 @@ import com.example.spreng.ui.studyscreen.answer.micro.TalkingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerFillingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerSequenceScreen
 import com.example.spreng.ui.studyscreen.answer.writing.BaseWritingScreen
+import com.example.spreng.ui.studyscreen.question.text.QuestionText
 
 @Composable
 fun StudyFlowScreen(
@@ -129,7 +130,6 @@ fun StudyFlowScreen(
                     )
                     TalkingScreen(
                         modifier = modifier.fillMaxWidth().weight(0.7f),
-                        context = context,
                         inputAnswer = (uiState.answerUIState as AnswerUIState.Talking).answerTalking,
                         saveInputAnswer = {viewModel.updateAnswerTalking(it)}
                     )
@@ -227,28 +227,6 @@ private fun ResultPopup(
     }
 }
 
-@Composable
-private fun QuestionText(
-    modifier: Modifier = Modifier,
-    questionContent: String
-) {
-    Box(
-        modifier = modifier
-            .padding(dimensionResource(R.dimen.small))
-            .clip(RoundedCornerShape(dimensionResource(R.dimen.small)))
-            .border(
-                width = 1.dp,
-                color = Color.Black,
-                shape = RoundedCornerShape(dimensionResource(R.dimen.small))
-            )
-    ) {
-        Text(
-            text = questionContent,
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(dimensionResource(R.dimen.small))
-        )
-    }
-}
 @Preview
 @Composable
 private fun StudyFlowScreenPreview() {

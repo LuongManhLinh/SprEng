@@ -76,7 +76,9 @@ class StudyFlowViewModel(
                 }
             }
 
-            is AnswerUIState.Talking -> TODO()
+            is AnswerUIState.Talking -> {
+                isCorrect = checkTalkingAnswer(currentLesson.answer as String, answerUIState.answerTalking)
+            }
             is AnswerUIState.TextTyping -> {
                 isCorrect = checkWritingAnswer(currentLesson.questionContent, answerUIState.answerWriting)
             }
@@ -93,7 +95,9 @@ class StudyFlowViewModel(
                 AnswerType.WORD_PICKER_SEQUENCE -> {
                     (currentLesson.answer as List<*>).joinToString(" ")
                 }
-                AnswerType.TALKING -> TODO()
+                AnswerType.TALKING -> {
+                    currentLesson.answer as String
+                }
             }
         }
 

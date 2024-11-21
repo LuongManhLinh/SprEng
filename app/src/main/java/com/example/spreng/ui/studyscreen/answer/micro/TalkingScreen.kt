@@ -1,6 +1,5 @@
 package com.example.spreng.ui.studyscreen.answer.micro
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -22,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,10 +32,10 @@ import com.example.spreng.speech2Text.SpeechRecognizer
 @Composable
 fun TalkingScreen(
     modifier: Modifier = Modifier,
-    context: Context,
     inputAnswer: String,
     saveInputAnswer: (String) -> Unit
 ) {
+    val context = LocalContext.current
     val speechRecognizer = SpeechRecognizer(
         context = context,
         onResult = { result -> saveInputAnswer(result) },
@@ -68,7 +68,8 @@ fun TalkingScreen(
             )
         }
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium)))
-        Text(
+        if(inputAnswer.isNotEmpty()) {
+            Text(
                 text = inputAnswer,
                 modifier = Modifier
                     .padding(dimensionResource(R.dimen.small))
@@ -80,7 +81,8 @@ fun TalkingScreen(
                         shape = RoundedCornerShape(dimensionResource(R.dimen.small))
                     )
                     .padding(dimensionResource(R.dimen.small))
-        )
+            )
+        }
     }
 
 }
@@ -88,5 +90,7 @@ fun TalkingScreen(
 //@Preview(showBackground = true)
 //@Composable
 //fun PreviewScreen() {
-//    TalkingScreen()
+//    TalkingScreen(
+//        LocalContext.current, "", {}
+//    )
 //}
