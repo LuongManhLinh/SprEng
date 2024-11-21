@@ -247,7 +247,7 @@ class StudyFlowViewModel(
     }
 
     private fun checkWritingAnswer(rightAnswer: String, userAnswer: String): Boolean{
-        val lowQs = rightAnswer.lowercase().replace("\\s+".toRegex(), "").trim(
+        val lowQs = rightAnswer.lowercase().replace("\\s+".toRegex(), "").trim()
         val asQs = userAnswer.lowercase().replace("\\s+".toRegex(), "").trim()
         return lowQs == asQs
     }
