@@ -1,7 +1,6 @@
 package com.example.spreng.ui.studyscreen.answer.wordpicker
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -83,7 +82,8 @@ fun WordPickerFillingScreen(
                             onClick = {
                                 onSelectedWordClick(value)
                             },
-                            modifier = Modifier.width(cardMaxWidth)
+                            modifier = Modifier.width(cardMaxWidth),
+                            widthDp = cardMaxWidth
                         )
                     }
 

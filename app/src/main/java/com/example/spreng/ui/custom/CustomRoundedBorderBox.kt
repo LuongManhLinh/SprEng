@@ -2,7 +2,10 @@ package com.example.spreng.ui.custom
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +29,9 @@ fun CustomRoundedBorderBox(
     endBorderWidth: Dp = 1.dp,
     borderColor: Color = Color.Black,
     containerColor: Color = Color.White,
-    content: @Composable (Modifier) -> Unit
+    contentWidthDp: Dp? = null,
+    contentHeightDp: Dp? = null,
+    content: @Composable () -> Unit
 ) {
     Box(
         modifier = modifier
@@ -35,17 +40,36 @@ fun CustomRoundedBorderBox(
             ),
         contentAlignment = Alignment.Center
     ) {
-        content(
-            Modifier
+        Box(
+            modifier = Modifier
                 .padding(
                     start = startBorderWidth,
                     top = topBorderWidth,
                     end = endBorderWidth,
                     bottom = bottomBorderWidth
                 )
+                .then(
+                    if (contentWidthDp != null) {
+                        Modifier.width(contentWidthDp - startBorderWidth - endBorderWidth)
+                    } else {
+                        Modifier
+                    }
+                )
+                .then(
+                    if (contentHeightDp != null) {
+                        Modifier.height(contentHeightDp - topBorderWidth - bottomBorderWidth)
+                    } else {
+                        Modifier
+                    }
+                )
+
                 .clip(RoundedCornerShape(cornerRadius))
                 .background(containerColor)
-        )
+            ,
+            contentAlignment = Alignment.Center
+        ) {
+            content()
+        }
     }
 }
 
@@ -54,17 +78,22 @@ fun CustomRoundedBorderBox(
 @Preview
 @Composable
 private fun Preview() {
-    CustomRoundedBorderBox(
-        cornerRadius = 8.dp,
-        bottomBorderWidth = 4.dp,
-        borderColor = Color.Red
-    ) { contentModifier ->
-        Text(
-            text = "Hello World",
-            fontSize = 20.sp,
-            modifier = contentModifier.padding(16.dp)
-        )
+    Box(modifier = Modifier.fillMaxSize()) {
+        CustomRoundedBorderBox(
+            cornerRadius = 8.dp,
+            bottomBorderWidth = 4.dp,
+            borderColor = Color.Red,
+            contentWidthDp = 500.dp,
+            contentHeightDp = 300.dp
+        ) {
+            Text(
+                text = "Hello World Haha",
+                fontSize = 20.sp,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
     }
+
 }
 
 

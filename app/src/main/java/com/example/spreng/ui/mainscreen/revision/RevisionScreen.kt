@@ -52,7 +52,7 @@ fun RevisionScreen(
 //                containerColor = Color.LightGray,
                 borderColor = Color.Gray
             ) {
-                RevisionTopBar(it)
+                RevisionTopBar()
             }
         }
     ) { contentPadding ->
@@ -88,7 +88,7 @@ fun RevisionScreen(
                         onClick = {
                             navController.navigate(RevisionRoute.MISTAKE.name)
                         },
-                        modifier = it
+                        modifier = Modifier
                             .size(240.dp),
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(199, 210, 254))
@@ -112,7 +112,7 @@ fun RevisionScreen(
                         onClick = {
                             navController.navigate(RevisionRoute.VOCAB.name)
                         },
-                        modifier = it
+                        modifier = Modifier
                             .size(240.dp),
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(199, 210, 254))

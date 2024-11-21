@@ -80,7 +80,6 @@ fun ReviewVocabsScreen(navController: NavHostController,
                 ReviewVocabTopBar(
                     navController = navController,
                     numbOfVocab = vocabList.size,
-                    modifier = it
                 )
             }
         }

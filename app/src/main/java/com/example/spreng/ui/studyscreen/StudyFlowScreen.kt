@@ -1,25 +1,16 @@
 package com.example.spreng.ui.studyscreen
 
-import android.content.Context
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Call
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,16 +25,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
-
-import com.example.spreng.ui.studyscreen.question.listening.BaseListeningQuestionScreen
-import com.example.spreng.speech2Text.SpeechRecognizer
+import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import com.example.spreng.ui.studyscreen.answer.micro.TalkingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerFillingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerSequenceScreen
 import com.example.spreng.ui.studyscreen.answer.writing.BaseWritingScreen
+import com.example.spreng.ui.studyscreen.question.listening.BaseListeningQuestionScreen
 import com.example.spreng.ui.studyscreen.question.text.QuestionText
 
 @Composable
@@ -150,7 +139,7 @@ fun StudyFlowScreen(
                 }
             }
 
-            ResultPopup(
+            PopupResult(
                 modifier = modifier.padding(
                     start = dimensionResource(R.dimen.large),
                     end = dimensionResource(R.dimen.large),
@@ -167,7 +156,7 @@ fun StudyFlowScreen(
 
 
 @Composable
-private fun ResultPopup(
+private fun PopupResult(
     modifier: Modifier = Modifier,
     isVisible: Boolean,
     isCorrect: Boolean,
@@ -180,48 +169,43 @@ private fun ResultPopup(
             if (isVisible) 1f else 0f
         )
     ) {
-        Column (
-            modifier = Modifier
-                .height(dimensionResource(R.dimen.popup_height))
-                .fillMaxWidth()
-                .clip(
-                    RoundedCornerShape(
-                        topStart = dimensionResource(R.dimen.small),
-                        topEnd = dimensionResource(R.dimen.small)
-                    )
-                )
-                .border(
-                    width = dimensionResource(R.dimen.very_tiny),
-                    color = Color.Gray,
-                    shape = RoundedCornerShape(
-                        topStart = dimensionResource(R.dimen.small),
-                        topEnd = dimensionResource(R.dimen.small)
-                    )
-                )
-                .background(
-                    if (isCorrect) Color.Green else Color.Red
-                ),
-            verticalArrangement = Arrangement.Center,
+        CustomRoundedBorderBox(
+            cornerRadius = dimensionResource(R.dimen.large),
+            borderColor = Color.Black,
+            bottomBorderWidth = dimensionResource(R.dimen.small),
+            topBorderWidth = dimensionResource(R.dimen.very_tiny),
+            startBorderWidth = dimensionResource(R.dimen.tiny),
+            endBorderWidth = dimensionResource(R.dimen.very_tiny),
         ) {
-            Text(
-                text = if (isCorrect) "Chính xác" else "Không chính xác",
-                style = MaterialTheme.typography.headlineSmall,
-                color = Color.White,
+            Column (
                 modifier = Modifier
-                    .padding(dimensionResource(R.dimen.small))
-                    .align(Alignment.CenterHorizontally)
-            )
-            if (!isCorrect && correctAnswer != null) {
+                    .height(dimensionResource(R.dimen.popup_height))
+                    .fillMaxWidth()
+                    .background(
+                        if (isCorrect) Color.Green else Color.Red
+                    ),
+                verticalArrangement = Arrangement.Center,
+            ) {
                 Text(
-                    text = correctAnswer,
-                    style = MaterialTheme.typography.titleLarge,
+                    text = if (isCorrect) "Chính xác" else "Không chính xác",
+                    style = MaterialTheme.typography.headlineSmall,
                     color = Color.White,
                     modifier = Modifier
                         .padding(dimensionResource(R.dimen.small))
-                        .fillMaxWidth()
-                        .align(Alignment.Start),
-                    textAlign = TextAlign.Justify
+                        .align(Alignment.CenterHorizontally)
                 )
+                if (!isCorrect && correctAnswer != null) {
+                    Text(
+                        text = correctAnswer,
+                        style = MaterialTheme.typography.titleLarge,
+                        color = Color.White,
+                        modifier = Modifier
+                            .padding(dimensionResource(R.dimen.small))
+                            .fillMaxWidth()
+                            .align(Alignment.Start),
+                        textAlign = TextAlign.Justify
+                    )
+                }
             }
         }
     }
@@ -239,11 +223,11 @@ private fun ResultPopupPreview() {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        ResultPopup(
+        PopupResult(
             isVisible = true,
             isCorrect = true
         )
-        ResultPopup(
+        PopupResult(
             isVisible = true,
             isCorrect = false,
             correctAnswer = "This is the correct answer"

@@ -50,9 +50,9 @@ fun BaseListeningQuestionScreen(
             borderColor = Color(108, 126, 225),
             containerColor = Color(198, 215, 235)
         )
-        { contentModifier ->
+        {
             Row(
-                modifier = contentModifier.padding(16.dp),
+                modifier = Modifier.padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(

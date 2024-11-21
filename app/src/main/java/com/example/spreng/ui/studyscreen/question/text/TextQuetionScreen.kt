@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.spreng.R
 
@@ -24,15 +25,21 @@ fun QuestionText(
             .padding(dimensionResource(R.dimen.small))
             .clip(RoundedCornerShape(dimensionResource(R.dimen.small)))
             .border(
-                width = 1.dp,
+                width = dimensionResource(R.dimen.very_tiny),
                 color = Color.Black,
                 shape = RoundedCornerShape(dimensionResource(R.dimen.small))
             )
     ) {
         Text(
             text = questionContent,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(dimensionResource(R.dimen.small))
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuestionTextPreview() {
+    QuestionText(questionContent = "This is a question")
 }

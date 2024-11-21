@@ -1,7 +1,5 @@
 package com.example.spreng.ui.studyscreen.answer.wordpicker
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,10 +14,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -28,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.spreng.R
+import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import com.example.spreng.ui.studyscreen.UnselectedWord
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -85,6 +82,7 @@ fun BaseWordPickerScreen(
 fun WordItem(
     modifier: Modifier = Modifier,
     word: String,
+    widthDp: Dp? = null,
     onClick: () -> Unit = {}
 ) {
     WordHolder(
@@ -96,10 +94,7 @@ fun WordItem(
                 onClick()
             },
         wordHolder = word,
-        borderStroke = BorderStroke(
-            dimensionResource(R.dimen.very_tiny),
-            Color.Gray
-        )
+        widthDp = widthDp
     )
 
 }
@@ -109,30 +104,23 @@ private fun WordHolder(
     modifier: Modifier = Modifier,
     wordHolder: String,
     textAlpha: Float = 1f,
-    borderStroke: BorderStroke? = null,
+    widthDp: Dp? = null,
 ) {
-    Box(
-        modifier = modifier
-            .padding(dimensionResource(R.dimen.tiny))
-            .clip(RoundedCornerShape(dimensionResource(R.dimen.small_medium)))
-            .background(
-                Color.Green
-            )
-            .border(
-                borderStroke?: BorderStroke(0.dp, Color.Transparent),
-                shape = RoundedCornerShape(dimensionResource(R.dimen.small_medium))
-            )
-
-        ,
-        contentAlignment = Alignment.Center
+    CustomRoundedBorderBox(
+        cornerRadius = dimensionResource(R.dimen.small_medium),
+        borderColor = Color.Gray,
+        bottomBorderWidth = dimensionResource(R.dimen.tiny),
+        containerColor = if (textAlpha == 1f) Color.Green else Color.Gray,
+        modifier = modifier.padding(dimensionResource(R.dimen.small)),
+        contentWidthDp = widthDp
     ) {
-       Text(
-           text = wordHolder,
-           style = MaterialTheme.typography.titleMedium,
-           modifier = Modifier
-               .padding(dimensionResource(R.dimen.small))
-               .alpha(textAlpha)
-       )
+        Text(
+            text = wordHolder,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier
+                .padding(dimensionResource(R.dimen.small))
+                .alpha(textAlpha)
+        )
     }
 }
 
@@ -141,7 +129,7 @@ private fun WordHolder(
 private fun BaseWordPickerScreenPreview() {
     BaseWordPickerScreen(
         unselectedWords = listOf(
-            UnselectedWord("Hello", false),
+            UnselectedWord("Hello", true),
             UnselectedWord("World", false),
             UnselectedWord("This", false),
             UnselectedWord("Is", false),

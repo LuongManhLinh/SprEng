@@ -63,7 +63,6 @@ fun ReviewMistakesScreen(
                 borderColor = Color.Gray
             ) {
                 ReviewMistakeTopBar(
-                    modifier = it,
                     navController = navController,
                     numbOfMistake = mistakeList.size
                 )

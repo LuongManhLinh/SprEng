@@ -63,7 +63,7 @@ internal fun HomeTopBar(
         borderColor = Color.Gray
     ) {
         Row(
-            modifier = it.padding(dimensionResource(R.dimen.tiny)),
+            modifier = Modifier.padding(dimensionResource(R.dimen.tiny)),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
@@ -190,10 +190,10 @@ private fun StudyProgressBarContent(
             startBorderWidth = dimensionResource(R.dimen.very_tiny),
             bottomBorderWidth = dimensionResource(R.dimen.tiny),
             borderColor = Color(0, 100, 0)
-        ) { contentModifier ->
+        ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = contentModifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .drawBehind {
                         val size = Size(
