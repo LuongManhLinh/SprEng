@@ -99,7 +99,6 @@ fun RankingScreen(
 
 @Composable
 fun TopBar(
-//    navController: NavHostController,
     showAllRanking: () -> Unit
 ) {
     Row(modifier = Modifier.fillMaxWidth()) {
