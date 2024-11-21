@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +20,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.VolumeOff
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -75,7 +78,9 @@ fun ReviewVocabsScreen(navController: NavHostController,
                 onValueChange = { vocabViewModel.updateQuery(it) },
                 placeholder = { Text("Gõ vào đây từ bạn muốn tìm") },
                 trailingIcon = {
-                    Icon(imageVector = Icons.Filled.Search, contentDescription = "Tìm")
+                    Icon(imageVector = Icons.Filled.Search,
+                        contentDescription = "Tìm",
+                        modifier = Modifier.size(40.dp))
                 },
                 modifier = Modifier
                     .padding(dimensionResource(R.dimen.small_medium))
@@ -116,8 +121,6 @@ fun VocabItem(
 ) {
     Row(
         modifier = modifier
-//            .clip(RoundedCornerShape(8.dp))
-//            .background(Color.Cyan)
             .padding(top = 16.dp, bottom = 16.dp, start = 8.dp, end = 8.dp)
             .fillMaxWidth()
     ) {
@@ -187,6 +190,13 @@ fun ReviewVocabTopBar(
             fontSize = 24.sp,
             modifier = Modifier.align(Alignment.Center)
         )
+//        Button(
+//            onClick = {},
+//            modifier = Modifier
+//                .align(Alignment.CenterEnd),
+//            colors = ButtonDefaults.buttonColors(containerColor = Color(48, 138, 203))) {
+//            Text(text = "Lưu")
+//        }
     }
 }
 

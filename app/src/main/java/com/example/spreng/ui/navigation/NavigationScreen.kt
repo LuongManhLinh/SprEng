@@ -43,7 +43,6 @@ import com.example.spreng.ui.mainscreen.ranking.RankingScreen
 import com.example.spreng.ui.mainscreen.revision.ReviewMistakesScreen
 import com.example.spreng.ui.mainscreen.revision.ReviewVocabsScreen
 import com.example.spreng.ui.mainscreen.revision.RevisionScreen
-import com.example.spreng.ui.mainscreen.setting.SettingScreen
 
 
 @Composable
@@ -71,6 +70,7 @@ private fun NavigationScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+
     NavHost(
         navController = navController,
         startDestination = DefaultMainNavItemRepo.getRoute(MainNavRoute.HOME),
@@ -88,35 +88,38 @@ private fun NavigationScreen(
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.REVISION)) {
             RevisionScreen(navController)
         }
+
         composable(route = RevisionRoute.MISTAKE.name) {
             ReviewMistakesScreen(navController)
         }
+
         composable(route = RevisionRoute.VOCAB.name) {
             ReviewVocabsScreen(navController)
         }
+
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING)) {
             RankingScreen(
                 showInfoUser = {navController.navigate(NavRanking.Profile.name)},
                 showAllRanking = {navController.navigate(NavRanking.AllRank.name)}
                 )
         }
+
         composable(route = NavRanking.AllRank.name) {
             AllRankingScreen(
                 showRankingScreen = {navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING))}
             )
         }
+
         composable(route = NavRanking.Profile.name) {
             InfoUserScreen(
                 showRankingScreen = {navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING))}
             )
         }
+
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.INFO)) {
             InfoScreen()
         }
 
-        composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.SETTING)) {
-            SettingScreen()
-        }
         composable("edit") { EditScreen(navController)}
     }
 }

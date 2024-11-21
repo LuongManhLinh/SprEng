@@ -15,7 +15,8 @@ class DemoLessonRepository : LessonRepository {
                 title = "Hoàn thiện câu sau",
                 questionContent = "Hôm qua, tớ đi chợ và mua một quả táo rất to",
                 questionType = QuestionType.TEXT,
-                answer = listOf("yesterday", ", I went to the ", "market", " and bought a very big ", "apple"),
+                answer = listOf("yesterday", ", ", "I ", "went ", "to ", "the ", "market",
+                    " and ", "bought ", "a ", "very ", "big ", "apple"),
                 answerType = AnswerType.WORD_PICKER_FILLING,
                 answerOptions = listOf("pear", "about", "absolutely", "supermarket"),
                 maskedAnswer = listOf("apple", "market", "yesterday")
@@ -30,9 +31,17 @@ class DemoLessonRepository : LessonRepository {
             ),
             ChallengeForm(
                 title = "Nghe và điền lại câu",
-                questionContent = "How are you, my name is Alex, nice to meet you",
+                questionContent = "How are you",
+                answer = "How are you",
                 questionType = QuestionType.LISTENING,
                 answerType = AnswerType.TYPING
+            ),
+            ChallengeForm(
+                title = "Nhắc lại câu sau",
+                questionContent = "Nice to meet you",
+                questionType = QuestionType.TEXT,
+                answer = "nice to meet you",
+                answerType = AnswerType.TALKING,
             )
         )
     }
