@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,11 +19,9 @@ import com.example.spreng.R
 @Composable
 fun BaseWritingScreen(
     modifier: Modifier = Modifier,
-//    baseWritingScreenViewModel: BaseWritingScreenViewModel = viewModel(),
     inputAnswer: String,
     saveInputAnswer: (String) -> Unit
 ) {
-//    val uiState by baseWritingScreenViewModel.uiState.collectAsState()
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -35,14 +34,9 @@ fun BaseWritingScreen(
             )
     ) {
         TextField(
-//            value = uiState.answerWriting,
             value = inputAnswer,
-            onValueChange ={saveInputAnswer(it)}
-//                baseWritingScreenViewModel.updateAnswer(
-//                    it
-//                )
-
-            ,
+            onValueChange ={ saveInputAnswer(it) },
+            textStyle = MaterialTheme.typography.titleLarge,
             modifier = modifier.fillMaxSize()
         )
     }

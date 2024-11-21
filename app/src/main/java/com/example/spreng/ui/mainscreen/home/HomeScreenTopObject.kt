@@ -114,7 +114,7 @@ internal fun StudyProgressBar(
 
     Row(
         modifier = modifier
-            .padding(top = dimensionResource(R.dimen.small))
+            .padding(dimensionResource(R.dimen.small))
             .height(dimensionResource(R.dimen.middle_large)),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -131,7 +131,7 @@ internal fun StudyProgressBar(
 
         StudyProgressBarContent(
             modifier = Modifier
-                .padding(end = dimensionResource(R.dimen.medium_large))
+                .fillMaxWidth()
                 .clickable(
                     indication = null,
                     interactionSource = null

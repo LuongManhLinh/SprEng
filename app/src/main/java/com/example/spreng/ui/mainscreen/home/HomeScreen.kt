@@ -16,20 +16,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarColors
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,6 +44,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
+import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -109,8 +105,7 @@ fun HomeScreen(
                                     R.drawable.lesson_ic
                                 }
                             ),
-                            contentDescription =
-                            stringResource(R.string.lesson_img_cnt_desc, idx + 1),
+                            contentDescription = stringResource(R.string.lesson_img_cnt_desc, idx + 1),
                             modifier = Modifier
                                 .pointerInput(Unit) {
                                     awaitPointerEventScope {
@@ -145,7 +140,7 @@ fun HomeScreen(
                     LessonBox(
                         isShowingBox = lessonUI.cardState == LessonCardState.SHOWING
                                 || lessonUI.cardState == LessonCardState.OPENING,
-                        info = "This is the lesson ${lessonUI.id}",
+                        info = stringResource(R.string.lesson_img_cnt_desc, idx + 1),
                         onLessonStarted = onLessonStarted,
                         onOpeningCompleted = {
                             viewModel.updateLessonCardState(idx, LessonCardState.SHOWING)
@@ -271,9 +266,9 @@ private fun LessonBox(
 
 @Composable
 private fun LessonContent(
+    modifier: Modifier = Modifier,
     info: String,
     onLessonClicked: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.background(Color.Green)
@@ -286,11 +281,14 @@ private fun LessonContent(
         Row {
             Spacer(Modifier.weight(1f))
             Button(
-                onClick = { onLessonClicked() },
-                modifier = Modifier.padding(dimensionResource(R.dimen.small))
+                onClick = onLessonClicked,
+                modifier = Modifier.padding(dimensionResource(R.dimen.medium))
             ) {
-                Text("Bắt đầu")
+                Text(
+                    text = stringResource(R.string.button_title_start)
+                )
             }
+
         }
     }
 }
@@ -300,5 +298,8 @@ private fun LessonContent(
 @Preview(showBackground = false)
 @Composable
 private fun Preview() {
-    HomeScreen(viewModel = HomeViewModel())
+    LessonContent(
+        info = "This is the lesson 1",
+        onLessonClicked = { }
+    )
 }

@@ -25,8 +25,8 @@ class HomeViewModel : ViewModel() {
 
 data class HomeUiState(
     val lessonList: List<LessonUI> = LessonUI.getSample(20),
-    val userName: String = "",
-    val userXp: Int = 0,
+    val userName: String = "Nguyễn Văn A",
+    val userXp: Int = 1888,
     val numCompletedLesson: Int = 1,
 )
 

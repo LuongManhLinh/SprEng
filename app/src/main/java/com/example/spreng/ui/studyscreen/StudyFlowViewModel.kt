@@ -23,6 +23,7 @@ class StudyFlowViewModel(
 
     private val lesson: List<ChallengeForm> = lessonRepository.getLesson(lessonId)
     private var currentChallengeIndex = 0
+    private var numCorrect = 0
 
     private val _uiState = MutableStateFlow(
         StudyFlowUIState.buildFromChallengeForm(
@@ -33,7 +34,6 @@ class StudyFlowViewModel(
     )
 
     val uiState = _uiState.asStateFlow()
-
 
     fun complete() {
 
@@ -108,12 +108,23 @@ class StudyFlowViewModel(
                 correctAnswer = correctAnswer
             )
         }
+
+        if (isCorrect) {
+            numCorrect++
+        }
     }
 
 
     fun nextChallenge() {
         currentChallengeIndex++
         if (currentChallengeIndex >= lesson.size) {
+            _uiState.update {
+                it.copy(
+                    isLessonDone = true,
+                    numCorrect = numCorrect,
+                    totalChallenge = lesson.size
+                )
+            }
             return
         }
 
@@ -274,7 +285,10 @@ data class StudyFlowUIState(
     val answerUIState: AnswerUIState,
     val isDone: Boolean = false,
     val isCorrect: Boolean = false,
-    val correctAnswer: String? = null
+    val correctAnswer: String? = null,
+    val isLessonDone: Boolean = false,
+    val numCorrect: Int = 0,
+    val totalChallenge: Int = 0
 ) {
     companion object {
         fun buildFromChallengeForm(

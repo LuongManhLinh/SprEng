@@ -34,6 +34,7 @@ import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerSequenceScr
 import com.example.spreng.ui.studyscreen.answer.writing.BaseWritingScreen
 import com.example.spreng.ui.studyscreen.question.listening.BaseListeningQuestionScreen
 import com.example.spreng.ui.studyscreen.question.text.QuestionText
+import com.example.spreng.ui.studyscreen.result.ResultScreen
 
 @Composable
 fun StudyFlowScreen(
@@ -42,6 +43,14 @@ fun StudyFlowScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
+
+    if (uiState.isLessonDone) {
+        ResultScreen(
+            numCorrect = uiState.numCorrect,
+            numTotal = uiState.totalChallenge
+        )
+        return
+    }
 
     BaseStudyScreen(
         learningProgress = uiState.learningProgress,
@@ -123,9 +132,8 @@ fun StudyFlowScreen(
                         saveInputAnswer = {viewModel.updateAnswerTalking(it)}
                     )
                 }
+
                 is AnswerUIState.TextTyping -> {
-                    Log.i("QS", (uiState.questionUIState as QuestionUIState.Listening).questionContent)
-                    Log.i("AS", (uiState.answerUIState as AnswerUIState.TextTyping).answerWriting)
                     BaseListeningQuestionScreen(
                         modifier = modifier.fillMaxWidth().weight(0.3f),
                         context = context,
@@ -149,7 +157,6 @@ fun StudyFlowScreen(
                 correctAnswer = uiState.correctAnswer
             )
         }
-
     }
 
 }
@@ -170,8 +177,8 @@ private fun PopupResult(
         )
     ) {
         CustomRoundedBorderBox(
-            cornerRadius = dimensionResource(R.dimen.large),
-            borderColor = Color.Black,
+            cornerRadius = dimensionResource(R.dimen.medium),
+            borderColor = Color.Gray,
             bottomBorderWidth = dimensionResource(R.dimen.small),
             topBorderWidth = dimensionResource(R.dimen.very_tiny),
             startBorderWidth = dimensionResource(R.dimen.tiny),
@@ -185,6 +192,7 @@ private fun PopupResult(
                         if (isCorrect) Color.Green else Color.Red
                     ),
                 verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = if (isCorrect) "Chính xác" else "Không chính xác",
@@ -192,7 +200,6 @@ private fun PopupResult(
                     color = Color.White,
                     modifier = Modifier
                         .padding(dimensionResource(R.dimen.small))
-                        .align(Alignment.CenterHorizontally)
                 )
                 if (!isCorrect && correctAnswer != null) {
                     Text(
@@ -200,9 +207,7 @@ private fun PopupResult(
                         style = MaterialTheme.typography.titleLarge,
                         color = Color.White,
                         modifier = Modifier
-                            .padding(dimensionResource(R.dimen.small))
-                            .fillMaxWidth()
-                            .align(Alignment.Start),
+                            .padding(dimensionResource(R.dimen.small)),
                         textAlign = TextAlign.Justify
                     )
                 }

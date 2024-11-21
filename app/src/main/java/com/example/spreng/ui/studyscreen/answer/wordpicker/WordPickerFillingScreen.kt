@@ -117,7 +117,7 @@ private fun UnmaskedWord(
     ) {
         Text(
             text = word,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.onGloballyPositioned {
                 with(currentDensity) {
                     setTextHeight(it.size.height.toDp())
