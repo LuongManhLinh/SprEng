@@ -35,6 +35,13 @@ class DemoLessonRepository : LessonRepository {
                 answer = "How are you",
                 questionType = QuestionType.LISTENING,
                 answerType = AnswerType.TYPING
+            ),
+            ChallengeForm(
+                title = "Nhắc lại câu sau",
+                questionContent = "Nice to meet you",
+                questionType = QuestionType.TEXT,
+                answer = "nice to meet you",
+                answerType = AnswerType.TALKING,
             )
         )
     }

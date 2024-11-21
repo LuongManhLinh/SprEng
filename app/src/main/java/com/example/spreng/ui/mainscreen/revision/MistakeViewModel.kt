@@ -13,18 +13,18 @@ data class Mistake(
 class MistakeViewModel : ViewModel() {
     private val _mistakeList = MutableStateFlow(
         listOf(
-            Mistake("Mô tả câu hỏi", "This is a fucking cat"),
-            Mistake("Mô tả câu hỏi", "This is a fucking cat"),
-            Mistake("Mô tả câu hỏi", "This is a fucking cat"),
-            Mistake("Mô tả câu hỏi", "This is a fucking cat"),
-            Mistake("Mô tả câu hỏi", "This is a fucking cat"),
-            Mistake("Mô tả câu hỏi", "This is a fucking cat"),
-            Mistake("Mô tả câu hỏi", "This is a fucking cat"),
-            Mistake("Mô tả câu hỏi", "This is a fucking cat"),
-            Mistake("Mô tả câu hỏi", "This is a fucking cat"),
-            Mistake("Mô tả câu hỏi", "This is a fucking cat"),
-            Mistake("Mô tả câu hỏi", "This is a fucking cat"),
-            Mistake("Mô tả câu hỏi", "This is a fucking cat"),
+            Mistake("Mô tả câu hỏi", "This is a cat"),
+            Mistake("Mô tả câu hỏi", "This is a cat"),
+            Mistake("Mô tả câu hỏi", "This is a cat"),
+            Mistake("Mô tả câu hỏi", "This is a cat"),
+            Mistake("Mô tả câu hỏi", "This is a cat"),
+            Mistake("Mô tả câu hỏi", "This is a cat"),
+            Mistake("Mô tả câu hỏi", "This is a cat"),
+            Mistake("Mô tả câu hỏi", "This is a cat"),
+            Mistake("Mô tả câu hỏi", "This is a cat"),
+            Mistake("Mô tả câu hỏi", "This is a cat"),
+            Mistake("Mô tả câu hỏi", "This is a cat"),
+            Mistake("Mô tả câu hỏi", "This is a cat"),
         )
     )
     val mistakeList: StateFlow<List<Mistake>> = _mistakeList

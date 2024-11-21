@@ -235,11 +235,26 @@ class StudyFlowViewModel(
         }
     }
 
+    // cập nhật câu trả lời dạng nói
+    fun updateAnswerTalking(input: String) {
+        _uiState.update {
+            it.copy(
+                answerUIState = AnswerUIState.Talking(answerTalking = input)
+            )
+        }
+    }
+
+
     private fun checkWritingAnswer(question: String, answer: String): Boolean{
         val lowQs = question.lowercase().replace("\\s+".toRegex(), "").trim()
 
         val asQs = answer.lowercase().replace("\\s+".toRegex(), "").trim()
         return lowQs == asQs
+    }
+
+    // kiểm tra câu trả lời dạng nói với đáp án đúng
+    private fun checkTalkingAnswer(rightAnswer: String, userAnswer: String) : Boolean {
+        return rightAnswer.lowercase() == userAnswer.lowercase()
     }
 
     fun exit(context: Context) {
@@ -302,7 +317,9 @@ data class StudyFlowUIState(
                     answerWriting = ""
                 )
 
-                AnswerType.TALKING -> AnswerUIState.Talking()
+                AnswerType.TALKING -> AnswerUIState.Talking(
+                    answerTalking = ""
+                )
             }
 
             return StudyFlowUIState(
@@ -341,7 +358,7 @@ sealed interface AnswerUIState {
     ) : AnswerUIState
 
     class Talking(
-
+        val answerTalking: String
     ) : AnswerUIState
 }
 
