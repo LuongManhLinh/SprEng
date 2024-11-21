@@ -29,7 +29,6 @@ data class HomeUiState(
     val userName: String = "",
     val userXp: Int = 0,
     val numCompletedLesson: Int = 1,
-    val numTotalLesson: Int = 20
 )
 
 data class LessonUI(

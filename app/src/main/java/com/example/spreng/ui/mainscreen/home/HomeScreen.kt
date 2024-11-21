@@ -9,8 +9,6 @@ import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,7 +18,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -32,13 +29,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
@@ -46,10 +45,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
+import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import kotlinx.coroutines.delay
 
 @Composable
@@ -66,7 +66,6 @@ fun HomeScreen(
             HomeTopBar(
                 userName = uiState.userName,
                 userXp = uiState.userXp.toString(),
-                userProgress = "${uiState.numCompletedLesson}/${uiState.numTotalLesson}"
             )
         }
     ) { innerPadding ->
@@ -99,41 +98,36 @@ fun HomeScreen(
                                     R.drawable.lesson_ic
                                 }
                             ),
-                            contentDescription = null,
+                            contentDescription =
+                                stringResource(R.string.lesson_img_cnt_desc, idx + 1),
                             modifier = Modifier
                                 .pointerInput(Unit) {
                                     awaitPointerEventScope {
                                         while (true) {
                                             val event = awaitPointerEvent()
-                                            val eventPosition = event.changes.firstOrNull()?.position
-
-                                            if (event.changes.firstOrNull()?.pressed == true && eventPosition != null) {
-
-                                                val w = size.width
-                                                val h = size.height
-                                                val eX = eventPosition.x
-                                                val eY = eventPosition.y
-
-                                                isPressed = eX >= 0 && eY >= 0 && eX <= w && eY <= h
-                                                if (isPressed) {
-                                                    if (lessonUI.cardState == LessonCardState.HIDING) {
-                                                        viewModel.updateLessonCardState(idx, LessonCardState.OPENING)
+                                            isPressed = handlePressAction(
+                                                event = event,
+                                                size = size,
+                                                actionIfPressed = {
+                                                    if (lessonUI.cardState
+                                                        == LessonCardState.HIDING) {
+                                                        viewModel.updateLessonCardState(
+                                                                idx, LessonCardState.OPENING
+                                                            )
                                                     }
-                                                    else if (lessonUI.cardState == LessonCardState.SHOWING) {
-                                                        viewModel.updateLessonCardState(idx, LessonCardState.CLOSING)
+                                                    else if (lessonUI.cardState
+                                                        == LessonCardState.SHOWING) {
+                                                        viewModel.updateLessonCardState(
+                                                                idx, LessonCardState.CLOSING
+                                                            )
                                                     }
-                                                    Log.d("HomeScreen", "Lesson ${lessonUI.cardState}")
                                                 }
-
-                                            } else {
-
-                                                isPressed = false
-
-                                            }
+                                            )
                                         }
                                     }
                                 }
                         )
+
                         Spacer(Modifier.weight(lessonUI.rightWeight))
                     }
 
@@ -154,124 +148,149 @@ fun HomeScreen(
             }
         }
     }
+
+    StudyProgressBar(
+        numCompletedLesson = uiState.numCompletedLesson,
+        numTotalLesson = uiState.lessonList.size
+    )
+}
+
+private fun handlePressAction(
+    event: PointerEvent,
+    size: IntSize,
+    actionIfPressed: () -> Unit
+) : Boolean {
+    val eventPosition = event.changes.firstOrNull()?.position
+
+    if (event.changes.firstOrNull()?.pressed == true && eventPosition != null) {
+
+        val w = size.width
+        val h = size.height
+        val eX = eventPosition.x
+        val eY = eventPosition.y
+
+        val isPressed = eX >= 0 && eY >= 0 && eX <= w && eY <= h
+        if (isPressed) {
+            actionIfPressed()
+        }
+
+        return isPressed
+    }
+
+    return false
 }
 
 @Composable
 private fun HomeTopBar(
     modifier: Modifier = Modifier,
     userName: String,
-    userXp: String,
-    userProgress: String
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-    ) {
-        HomeTopBarfInfo(
-            userName = userName,
-            userXp = userXp
-        )
-        HomeTopBarProgress(
-            userProgress = userProgress
-        )
-    }
-}
-
-@Composable
-private fun HomeTopBarfInfo(
-    modifier: Modifier = Modifier,
-    userName: String,
     userXp: String
 ) {
-    Row(
+    CustomRoundedBorderBox(
         modifier = modifier
             .padding(
                 top = dimensionResource(R.dimen.tiny),
                 start = dimensionResource(R.dimen.tiny),
                 end = dimensionResource(R.dimen.tiny)
             )
-            .clip(RoundedCornerShape(dimensionResource(R.dimen.small)))
-            .background(Color.LightGray)
-            .padding(dimensionResource(R.dimen.small))
         ,
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        cornerRadius = dimensionResource(R.dimen.small),
+        startBorderWidth = dimensionResource(R.dimen.tiny),
+        bottomBorderWidth = dimensionResource(R.dimen.small),
+        containerColor = Color.LightGray,
+        borderColor = Color.Gray
     ) {
-        Image(
-            painter = painterResource(R.drawable.sample_avatar),
-            contentDescription = null,
-            modifier = Modifier
-                .size(dimensionResource(R.dimen.middle_large))
-                .clip(RoundedCornerShape(dimensionResource(R.dimen.large))
-                )
-            ,
-            contentScale = ContentScale.Crop
-        )
-        Text(
-            text = userName,
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp,
-            modifier = Modifier.padding(start = dimensionResource(R.dimen.small))
-        )
-        Spacer(Modifier.weight(1f))
-        Image(
-            painter = painterResource(R.drawable.xp),
-            contentDescription = null,
-            modifier = Modifier
-                .size(dimensionResource(R.dimen.middle_large))
-                .clip(RoundedCornerShape(dimensionResource(R.dimen.large)))
-            ,
-            contentScale = ContentScale.Crop
-        )
-        Text(
-            text = userXp,
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp,
-            color = Color(0, 130, 0),
-            modifier = Modifier.padding(start = dimensionResource(R.dimen.small))
-        )
+        Row(
+            modifier = it.padding(dimensionResource(R.dimen.tiny)),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(R.drawable.sample_avatar),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(dimensionResource(R.dimen.middle_large))
+                    .clip(RoundedCornerShape(dimensionResource(R.dimen.large))
+                    )
+                ,
+                contentScale = ContentScale.Crop
+            )
+            Text(
+                text = userName,
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp,
+                modifier = Modifier.padding(start = dimensionResource(R.dimen.small))
+            )
+            Spacer(Modifier.weight(1f))
+            Image(
+                painter = painterResource(R.drawable.xp),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(dimensionResource(R.dimen.middle_large))
+                    .clip(RoundedCornerShape(dimensionResource(R.dimen.large)))
+                ,
+                contentScale = ContentScale.Crop
+            )
+            Text(
+                text = userXp,
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp,
+                color = Color(0, 130, 0),
+                modifier = Modifier.padding(start = dimensionResource(R.dimen.small))
+            )
+        }
+
     }
 }
 
 @Composable
-private fun HomeTopBarProgress(
+private fun StudyProgressBar(
     modifier: Modifier = Modifier,
-    userProgress: String
+    numCompletedLesson: Int,
+    numTotalLesson: Int,
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+    val smallDimen = dimensionResource(R.dimen.small)
+    CustomRoundedBorderBox(
         modifier = modifier
-            .width(200.dp)
-            .clip(
-                RoundedCornerShape(
-                    bottomStart = dimensionResource(R.dimen.small),
-                    bottomEnd = dimensionResource(R.dimen.small)
-                )
+            .padding(
+                top = smallDimen,
+                start = smallDimen,
+                end = smallDimen
+            ),
+        cornerRadius = smallDimen,
+        bottomBorderWidth = dimensionResource(R.dimen.tiny),
+    ) { contentModifier ->
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = contentModifier
+                .fillMaxWidth()
+                .drawBehind {
+                    val size = Size(
+                        width = size.width * numCompletedLesson / numTotalLesson,
+                        height = size.height)
+                    drawRect(
+                        color = Color.Magenta,
+                        size = size,
+                    )
+                }
+        ) {
+            Spacer(Modifier.weight(0.1f))
+            Text(
+                text = stringResource(R.string.progress),
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
             )
-            .border(
-                width = 1.dp,
-                color = Color.Black,
-                shape = RoundedCornerShape(
-                    bottomStart = dimensionResource(R.dimen.small),
-                    bottomEnd = dimensionResource(R.dimen.small)
-                )
+            Spacer(Modifier.weight(1f))
+            Text(
+                text = "$numCompletedLesson/$numTotalLesson",
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
             )
-            .background(Color.Magenta)
-    ) {
-        Spacer(Modifier.weight(0.1f))
-        Text(
-            text = stringResource(R.string.progress),
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp
-        )
-        Spacer(Modifier.weight(1f))
-        Text(
-            text = userProgress,
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp
-        )
-        Spacer(Modifier.weight(0.1f))
+            Spacer(Modifier.weight(0.1f))
+        }
     }
+
+
+
 }
 
 
