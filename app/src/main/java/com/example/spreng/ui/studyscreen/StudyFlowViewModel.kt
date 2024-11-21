@@ -2,6 +2,8 @@ package com.example.spreng.ui.studyscreen
 
 import android.content.Context
 import android.content.Intent
+import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.spreng.MainActivity
@@ -227,10 +229,10 @@ class StudyFlowViewModel(
     }
 
     // Cập nhật câu trả lời dạng viết
-    fun updateAnswerWriting(input: String) {
+    fun updateAnswerWriting(inputUser: String) {
         _uiState.update {
             it.copy(
-                answerUIState = AnswerUIState.TextTyping(answerWriting = input)
+                answerUIState = AnswerUIState.TextTyping(answerWriting = inputUser)
             )
         }
     }
@@ -244,11 +246,9 @@ class StudyFlowViewModel(
         }
     }
 
-
-    private fun checkWritingAnswer(question: String, answer: String): Boolean{
-        val lowQs = question.lowercase().replace("\\s+".toRegex(), "").trim()
-
-        val asQs = answer.lowercase().replace("\\s+".toRegex(), "").trim()
+    private fun checkWritingAnswer(rightAnswer: String, userAnswer: String): Boolean{
+        val lowQs = rightAnswer.lowercase().replace("\\s+".toRegex(), "").trim(
+        val asQs = userAnswer.lowercase().replace("\\s+".toRegex(), "").trim()
         return lowQs == asQs
     }
 

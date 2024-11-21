@@ -1,8 +1,10 @@
 package com.example.spreng.ui.studyscreen
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -35,8 +37,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
+
+import com.example.spreng.ui.studyscreen.question.listening.BaseListeningQuestionScreen
 import com.example.spreng.speech2Text.SpeechRecognizer
-import com.example.spreng.tts.TTS
 import com.example.spreng.ui.studyscreen.answer.micro.TalkingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerFillingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerSequenceScreen
@@ -132,7 +135,9 @@ fun StudyFlowScreen(
                     )
                 }
                 is AnswerUIState.TextTyping -> {
-                    QuestionListening(
+                    Log.i("QS", (uiState.questionUIState as QuestionUIState.Listening).questionContent)
+                    Log.i("AS", (uiState.answerUIState as AnswerUIState.TextTyping).answerWriting)
+                    BaseListeningQuestionScreen(
                         modifier = modifier.fillMaxWidth().weight(0.3f),
                         context = context,
                         sentence = (uiState.questionUIState as QuestionUIState.Listening).questionContent
@@ -244,35 +249,6 @@ private fun QuestionText(
         )
     }
 }
-
-@Composable
-private fun QuestionListening(
-    modifier: Modifier = Modifier,
-    context: Context,
-    sentence: String
-){
-    Box(modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(
-                onClick = {
-                    TTS(context, sentence)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Call,
-                    contentDescription = "volume"
-                )
-            }
-            Text(
-                "Điền những gì đã nghe được"
-            )
-        }
-    }
-}
-
-
 @Preview
 @Composable
 private fun StudyFlowScreenPreview() {
