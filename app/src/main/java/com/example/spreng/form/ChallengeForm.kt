@@ -8,6 +8,5 @@ data class ChallengeForm(
     val answerType: AnswerType,
     val answerOptions: List<String>? = null,
     val maskedAnswer: List<String>? = null
-) {
+)
 
-}

@@ -6,7 +6,6 @@ import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,10 +21,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -108,35 +103,36 @@ internal fun StudyProgressBar(
     modifier: Modifier = Modifier,
     numCompletedLesson: Int,
     numTotalLesson: Int,
+    appear: Boolean = false,
+    onAppearChange: (Boolean) -> Unit
 ) {
-
-    var appear by remember { mutableStateOf(true) }
 
     Row(
         modifier = modifier
-            .padding(dimensionResource(R.dimen.small))
+            .padding(top = dimensionResource(R.dimen.small))
             .height(dimensionResource(R.dimen.middle_large)),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
         ExpandButton(
+            modifier = Modifier.padding(start = dimensionResource(R.dimen.small)),
             icon = if (appear) {
                 Icons.AutoMirrored.Filled.ArrowBackIos
             } else {
                 Icons.AutoMirrored.Filled.ArrowForwardIos
             }
         ) {
-            appear = !appear
+            onAppearChange(!appear)
         }
 
         StudyProgressBarContent(
             modifier = Modifier
-                .fillMaxWidth()
+                .padding(end = dimensionResource(R.dimen.small))
                 .clickable(
                     indication = null,
                     interactionSource = null
                 ) {
-                    appear = false
+                    onAppearChange(false)
                 },
             appear = appear,
             numCompletedLesson = numCompletedLesson,
@@ -148,13 +144,14 @@ internal fun StudyProgressBar(
 
 @Composable
 private fun ExpandButton(
+    modifier: Modifier = Modifier,
     icon: ImageVector,
     onClick: () -> Unit
 ) {
     Icon(
         imageVector = icon,
         contentDescription = null,
-        modifier = Modifier.clickable(
+        modifier = modifier.clickable(
             interactionSource = null,
             indication = null
         ) {
@@ -236,7 +233,8 @@ private fun Preview() {
         )
         StudyProgressBar(
             numCompletedLesson = 5,
-            numTotalLesson = 10
+            numTotalLesson = 10,
+            onAppearChange = {}
         )
     }
 
