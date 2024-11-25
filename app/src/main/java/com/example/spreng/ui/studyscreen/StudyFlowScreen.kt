@@ -73,15 +73,14 @@ fun StudyFlowScreen(
 
                     QuestionText(
                         modifier = modifier
-                            .fillMaxWidth()
-                            .weight(0.3f),
+                            .fillMaxWidth(),
                         questionContent = (
                                 uiState.questionUIState as QuestionUIState.Text
                                 ).questionContent,
                     )
 
                     WordPickerFillingScreen(
-                        modifier = modifier.fillMaxWidth().weight(0.7f),
+                        modifier = modifier.fillMaxWidth().weight(1f),
                         sentenceUI = (
                                 uiState.answerUIState as AnswerUIState.WordPickerFilling
                                 ).sentenceUI,
@@ -97,15 +96,14 @@ fun StudyFlowScreen(
                 is AnswerUIState.WordPickerSequence -> {
                     QuestionText(
                         modifier = modifier
-                            .fillMaxWidth()
-                            .weight(0.3f),
+                            .fillMaxWidth(),
                         questionContent = (
                                 uiState.questionUIState as QuestionUIState.Text
                                 ).questionContent,
                     )
 
                     WordPickerSequenceScreen(
-                        modifier = modifier.fillMaxWidth().weight(0.7f),
+                        modifier = modifier.fillMaxWidth().weight(1f),
                         selectedWords = (
                                 uiState.answerUIState as AnswerUIState.WordPickerSequence
                                 ).selectedWords,
@@ -120,14 +118,13 @@ fun StudyFlowScreen(
                 is AnswerUIState.Talking -> {
                     QuestionText(
                         modifier = modifier
-                            .fillMaxWidth()
-                            .weight(0.3f),
+                            .fillMaxWidth(),
                         questionContent = (
                                 uiState.questionUIState as QuestionUIState.Text
                                 ).questionContent,
                     )
                     TalkingScreen(
-                        modifier = modifier.fillMaxWidth().weight(0.7f),
+                        modifier = modifier.fillMaxWidth().weight(1f),
                         inputAnswer = (uiState.answerUIState as AnswerUIState.Talking).answerTalking,
                         saveInputAnswer = {viewModel.updateAnswerTalking(it)}
                     )

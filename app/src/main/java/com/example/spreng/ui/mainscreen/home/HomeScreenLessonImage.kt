@@ -29,9 +29,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -39,15 +42,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.example.spreng.R
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import kotlinx.coroutines.delay
 
+
 @Composable
-internal fun LessonImage(
+internal fun LessonUI(
     modifier: Modifier = Modifier,
-    lessonUI: LessonUI,
+    lessonUIState: LessonUIState,
     lessonIdx: Int,
+    isCurrentLesson: Boolean,
     onPressChanged: (Int, Boolean) -> Unit,
     onLessonStarted: () -> Unit,
     onOpeningCompleted: () -> Unit,
@@ -59,70 +67,91 @@ internal fun LessonImage(
             .padding(dimensionResource(R.dimen.medium))
             .clip(RoundedCornerShape(dimensionResource(R.dimen.small)))
     ) {
-        Row {
-            Spacer(Modifier.weight(lessonUI.leftWeight))
-
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                Image(
-                    painter = painterResource(
-                        if (lessonUI.isCompleted) {
-                            if (lessonUI.isPressed) {
-                                R.drawable.lesson_pressed
-                            } else {
-                                R.drawable.lesson
-                            }
-                        } else {
-                            if (lessonUI.isPressed) {
-                                R.drawable.lesson_uncompleted_pressed
-                            } else {
-                                R.drawable.lesson_uncompleted
-                            }
-                        }
-                    ),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .pointerInput(Unit) {
-                            awaitPointerEventScope {
-                                while (true) {
-                                    val event = awaitPointerEvent()
-
-                                    val isPressed = handlePressAction(
-                                        event = event,
-                                        size = size
-                                    )
-                                    onPressChanged(lessonIdx, isPressed)
-                                }
-                            }
-                        }
-                )
-
-                if (lessonUI.isCompleted) {
-                    RatingBar(
-                        rating = lessonUI.rating ?: 0
-                    )
-                }
-
-            }
-
-            Spacer(Modifier.weight(lessonUI.rightWeight))
-        }
+        LessonImage(
+            lessonUIState = lessonUIState,
+            lessonIdx = lessonIdx,
+            isCurrentLesson = isCurrentLesson,
+            onPressChanged = onPressChanged
+        )
 
         LessonBox(
-            isShowingBox = lessonUI.cardState == LessonCardState.SHOWING
-                    || lessonUI.cardState == LessonCardState.OPENING,
-            title = lessonUI.title,
-            summarization = lessonUI.summarization,
-            isLessonCompleted = lessonUI.isCompleted,
+            isShowingBox = lessonUIState.cardState == LessonCardState.SHOWING
+                    || lessonUIState.cardState == LessonCardState.OPENING,
+            title = lessonUIState.title,
+            summarization = lessonUIState.summarization,
+            isLessonCompleted = lessonUIState.isCompleted,
+            isCurrentLesson = isCurrentLesson,
             onLessonStarted = onLessonStarted,
             onOpeningCompleted = onOpeningCompleted,
             onClosingCompleted = onClosingCompleted
         )
     }
 }
+
+@Composable
+private fun LessonImage(
+    modifier: Modifier = Modifier,
+    lessonUIState: LessonUIState,
+    lessonIdx: Int,
+    isCurrentLesson: Boolean,
+    onPressChanged: (Int, Boolean) -> Unit
+) {
+    Row(
+        modifier = modifier
+    ) {
+        Spacer(Modifier.weight(lessonUIState.leftWeight))
+
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Image(
+                painter = painterResource(
+                    if (lessonUIState.isCompleted || isCurrentLesson) {
+                        if (lessonUIState.isPressed) {
+                            R.drawable.lesson_pressed
+                        } else {
+                            R.drawable.lesson
+                        }
+                    } else {
+                        if (lessonUIState.isPressed) {
+                            R.drawable.lesson_uncompleted_pressed
+                        } else {
+                            R.drawable.lesson_uncompleted
+                        }
+                    }
+                ),
+                contentDescription = null,
+                modifier = Modifier
+                    .pointerInput(Unit) {
+                        awaitPointerEventScope {
+                            while (true) {
+                                val event = awaitPointerEvent()
+
+                                val isPressed = handlePressAction(
+                                    event = event,
+                                    size = size
+                                )
+                                onPressChanged(lessonIdx, isPressed)
+                            }
+                        }
+                    }
+            )
+
+
+            if (lessonUIState.isCompleted) {
+                RatingBar(
+                    rating = lessonUIState.rating ?: 0
+                )
+            }
+
+        }
+
+        Spacer(Modifier.weight(lessonUIState.rightWeight))
+    }
+}
+
 
 @Composable
 private fun RatingBar(
@@ -165,7 +194,6 @@ private fun handlePressAction(
 }
 
 
-
 @Composable
 private fun LessonBox(
     modifier: Modifier = Modifier,
@@ -175,7 +203,8 @@ private fun LessonBox(
     onLessonStarted: () -> Unit,
     onOpeningCompleted: () -> Unit,
     onClosingCompleted: () -> Unit,
-    isLessonCompleted: Boolean
+    isLessonCompleted: Boolean,
+    isCurrentLesson: Boolean
 ) {
 
     LaunchedEffect(isShowingBox) {
@@ -237,6 +266,7 @@ private fun LessonBox(
             title = title,
             summarization = summarization,
             isLessonCompleted = isLessonCompleted,
+            isCurrentLesson = isCurrentLesson,
             onLessonClicked = onLessonStarted
         )
     }
@@ -249,13 +279,18 @@ private fun LessonContent(
     title: String,
     summarization: String,
     isLessonCompleted: Boolean,
+    isCurrentLesson: Boolean,
     onLessonClicked: () -> Unit,
 ) {
     val mediumPadding = dimensionResource(R.dimen.medium)
 
     Column(
         modifier = modifier.background(
-            color = colorResource(R.color.teal_200)
+            color = if (isLessonCompleted || isCurrentLesson) {
+                colorResource(R.color.teal_200)
+            } else {
+                colorResource(R.color.gray_teal)
+            }
         )
     ) {
         Text(
@@ -288,17 +323,19 @@ private fun LessonContent(
                     ) {
                         onLessonClicked()
                     },
-                cornerRadius = dimensionResource(R.dimen.small),
+                cornerRadius = dimensionResource(R.dimen.small_medium),
                 containerColor = colorResource(R.color.purple_200),
                 borderColor = colorResource(R.color.purple_700),
-                startBorderWidth = dimensionResource(R.dimen.tiny),
+                startBorderWidth = dimensionResource(R.dimen.small),
                 bottomBorderWidth = dimensionResource(R.dimen.small),
+                topBorderWidth = dimensionResource(R.dimen.very_tiny),
+                endBorderWidth = dimensionResource(R.dimen.very_tiny)
             ) {
                 Text(
                     text = if (isLessonCompleted) {
-                        stringResource(R.string.button_title_start)
-                    } else {
                         stringResource(R.string.button_title_review)
+                    } else {
+                        stringResource(R.string.button_title_start)
                     },
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
@@ -317,20 +354,12 @@ private fun LessonContent(
 
 @Preview(showBackground = true)
 @Composable
-private fun LessonContentPrev() {
+private fun LessonContentPreview() {
     LessonContent(
-        title = "Environment",
-        summarization = "This is a lesson about environment",
+        title = "Lesson Title",
+        summarization = "Lesson Summarization",
         isLessonCompleted = false,
+        isCurrentLesson = false,
         onLessonClicked = {}
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun RatingBarPrev() {
-    RatingBar(
-        modifier = Modifier.background(colorResource(R.color.container)),
-        rating = 2
     )
 }

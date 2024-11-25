@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -109,8 +110,12 @@ private fun WordHolder(
     CustomRoundedBorderBox(
         cornerRadius = dimensionResource(R.dimen.small_medium),
         bottomBorderWidth = dimensionResource(R.dimen.small),
-        borderColor = Color.Gray,
-        containerColor = if (textAlpha == 1f) Color.Green else Color.Gray,
+        borderColor = colorResource(R.color.word_holder_selected),
+        containerColor = if (textAlpha == 1f) {
+            colorResource(R.color.word_holder_unselected)
+        } else {
+            colorResource(R.color.word_holder_selected)
+        },
         modifier = modifier.padding(dimensionResource(R.dimen.small)),
         contentWidthDp = widthDp
     ) {

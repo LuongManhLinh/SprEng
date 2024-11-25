@@ -16,7 +16,7 @@ class HomeViewModel(
 
     private val _uiState = MutableStateFlow(
         HomeUiState(
-            lessonList = LessonUI.buildFromLessonSummarizationForm(
+            lessonList = LessonUIState.buildFromLessonSummarizationForm(
                 lessonSummarizationRepository.getAllLessonSummarization()
             )
         )
@@ -70,16 +70,17 @@ class HomeViewModel(
 }
 
 data class HomeUiState(
-    val lessonList: List<LessonUI>,
+    val lessonList: List<LessonUIState>,
     val userName: String = "Nguyễn Văn A",
     val userXp: Int = 1888,
     val isProgressBarAppeared: Boolean = false
 ) {
     val numCompletedLesson: Int
         get() = lessonList.count { it.isCompleted }
+
 }
 
-data class LessonUI(
+data class LessonUIState(
     val id: Int,
     val isCompleted: Boolean,
     val title: String = "",
@@ -96,10 +97,10 @@ data class LessonUI(
             smallestWeight: Double = 0.1,
             omega: Double = PI / 4,
             phi: Double = PI / 2
-        ) : List<LessonUI> {
+        ) : List<LessonUIState> {
 
             val samples =  formList.map {
-                LessonUI(
+                LessonUIState(
                     id = it.id,
                     isCompleted = it.isCompleted,
                     title = it.title,

@@ -14,11 +14,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,11 +31,14 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.spreng.R
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
@@ -54,8 +59,8 @@ internal fun HomeTopBar(
         cornerRadius = dimensionResource(R.dimen.small),
         startBorderWidth = dimensionResource(R.dimen.tiny),
         bottomBorderWidth = dimensionResource(R.dimen.small),
-        containerColor = Color.LightGray,
-        borderColor = Color.Gray
+        containerColor = colorResource(R.color.teal_200),
+        borderColor = colorResource(R.color.gray_teal)
     ) {
         Row(
             modifier = Modifier.padding(dimensionResource(R.dimen.tiny)),
@@ -74,8 +79,12 @@ internal fun HomeTopBar(
             Text(
                 text = userName,
                 fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-                modifier = Modifier.padding(start = dimensionResource(R.dimen.small))
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier
+                    .padding(start = dimensionResource(R.dimen.small))
+                    .widthIn(max = 200.dp)
             )
             Spacer(Modifier.weight(1f))
             Image(
@@ -89,8 +98,8 @@ internal fun HomeTopBar(
             Text(
                 text = userXp,
                 fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-                color = Color(0, 130, 0),
+                style = MaterialTheme.typography.titleLarge,
+                color = colorResource(R.color.xp),
                 modifier = Modifier.padding(start = dimensionResource(R.dimen.small))
             )
         }
@@ -228,7 +237,7 @@ private fun Preview() {
         modifier = Modifier.fillMaxSize()
     ) {
         HomeTopBar(
-            userName = "Nguyễn Văn A",
+            userName = "Nguyễn Trần Hoàng Văn A",
             userXp = "1000"
         )
         StudyProgressBar(
