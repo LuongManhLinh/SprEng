@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.spreng.R
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
@@ -24,12 +25,15 @@ internal fun StudyBottomButton(
     CustomRoundedBorderBox(
         cornerRadius = dimensionResource(R.dimen.small_medium),
         modifier = modifier
-            .width(300.dp)
-            .clickable {
+            .width(320.dp)
+            .clickable(
+                interactionSource = null,
+                indication = null
+            ) {
                 onBottomButtonPressed()
             }
         ,
-        contentWidthDp = 300.dp,
+        contentWidthDp = 320.dp,
         containerColor = colorResource(R.color.study_button),
         borderColor = colorResource(R.color.study_button_border),
         bottomBorderWidth = dimensionResource(R.dimen.small)
@@ -42,4 +46,10 @@ internal fun StudyBottomButton(
             modifier = Modifier.padding(dimensionResource(R.dimen.small))
         )
     }
+}
+
+@Preview
+@Composable
+fun StudyBottomButtonPreview() {
+    StudyBottomButton(text = "Next", onBottomButtonPressed = {})
 }

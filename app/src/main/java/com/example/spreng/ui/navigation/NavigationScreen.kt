@@ -3,6 +3,7 @@ package com.example.spreng.ui.navigation
 import InfoScreen
 import android.content.Intent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -22,7 +22,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -161,9 +160,9 @@ private fun BaseBottomBar(
                 },
                 selected = selected,
                 icon = {
-                    Icon(
+                    Image(
                         painter = painterResource(navItem.icon),
-                        contentDescription = stringResource(navItem.contentDescription),
+                        contentDescription = null,
                         modifier = if (selected) {
                             Modifier
                                 .border(
@@ -178,6 +177,7 @@ private fun BaseBottomBar(
                             Modifier
                         }
                     )
+//
                 },
                 colors = NavigationBarItemDefaults.colors(
                     indicatorColor = Color.Transparent,

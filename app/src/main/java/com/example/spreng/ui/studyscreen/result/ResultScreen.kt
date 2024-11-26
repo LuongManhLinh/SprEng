@@ -103,7 +103,7 @@ private const val XP_SLIDE_IN_TIME = 750
 private fun ResultBanner(
     modifier: Modifier = Modifier
 ) {
-    var isVisible by remember { mutableStateOf(true) }
+    var isVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(true) {
         delay(IDLE_TIME.toLong())
@@ -143,7 +143,7 @@ private fun ScoreCard(
 
     val correctRate = numCorrect.toFloat() / numTotal
 
-    var isVisible by remember { mutableStateOf(true) }
+    var isVisible by remember { mutableStateOf(false) }
 
     var isColorChanged by remember { mutableStateOf(false) }
 
@@ -215,7 +215,7 @@ private fun XpCard(
     modifier: Modifier = Modifier,
     xp: Int
 ) {
-    var isVisible by remember { mutableStateOf(true) }
+    var isVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(true) {
         delay(
