@@ -33,7 +33,7 @@ import com.example.spreng.R
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun ResultScreen(
     modifier: Modifier = Modifier,
@@ -49,25 +49,6 @@ fun ResultScreen(
     )
 
     Scaffold(
-        topBar = {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                CustomRoundedBorderBox(
-                    cornerRadius = dimensionResource(R.dimen.medium),
-                    bottomBorderWidth = dimensionResource(R.dimen.tiny),
-                    containerColor = colorResource(R.color.teal_200),
-                    modifier = Modifier.padding(dimensionResource(R.dimen.medium))
-                ) {
-                    Text(
-                        text = "Tổng Kết Bài Học",
-                        style = MaterialTheme.typography.displaySmall,
-                        modifier = Modifier.padding(dimensionResource(R.dimen.medium))
-                    )
-                }
-            }
-        },
         bottomBar = {
             BottomAppBar(
                 modifier = modifier,
@@ -101,6 +82,24 @@ fun ResultScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                CustomRoundedBorderBox(
+                    cornerRadius = dimensionResource(R.dimen.medium),
+                    bottomBorderWidth = dimensionResource(R.dimen.tiny),
+                    containerColor = colorResource(R.color.teal_200),
+                    modifier = Modifier.padding(dimensionResource(R.dimen.medium))
+                ) {
+                    Text(
+                        text = "Tổng Kết Bài Học",
+                        style = MaterialTheme.typography.displaySmall,
+                        modifier = Modifier.padding(dimensionResource(R.dimen.medium))
+                    )
+                }
+            }
 
 
             ScoreCard(numCorrect = numCorrect, numTotal = numTotal)

@@ -24,6 +24,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.spreng.R
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import com.example.spreng.ui.studyscreen.UnselectedWord
@@ -34,10 +35,12 @@ fun BaseWordPickerScreen(
     modifier: Modifier = Modifier,
     unselectedWords: List<UnselectedWord>,
     onUnselectedWordClick: (Int) -> Unit,
-    setCardSize: (Dp, Dp) -> Unit = {_, _ -> },
+    getCardSize: (Dp, Dp) -> Unit = { _, _ -> },
+    getPickerMaxHeight: (Dp) -> Unit = { },
     content: @Composable (Modifier) -> Unit
 ) {
     val currentDensity = LocalDensity.current
+
     Column(
         modifier = modifier.fillMaxSize()
     ) {
@@ -49,6 +52,11 @@ fun BaseWordPickerScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
+                .onGloballyPositioned {
+                    with(currentDensity) {
+                        getPickerMaxHeight(it.size.height.toDp())
+                    }
+                }
         ){
             for (idx in unselectedWords.indices) {
                 val unselectedWord = unselectedWords[idx]
@@ -65,12 +73,11 @@ fun BaseWordPickerScreen(
                         },
                         modifier = Modifier.onGloballyPositioned {
                             with(currentDensity) {
-                                setCardSize(
+                                getCardSize(
                                     it.size.width.toDp(),
                                     it.size.height.toDp()
                                 )
                             }
-
                         }
                     )
                 }
@@ -122,6 +129,7 @@ private fun WordHolder(
         Text(
             text = wordHolder,
             style = MaterialTheme.typography.titleLarge,
+            fontSize = 20.sp,
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.small))
                 .alpha(textAlpha)
