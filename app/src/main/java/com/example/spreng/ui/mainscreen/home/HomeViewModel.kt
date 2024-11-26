@@ -1,65 +1,125 @@
 package com.example.spreng.ui.mainscreen.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.example.spreng.data.DemoLessonSummarizationRepository
+import com.example.spreng.data.LessonSummarizationRepository
+import com.example.spreng.form.LessonSummarizationForm
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.math.PI
 import kotlin.math.cos
 
-class HomeViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(HomeUiState())
+class HomeViewModel(
+    lessonSummarizationRepository: LessonSummarizationRepository = DemoLessonSummarizationRepository()
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(
+        HomeUiState(
+            lessonList = LessonUIState.buildFromLessonSummarizationForm(
+                lessonSummarizationRepository.getAllLessonSummarization()
+            )
+        )
+    )
+
     val uiState = _uiState.asStateFlow()
 
-    fun updateLessonCardState(lessonIdx: Int, newState: LessonCardState) {
-        _uiState.update { state ->
-            val newLessonList = state.lessonList
-            newLessonList[lessonIdx].cardState = newState
-            state.copy(
-                lessonList = newLessonList
-            )
+    fun onPressChanged(lessonIdx: Int, isPressed: Boolean) {
+        val newLessonList = _uiState.value.lessonList.toMutableList()
+        var newLessonUI = newLessonList[lessonIdx].copy(isPressed = isPressed)
+
+        if (isPressed) {
+            if (newLessonUI.cardState == LessonCardState.HIDING) {
+                newLessonUI = newLessonUI.copy(cardState = LessonCardState.OPENING)
+            } else if (newLessonUI.cardState == LessonCardState.SHOWING) {
+                newLessonUI = newLessonUI.copy(cardState = LessonCardState.CLOSING)
+            }
+        }
+
+        newLessonList[lessonIdx] = newLessonUI
+
+        _uiState.update {
+            it.copy(lessonList = newLessonList)
+        }
+    }
+
+    fun onCardOpeningCompleted(lessonIdx: Int) {
+        val newLessonList = _uiState.value.lessonList.toMutableList()
+        newLessonList[lessonIdx] = newLessonList[lessonIdx].copy(cardState = LessonCardState.SHOWING)
+
+        _uiState.update {
+            it.copy(lessonList = newLessonList)
+        }
+    }
+
+    fun onCardClosingCompleted(lessonIdx: Int) {
+        val newLessonList = _uiState.value.lessonList.toMutableList()
+        newLessonList[lessonIdx] = newLessonList[lessonIdx].copy(cardState = LessonCardState.HIDING)
+
+        _uiState.update {
+            it.copy(lessonList = newLessonList)
+        }
+    }
+
+    fun onProgressBarAppearanceChanged(isAppear: Boolean) {
+        _uiState.update {
+            it.copy(isProgressBarAppeared = isAppear)
         }
     }
 
 }
 
 data class HomeUiState(
-    val lessonList: List<LessonUI> = LessonUI.getSample(20),
-    val userName: String = "",
-    val userXp: Int = 0,
-    val numCompletedLesson: Int = 1,
-    val numTotalLesson: Int = 20
-)
+    val lessonList: List<LessonUIState>,
+    val userName: String = "Nguyễn Văn A",
+    val userXp: Int = 1888,
+    val isProgressBarAppeared: Boolean = false
+) {
+    val numCompletedLesson: Int
+        get() = lessonList.count { it.isCompleted }
 
-data class LessonUI(
+}
+
+data class LessonUIState(
     val id: Int,
-    val description: String = "",
+    val isCompleted: Boolean,
+    val title: String = "",
+    val summarization: String = "",
+    val rating: Int? = null,
+    var isPressed: Boolean = false,
     var cardState: LessonCardState = LessonCardState.HIDING,
     var leftWeight: Float = 0.5F,
     var rightWeight: Float = 0.5F
 ) {
     companion object {
-        fun getSample(
-            numSample: Int,
+        fun buildFromLessonSummarizationForm(
+            formList: List<LessonSummarizationForm>,
             smallestWeight: Double = 0.1,
             omega: Double = PI / 4,
             phi: Double = PI / 2
-        ) : List<LessonUI> {
+        ) : List<LessonUIState> {
 
-            val sample = List(numSample) { LessonUI(it) }
+            val samples =  formList.map {
+                LessonUIState(
+                    id = it.id,
+                    isCompleted = it.isCompleted,
+                    title = it.title,
+                    summarization = it.summarization,
+                    rating = it.rating
+                )
+            }
 
             val biggestWeight = 1 - smallestWeight
 
-            for (idx in sample.indices) {
+            for (idx in samples.indices) {
                 val leftVal = cos(omega * idx + phi)
                 val leftWeight = map(leftVal, -1.0, 1.0, smallestWeight, biggestWeight)
                 val rightWeight = 1 - leftWeight
-                sample[idx].leftWeight = leftWeight.toFloat()
-                sample[idx].rightWeight = rightWeight.toFloat()
+                samples[idx].leftWeight = leftWeight.toFloat()
+                samples[idx].rightWeight = rightWeight.toFloat()
             }
 
-            return sample
+            return samples
         }
 
         fun map(

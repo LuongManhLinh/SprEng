@@ -23,6 +23,7 @@ class StudyFlowViewModel(
 
     private val lesson: List<ChallengeForm> = lessonRepository.getLesson(lessonId)
     private var currentChallengeIndex = 0
+    private var numCorrect = 0
 
     private val _uiState = MutableStateFlow(
         StudyFlowUIState.buildFromChallengeForm(
@@ -34,7 +35,6 @@ class StudyFlowViewModel(
 
     val uiState = _uiState.asStateFlow()
 
-
     fun complete() {
 
         var isCorrect = true
@@ -43,42 +43,30 @@ class StudyFlowViewModel(
         when (val answerUIState = _uiState.value.answerUIState) {
 
             is AnswerUIState.WordPickerFilling -> {
-                for (i in answerUIState.sentenceUI.indices) {
-                    val word = answerUIState.sentenceUI[i]
-                    if (word == null) {
-                        isCorrect = false
-                        break
-                    } else if (word is SelectedWord) {
-                        val correctWord = (currentLesson.answer as List<String>)[i]
-                        if (word.word != correctWord) {
-                            isCorrect = false
-                            Log.d("StudyFlowViewModel", "selected ${word.word} but correct is $correctWord")
-                            break
-                        }
-                    }
-                }
-
-
+                isCorrect = checkWordPickerFillingAnswer(
+                    answerUIState.sentenceUI,
+                    currentLesson.answer as List<String>
+                )
             }
 
             is AnswerUIState.WordPickerSequence -> {
-                val selectedWords = answerUIState.selectedWords
-                val correctWords = currentLesson.answer as List<String>
-                if (selectedWords.size != correctWords.size) {
-                    isCorrect = false
-                } else {
-                    for (i in selectedWords.indices) {
-                        if (selectedWords[i].word != correctWords[i]) {
-                            isCorrect = false
-                            break
-                        }
-                    }
-                }
+                isCorrect = checkWordPickerSequenceAnswer(
+                    answerUIState.selectedWords,
+                    currentLesson.answer as List<String>
+                )
             }
 
-            is AnswerUIState.Talking -> TODO()
+            is AnswerUIState.Talking -> {
+                isCorrect = checkTalkingAnswer(
+                    currentLesson.answer as String,
+                    answerUIState.answerTalking
+                )
+            }
             is AnswerUIState.TextTyping -> {
-                isCorrect = checkWritingAnswer(currentLesson.questionContent, answerUIState.answerWriting)
+                isCorrect = checkWritingAnswer(
+                    currentLesson.questionContent,
+                    answerUIState.answerWriting
+                )
             }
         }
 
@@ -93,7 +81,9 @@ class StudyFlowViewModel(
                 AnswerType.WORD_PICKER_SEQUENCE -> {
                     (currentLesson.answer as List<*>).joinToString(" ")
                 }
-                AnswerType.TALKING -> TODO()
+                AnswerType.TALKING -> {
+                    currentLesson.answer as String
+                }
             }
         }
 
@@ -101,8 +91,13 @@ class StudyFlowViewModel(
             it.copy(
                 isDone = true,
                 isCorrect = isCorrect,
+                isShowingResultPopup = true,
                 correctAnswer = correctAnswer
             )
+        }
+
+        if (isCorrect) {
+            numCorrect++
         }
     }
 
@@ -110,6 +105,13 @@ class StudyFlowViewModel(
     fun nextChallenge() {
         currentChallengeIndex++
         if (currentChallengeIndex >= lesson.size) {
+            _uiState.update {
+                it.copy(
+                    isLessonDone = true,
+                    numCorrect = numCorrect,
+                    totalChallenge = lesson.size
+                )
+            }
             return
         }
 
@@ -246,6 +248,44 @@ class StudyFlowViewModel(
         }
     }
 
+    fun changeResultPopupVisibility() {
+        _uiState.update {
+            it.copy(isShowingResultPopup = !it.isShowingResultPopup)
+        }
+    }
+
+    private fun checkWordPickerFillingAnswer(
+        sentenceUI: MutableList<Any?>,
+        answer: List<String>
+    ): Boolean {
+        for (i in sentenceUI.indices) {
+            val word = sentenceUI[i]
+            if (word == null) {
+                return false
+            } else if (word is SelectedWord) {
+                if (word.word != answer[i]) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    private fun checkWordPickerSequenceAnswer(
+        selectedWords: List<SelectedWord>,
+        answer: List<String>
+    ): Boolean {
+        if (selectedWords.size != answer.size) {
+            return false
+        }
+        for (i in selectedWords.indices) {
+            if (selectedWords[i].word != answer[i]) {
+                return false
+            }
+        }
+        return true
+    }
+
     private fun checkWritingAnswer(rightAnswer: String, userAnswer: String): Boolean{
         val lowQs = rightAnswer.lowercase().replace("\\s+".toRegex(), "").trim()
         val asQs = userAnswer.lowercase().replace("\\s+".toRegex(), "").trim()
@@ -270,7 +310,11 @@ data class StudyFlowUIState(
     val answerUIState: AnswerUIState,
     val isDone: Boolean = false,
     val isCorrect: Boolean = false,
-    val correctAnswer: String? = null
+    val isShowingResultPopup: Boolean = false,
+    val correctAnswer: String? = null,
+    val isLessonDone: Boolean = false,
+    val numCorrect: Int = 0,
+    val totalChallenge: Int = 0
 ) {
     companion object {
         fun buildFromChallengeForm(

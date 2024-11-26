@@ -1,7 +1,6 @@
 package com.example.spreng.ui.studyscreen.answer.wordpicker
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +27,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.spreng.R
 import com.example.spreng.ui.studyscreen.SelectedWord
 import com.example.spreng.ui.studyscreen.UnselectedWord
@@ -49,7 +49,7 @@ fun WordPickerFillingScreen(
         unselectedWords = unselectedWords,
         onUnselectedWordClick = onUnselectedWordClick,
         modifier = modifier,
-        setCardSize = { width, height ->
+        getCardSize = { width, height ->
             if (width > cardMaxWidth) {
                 cardMaxWidth = width
             }
@@ -83,7 +83,8 @@ fun WordPickerFillingScreen(
                             onClick = {
                                 onSelectedWordClick(value)
                             },
-                            modifier = Modifier.width(cardMaxWidth)
+                            modifier = Modifier.width(cardMaxWidth),
+                            widthDp = cardMaxWidth
                         )
                     }
 
@@ -117,7 +118,8 @@ private fun UnmaskedWord(
     ) {
         Text(
             text = word,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleLarge,
+            fontSize = 20.sp,
             modifier = Modifier.onGloballyPositioned {
                 with(currentDensity) {
                     setTextHeight(it.size.height.toDp())

@@ -63,7 +63,14 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.ui.text.google.fonts)
 
+    implementation(libs.accompanist.systemuicontroller)
+
     implementation(libs.androidx.material.icons.extended)
+
+    implementation(libs.coil3.coil.compose)
+    implementation(libs.coil3.coil.gif)
+
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

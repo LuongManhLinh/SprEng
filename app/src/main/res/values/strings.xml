@@ -25,4 +25,8 @@
     <string name="button_title_complete">Hoàn thành</string>
     <string name="cnt_desc_close">Đóng</string>
     <string name="button_title_next">Tiếp theo</string>
+    <string name="button_title_start">Bắt đầu</string>
+    <string name="button_title_review">Ôn lại</string>
+
+    <string name="lesson_img_cnt_desc">Bài học %s</string>
 </resources>

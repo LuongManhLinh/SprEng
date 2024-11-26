@@ -6,9 +6,6 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
-import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 
 class SpeechRecognizer(

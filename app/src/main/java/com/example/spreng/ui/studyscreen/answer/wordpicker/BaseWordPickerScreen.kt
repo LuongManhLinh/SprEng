@@ -1,7 +1,5 @@
 package com.example.spreng.ui.studyscreen.answer.wordpicker
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,18 +14,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.spreng.R
+import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import com.example.spreng.ui.studyscreen.UnselectedWord
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -36,10 +35,12 @@ fun BaseWordPickerScreen(
     modifier: Modifier = Modifier,
     unselectedWords: List<UnselectedWord>,
     onUnselectedWordClick: (Int) -> Unit,
-    setCardSize: (Dp, Dp) -> Unit = {_, _ -> },
+    getCardSize: (Dp, Dp) -> Unit = { _, _ -> },
+    getPickerMaxHeight: (Dp) -> Unit = { },
     content: @Composable (Modifier) -> Unit
 ) {
     val currentDensity = LocalDensity.current
+
     Column(
         modifier = modifier.fillMaxSize()
     ) {
@@ -51,6 +52,11 @@ fun BaseWordPickerScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
+                .onGloballyPositioned {
+                    with(currentDensity) {
+                        getPickerMaxHeight(it.size.height.toDp())
+                    }
+                }
         ){
             for (idx in unselectedWords.indices) {
                 val unselectedWord = unselectedWords[idx]
@@ -67,12 +73,11 @@ fun BaseWordPickerScreen(
                         },
                         modifier = Modifier.onGloballyPositioned {
                             with(currentDensity) {
-                                setCardSize(
+                                getCardSize(
                                     it.size.width.toDp(),
                                     it.size.height.toDp()
                                 )
                             }
-
                         }
                     )
                 }
@@ -85,6 +90,7 @@ fun BaseWordPickerScreen(
 fun WordItem(
     modifier: Modifier = Modifier,
     word: String,
+    widthDp: Dp? = null,
     onClick: () -> Unit = {}
 ) {
     WordHolder(
@@ -96,10 +102,7 @@ fun WordItem(
                 onClick()
             },
         wordHolder = word,
-        borderStroke = BorderStroke(
-            dimensionResource(R.dimen.very_tiny),
-            Color.Gray
-        )
+        widthDp = widthDp
     )
 
 }
@@ -109,30 +112,28 @@ private fun WordHolder(
     modifier: Modifier = Modifier,
     wordHolder: String,
     textAlpha: Float = 1f,
-    borderStroke: BorderStroke? = null,
+    widthDp: Dp? = null,
 ) {
-    Box(
-        modifier = modifier
-            .padding(dimensionResource(R.dimen.tiny))
-            .clip(RoundedCornerShape(dimensionResource(R.dimen.small_medium)))
-            .background(
-                Color.Green
-            )
-            .border(
-                borderStroke?: BorderStroke(0.dp, Color.Transparent),
-                shape = RoundedCornerShape(dimensionResource(R.dimen.small_medium))
-            )
-
-        ,
-        contentAlignment = Alignment.Center
+    CustomRoundedBorderBox(
+        cornerRadius = dimensionResource(R.dimen.small_medium),
+        bottomBorderWidth = dimensionResource(R.dimen.small),
+        borderColor = colorResource(R.color.word_holder_selected),
+        containerColor = if (textAlpha == 1f) {
+            colorResource(R.color.word_holder_unselected)
+        } else {
+            colorResource(R.color.word_holder_selected)
+        },
+        modifier = modifier.padding(dimensionResource(R.dimen.small)),
+        contentWidthDp = widthDp
     ) {
-       Text(
-           text = wordHolder,
-           style = MaterialTheme.typography.titleMedium,
-           modifier = Modifier
-               .padding(dimensionResource(R.dimen.small))
-               .alpha(textAlpha)
-       )
+        Text(
+            text = wordHolder,
+            style = MaterialTheme.typography.titleLarge,
+            fontSize = 20.sp,
+            modifier = Modifier
+                .padding(dimensionResource(R.dimen.small))
+                .alpha(textAlpha)
+        )
     }
 }
 
@@ -141,7 +142,7 @@ private fun WordHolder(
 private fun BaseWordPickerScreenPreview() {
     BaseWordPickerScreen(
         unselectedWords = listOf(
-            UnselectedWord("Hello", false),
+            UnselectedWord("Hello", true),
             UnselectedWord("World", false),
             UnselectedWord("This", false),
             UnselectedWord("Is", false),

@@ -23,12 +23,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,7 +61,8 @@ fun BaseStudyScreen(
                 onBottomButtonPressed = onBottomButtonPressed
             )
         },
-        modifier = modifier
+        modifier = modifier,
+        containerColor = colorResource(R.color.container)
     ) { innerPadding ->
         Column(
             modifier = Modifier.padding(innerPadding).fillMaxSize()
@@ -107,6 +110,10 @@ private fun StudyTopBar(
                     strokeCap = StrokeCap.Round
                 )
             },
+
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = colorResource(R.color.container)
+            ),
 
             navigationIcon = {
                 IconButton(onClick = onCancelling) {

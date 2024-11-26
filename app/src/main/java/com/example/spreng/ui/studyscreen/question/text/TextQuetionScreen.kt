@@ -1,12 +1,11 @@
-package com.example.spreng.ui.studyscreen.answer.writing
+package com.example.spreng.ui.studyscreen.question.text
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,37 +16,30 @@ import androidx.compose.ui.unit.dp
 import com.example.spreng.R
 
 @Composable
-fun BaseWritingScreen(
+fun QuestionText(
     modifier: Modifier = Modifier,
-    inputAnswer: String,
-    saveInputAnswer: (String) -> Unit
+    questionContent: String
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize()
             .padding(dimensionResource(R.dimen.small))
             .clip(RoundedCornerShape(dimensionResource(R.dimen.small)))
             .border(
-                width = 1.dp,
+                width = dimensionResource(R.dimen.very_tiny),
                 color = Color.Black,
                 shape = RoundedCornerShape(dimensionResource(R.dimen.small))
             )
     ) {
-        TextField(
-            value = inputAnswer,
-            onValueChange ={ saveInputAnswer(it) },
-            textStyle = MaterialTheme.typography.titleLarge,
-            modifier = modifier.fillMaxSize()
+        Text(
+            text = questionContent,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(dimensionResource(R.dimen.small))
         )
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
-fun BasePre() {
-    BaseWritingScreen(
-        inputAnswer = "Hello",
-        saveInputAnswer = {}
-    )
+fun QuestionTextPreview() {
+    QuestionText(questionContent = "This is a question")
 }
