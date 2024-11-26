@@ -31,6 +31,14 @@ class DemoLessonRepository : LessonRepository {
             ),
             ChallengeForm(
                 title = "Nghe và điền lại câu",
+                questionContent = "Today is a beautiful day",
+                questionType = QuestionType.LISTENING,
+                answer = listOf("today", "is", "a", "beautiful", "day"),
+                answerType = AnswerType.WORD_PICKER_SEQUENCE,
+                answerOptions = listOf("yesterday", "owl", "date", "beautify")
+            ),
+            ChallengeForm(
+                title = "Nghe và điền lại câu",
                 questionContent = "How are you",
                 answer = "How are you",
                 questionType = QuestionType.LISTENING,

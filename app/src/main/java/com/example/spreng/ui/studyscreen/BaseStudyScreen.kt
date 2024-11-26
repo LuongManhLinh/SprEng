@@ -8,12 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -36,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.spreng.R
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 /**
  * Base screen for all study screens
@@ -51,6 +50,13 @@ fun BaseStudyScreen(
     onBottomButtonPressed: () -> Unit,
     content: (@Composable () -> Unit)
 ) {
+
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setStatusBarColor(
+        color = colorResource(id = R.color.container),
+        darkIcons = true
+    )
+
     Scaffold(
         topBar = {
             StudyTopBar(learningProgress, onCancelling)
@@ -100,8 +106,8 @@ private fun StudyTopBar(
                     progress = { learningProgress },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(16.dp)
-                        .padding(end = 8.dp)
+                        .height(dimensionResource(R.dimen.medium))
+                        .padding(end = dimensionResource(R.dimen.small))
                         .clip(RoundedCornerShape(dimensionResource(R.dimen.large)))
                         .border(1.dp, Color.Black, RoundedCornerShape(dimensionResource(R.dimen.large)))
                     ,
@@ -119,7 +125,8 @@ private fun StudyTopBar(
                 IconButton(onClick = onCancelling) {
                     Icon(
                         Icons.Filled.Close,
-                        contentDescription = stringResource(R.string.cnt_desc_close)
+                        contentDescription = stringResource(R.string.cnt_desc_close),
+                        tint = Color.Black
                     )
                 }
             }
@@ -127,7 +134,7 @@ private fun StudyTopBar(
 
         HorizontalDivider(
             thickness = dimensionResource(R.dimen.very_tiny),
-            color = Color.Gray
+            color = Color.Black
         )
     }
 
@@ -150,18 +157,13 @@ private fun StudyBottomBar(
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
-            Button(
-                onClick = { onBottomButtonPressed() },
-                shape = RoundedCornerShape(dimensionResource(R.dimen.small)),
-                modifier = Modifier.width(300.dp)
-            ) {
-                Text(
-                    text = stringResource(
-                        if (isDone) R.string.button_title_next
-                        else R.string.button_title_complete
-                    )
-                )
-            }
+            StudyBottomButton(
+                text = stringResource(
+                    if (isDone) R.string.button_title_next
+                    else R.string.button_title_complete
+                ),
+                onBottomButtonPressed = onBottomButtonPressed
+            )
         }
     }
 }

@@ -7,8 +7,11 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,21 +23,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Reviews
+import androidx.compose.material.icons.outlined.RadioButtonChecked
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -42,9 +48,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
-import coil3.compose.AsyncImage
-import coil3.request.ImageRequest
-import coil3.request.crossfade
+import androidx.compose.ui.unit.dp
 import com.example.spreng.R
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import kotlinx.coroutines.delay
@@ -284,6 +288,16 @@ private fun LessonContent(
 ) {
     val mediumPadding = dimensionResource(R.dimen.medium)
 
+    val interactionSource = remember { MutableInteractionSource() }
+
+    var isPressed by remember { mutableStateOf(false) }
+
+    LaunchedEffect(interactionSource) {
+        interactionSource.interactions.collect {
+            isPressed = it is PressInteraction.Press
+        }
+    }
+
     Column(
         modifier = modifier.background(
             color = if (isLessonCompleted || isCurrentLesson) {
@@ -296,6 +310,7 @@ private fun LessonContent(
         Text(
             text = title,
             style = MaterialTheme.typography.headlineLarge,
+            color = Color.Black,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(
                 top = mediumPadding,
@@ -306,48 +321,70 @@ private fun LessonContent(
         Text(
             text = summarization,
             style = MaterialTheme.typography.headlineSmall,
+            color = Color.Black,
             modifier = Modifier.padding(
                 start = mediumPadding,
                 end = mediumPadding
             )
         )
         Row {
+
             Spacer(Modifier.weight(1f))
 
             CustomRoundedBorderBox(
                 modifier = Modifier
-                    .padding(dimensionResource(R.dimen.medium))
+                    .padding(
+                        top = if (isPressed) {
+                            dimensionResource(R.dimen.medium) + dimensionResource(R.dimen.small)
+                        } else {
+                            dimensionResource(R.dimen.medium)
+                        },
+                        bottom = dimensionResource(R.dimen.medium),
+                        end = dimensionResource(R.dimen.medium)
+                    )
                     .clickable(
-                        interactionSource = null,
-                        indication = null,
+                        interactionSource = interactionSource,
+                        indication = LocalIndication.current
                     ) {
                         onLessonClicked()
                     },
-                cornerRadius = dimensionResource(R.dimen.small_medium),
+                cornerRadius = dimensionResource(R.dimen.large),
                 containerColor = colorResource(R.color.purple_200),
                 borderColor = colorResource(R.color.purple_700),
-                startBorderWidth = dimensionResource(R.dimen.small),
-                bottomBorderWidth = dimensionResource(R.dimen.small),
-                topBorderWidth = dimensionResource(R.dimen.very_tiny),
-                endBorderWidth = dimensionResource(R.dimen.very_tiny)
+                startBorderWidth = if (isPressed) 0.dp else dimensionResource(R.dimen.tiny),
+                bottomBorderWidth = if (isPressed) 0.dp else dimensionResource(R.dimen.small),
+                topBorderWidth = 0.dp,
+                endBorderWidth = 0.dp
             ) {
-                Text(
-                    text = if (isLessonCompleted) {
-                        stringResource(R.string.button_title_review)
-                    } else {
-                        stringResource(R.string.button_title_start)
-                    },
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(
-                        top = dimensionResource(R.dimen.small),
-                        bottom = dimensionResource(R.dimen.small),
-                        start = mediumPadding,
-                        end = mediumPadding
-                    )
-                )
-            }
 
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(dimensionResource(R.dimen.small))
+                ) {
+                    Icon(
+                        imageVector = if (isLessonCompleted) {
+                            Icons.Filled.Reviews
+                        } else {
+                            Icons.Outlined.RadioButtonChecked
+                        },
+                        contentDescription = null,
+                        tint = Color.Black
+                    )
+                    Spacer(Modifier.padding(horizontal = dimensionResource(R.dimen.tiny)))
+                    Text(
+                        text = if (isLessonCompleted) {
+                            stringResource(R.string.button_title_review)
+                        } else {
+                            stringResource(R.string.button_title_start)
+                        },
+                        color = Color.Black,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
     }
 }

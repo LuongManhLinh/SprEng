@@ -130,6 +130,7 @@ private fun WordHolder(
             text = wordHolder,
             style = MaterialTheme.typography.titleLarge,
             fontSize = 20.sp,
+            color = Color.Black,
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.small))
                 .alpha(textAlpha)

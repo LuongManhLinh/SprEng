@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -75,7 +76,6 @@ fun StudyFlowScreen(
     ) {
 
         Box {
-
 
             Column {
 
@@ -185,10 +185,7 @@ fun StudyFlowScreen(
             )
 
         }
-
-
     }
-
 }
 
 
@@ -207,25 +204,31 @@ private fun PopupResult(
     ) {
         CustomRoundedBorderBox(
             cornerRadius = dimensionResource(R.dimen.medium),
-            borderColor = Color.Gray,
-            bottomBorderWidth = dimensionResource(R.dimen.small),
-            topBorderWidth = dimensionResource(R.dimen.very_tiny),
-            startBorderWidth = dimensionResource(R.dimen.tiny),
-            endBorderWidth = dimensionResource(R.dimen.very_tiny),
+            borderColor = if (isCorrect) {
+                colorResource(R.color.success_border)
+            } else {
+                colorResource(R.color.error_border)
+            },
+            bottomBorderWidth = dimensionResource(R.dimen.small)
         ) {
             Column (
                 modifier = Modifier
                     .height(dimensionResource(R.dimen.popup_height))
                     .fillMaxWidth()
                     .background(
-                        if (isCorrect) Color.Green else Color.Red
+                        if (isCorrect) {
+                            colorResource(R.color.success)
+                        } else {
+                            colorResource(R.color.error)
+                        }
                     ),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = if (isCorrect) "Chính xác" else "Không chính xác",
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = Color.White,
                     modifier = Modifier
                         .padding(dimensionResource(R.dimen.small))
                 )
@@ -233,6 +236,7 @@ private fun PopupResult(
                     Text(
                         text = "\"$correctAnswer\"",
                         style = MaterialTheme.typography.titleLarge,
+                        color = Color.White,
                         modifier = Modifier
                             .padding(dimensionResource(R.dimen.small)),
                         textAlign = TextAlign.Justify

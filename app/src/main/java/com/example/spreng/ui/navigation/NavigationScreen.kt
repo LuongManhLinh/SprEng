@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,11 +44,19 @@ import com.example.spreng.ui.mainscreen.ranking.RankingScreen
 import com.example.spreng.ui.mainscreen.revision.ReviewMistakesScreen
 import com.example.spreng.ui.mainscreen.revision.ReviewVocabsScreen
 import com.example.spreng.ui.mainscreen.revision.RevisionScreen
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
+
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setStatusBarColor(
+        color = colorResource(id = R.color.container),
+        darkIcons = true
+    )
+
     Scaffold(
         bottomBar = {
             BaseBottomBar(
@@ -176,14 +185,13 @@ private fun BaseBottomBar(
                     unselectedIconColor = Color.Black
                 )
             )
-
         }
     }
     Box(
         modifier = Modifier
-            .height(dimensionResource(R.dimen.very_tiny))
+            .height(dimensionResource(R.dimen.tiny))
             .fillMaxWidth()
-            .background(Color.Gray)
+            .background(colorResource(R.color.gray_teal))
     )
 }
 
