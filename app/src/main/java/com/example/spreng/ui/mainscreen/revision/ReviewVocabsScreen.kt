@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,13 +17,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.VolumeOff
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -32,32 +29,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.spreng.R
-import com.example.spreng.data.MainNavRoute
 import com.example.spreng.text2speech.TTS
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 
 
 @Composable
-fun ReviewVocabsScreen(navController: NavHostController,
-                       modifier: Modifier = Modifier,
-                       vocabViewModel: VocabViewModel = viewModel()
+fun ReviewVocabsScreen(
+    showRevision: () -> Unit,
+    modifier: Modifier = Modifier,
+    vocabViewModel: VocabViewModel = viewModel()
 ) {
     val vocabList by vocabViewModel.vocabList.collectAsState()
+    val filteredList by vocabViewModel.filteredList.collectAsState()
     val query by vocabViewModel.query.collectAsState()
     val context = LocalContext.current
 
@@ -74,11 +69,11 @@ fun ReviewVocabsScreen(navController: NavHostController,
                 cornerRadius = dimensionResource(R.dimen.small),
                 startBorderWidth = dimensionResource(R.dimen.tiny),
                 bottomBorderWidth = dimensionResource(R.dimen.small),
-//                containerColor = Color.LightGray,
-                borderColor = Color.Gray
+                containerColor = Color(135, 183, 239),
+                borderColor = Color(60, 71, 88)
             ) {
                 ReviewVocabTopBar(
-                    navController = navController,
+                    showRevision = {showRevision()},
                     numbOfVocab = vocabList.size,
                 )
             }
@@ -88,16 +83,22 @@ fun ReviewVocabsScreen(navController: NavHostController,
             modifier = Modifier
                 .padding(top = contentPadding.calculateTopPadding())
                 .fillMaxSize()
+                .background(colorResource(id = R.color.container))
         ) {
             // Thanh tìm kiếm sử dụng TextField
             TextField(
                 value = query,
-                onValueChange = { vocabViewModel.updateQuery(it) },
+                onValueChange = { vocabViewModel.updateQuery(it)
+                    vocabViewModel.performSearch()},
                 placeholder = { Text("Gõ vào đây từ bạn muốn tìm") },
                 trailingIcon = {
                     Icon(imageVector = Icons.Filled.Search,
                         contentDescription = "Tìm",
-                        modifier = Modifier.size(40.dp))
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clickable {
+                                vocabViewModel.performSearch()
+                            })
                 },
                 modifier = Modifier
                     .padding(dimensionResource(R.dimen.small_medium))
@@ -109,10 +110,11 @@ fun ReviewVocabsScreen(navController: NavHostController,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(dimensionResource(R.dimen.small_medium))
+                    .background(Color(226, 232, 240))
                     .border(1.dp, Color.Black, shape = RoundedCornerShape(dimensionResource(R.dimen.medium)))
                     .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.medium)))
             ) {
-                items(vocabList) { vocab ->
+                items(filteredList) { vocab ->
                     Column() {
                         // một từ trong list
                         VocabItem(
@@ -185,21 +187,19 @@ fun VocabItem(
 //top bar
 @Composable
 fun ReviewVocabTopBar(
-    navController: NavController,
+    showRevision: () -> Unit,
     numbOfVocab: Int,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
-            .height(dimensionResource(R.dimen.very_large))
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(dimensionResource(R.dimen.small))
     ) {
         // arrowback nằm bên trái
         IconButton(
             onClick = {
-                navController.navigate(MainNavRoute.REVISION.name)
+                showRevision()
             },
             modifier = Modifier.align(Alignment.CenterStart)
         ) {
@@ -226,8 +226,8 @@ fun ReviewVocabTopBar(
     }
 }
 
-@Preview
-@Composable
-fun PreviewVocabs() {
-    ReviewVocabsScreen(navController = rememberNavController())
-}
+//@Preview
+//@Composable
+//fun PreviewVocabs() {
+//    ReviewVocabsScreen(navController = rememberNavController())
+//}

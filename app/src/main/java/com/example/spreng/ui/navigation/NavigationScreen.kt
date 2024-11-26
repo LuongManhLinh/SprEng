@@ -86,15 +86,22 @@ private fun NavigationScreen(
         }
 
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.REVISION)) {
-            RevisionScreen(navController)
+            RevisionScreen(
+                showMistakes = {navController.navigate(RevisionRoute.MISTAKE.name)},
+                showVocabs = {navController.navigate(RevisionRoute.VOCAB.name)}
+            )
         }
 
         composable(route = RevisionRoute.MISTAKE.name) {
-            ReviewMistakesScreen(navController)
+            ReviewMistakesScreen(
+                showRevision = {navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.REVISION))}
+            )
         }
 
         composable(route = RevisionRoute.VOCAB.name) {
-            ReviewVocabsScreen(navController)
+            ReviewVocabsScreen(
+                showRevision = {navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.REVISION))}
+            )
         }
 
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING)) {

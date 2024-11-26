@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
-import com.example.spreng.ui.studyscreen.answer.micro.TalkingScreen
+import com.example.spreng.ui.studyscreen.answer.micro.SpeakingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerFillingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerSequenceScreen
 import com.example.spreng.ui.studyscreen.answer.writing.BaseWritingScreen
@@ -142,7 +142,7 @@ fun StudyFlowScreen(
 
                     is AnswerUIState.Talking -> {
 
-                        TalkingScreen(
+                        SpeakingScreen(
                             modifier = Modifier.fillMaxWidth().weight(1f),
                             inputAnswer = (uiState.answerUIState as AnswerUIState.Talking).answerTalking,
                             saveInputAnswer = { viewModel.updateAnswerTalking(it) }

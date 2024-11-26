@@ -45,8 +45,8 @@ class DemoLessonRepository : LessonRepository {
             ),
             ChallengeForm(
                 title = "Nghe và điền lại câu",
-                questionContent = "How are you",
-                answer = "How are you",
+                questionContent = "You are a good boy",
+                answer = "You are a good boy",
                 questionType = QuestionType.LISTENING,
                 answerType = AnswerType.TYPING
             )
