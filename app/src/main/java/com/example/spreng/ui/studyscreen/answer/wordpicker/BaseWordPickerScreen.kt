@@ -116,7 +116,7 @@ private fun WordHolder(
 ) {
     CustomRoundedBorderBox(
         cornerRadius = dimensionResource(R.dimen.small_medium),
-        bottomBorderWidth = dimensionResource(R.dimen.small),
+        bottomBorderWidth = dimensionResource(R.dimen.tiny),
         borderColor = colorResource(R.color.word_holder_selected),
         containerColor = if (textAlpha == 1f) {
             colorResource(R.color.word_holder_unselected)
