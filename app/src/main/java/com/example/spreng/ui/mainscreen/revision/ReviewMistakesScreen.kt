@@ -63,36 +63,46 @@ fun ReviewMistakesScreen(
                     numbOfMistake = mistakeList.size
                 )
             }
-        }
+        },
+        containerColor = colorResource(R.color.container)
+
     ) { contentPadding ->
         //hiển thị các lỗi sai
         Column(modifier = Modifier
             .padding(top = contentPadding.calculateTopPadding())
-            .background(colorResource(id = R.color.container))
             .fillMaxSize()
             .padding(dimensionResource(R.dimen.small_medium))
 
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .background(Color(226, 232, 240))
-                    .border(
-                        1.dp,
-                        Color.Black,
-                        shape = RoundedCornerShape(dimensionResource(R.dimen.medium))
-                    )
-                    .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.medium)))
-                    .fillMaxSize()
+            CustomRoundedBorderBox(
+                modifier = modifier,
+                cornerRadius = dimensionResource(R.dimen.medium_large),
+                startBorderWidth = dimensionResource(R.dimen.very_tiny),
+                bottomBorderWidth = dimensionResource(R.dimen.tiny),
+                containerColor = Color(226, 232, 240),
+                borderColor = Color(60, 71, 88)
             ) {
-                items(mistakeList) { mistake ->
-                    Column() {
-                        MistakeItem(
-                            mistake = mistake
+                LazyColumn(
+                    modifier = Modifier
+                        .border(
+                            1.dp,
+                            Color.LightGray,
+                            shape = RoundedCornerShape(dimensionResource(R.dimen.medium_large))
                         )
-                        HorizontalDivider(color = Color.Black, thickness = 1.dp)
+                        .fillMaxSize()
+                        .background(Color(226, 232, 240))
+                ) {
+                    items(mistakeList) { mistake ->
+                        Column() {
+                            MistakeItem(
+                                mistake = mistake
+                            )
+                            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+                        }
                     }
                 }
             }
+
         }
     }
 }
@@ -115,11 +125,13 @@ fun MistakeItem(
         ) {
             Text(
                 text = mistake.questionDescription,
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                color = Color.Black
             )
             Text(
                 text = mistake.question,
-                fontSize = 22.sp
+                fontSize = 22.sp,
+                color = Color.Black
             )
         }
     }
@@ -144,7 +156,8 @@ fun ReviewMistakeTopBar(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Quay lại"
+                contentDescription = "Quay lại",
+                tint = Color.Black
             )
         }
 
@@ -153,7 +166,9 @@ fun ReviewMistakeTopBar(
             text = "$numbOfMistake lỗi sai",
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
-            modifier = Modifier.align(Alignment.Center)
+            color = Color.Black,
+            modifier = Modifier
+                .align(Alignment.Center)
         )
     }
 }

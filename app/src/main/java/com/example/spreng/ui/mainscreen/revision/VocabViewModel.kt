@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.update
 
 data class Vocab(
     val word: String,
-    val transcription: String,
+    val meaning: String,
     var isChecked: Boolean = true,
     var isVolumeOn: Boolean = false
 )
@@ -15,16 +15,16 @@ data class Vocab(
 class VocabViewModel : ViewModel() {
     private val _vocabList = MutableStateFlow(
         listOf(
-            Vocab("Apple", "Phiên âm"),
-            Vocab("Banana", "Phiên âm"),
-            Vocab("Cat", "Phiên âm"),
-            Vocab("Dog", "Phiên âm"),
-            Vocab("Elephant", "Phiên âm"),
-            Vocab("Quay", "Phiên âm"),
-            Vocab("Bird", "Phiên âm"),
-            Vocab("Fish", "Phiên âm"),
-            Vocab("Human", "Phiên âm"),
-            Vocab("Blue", "Phiên âm")
+            Vocab("Apple", "Quả táo"),
+            Vocab("Banana", "Quả chuối"),
+            Vocab("Cat", "Con mèo"),
+            Vocab("Dog", "Con chó"),
+            Vocab("Elephant", "Con voi"),
+            Vocab("Quay", "Bến cảng"),
+            Vocab("Bird", "Con chim"),
+            Vocab("Fish", "Con cá"),
+            Vocab("Human", "Con người"),
+            Vocab("Red", "Màu đỏ")
         )
     )
     val vocabList: StateFlow<List<Vocab>> = _vocabList

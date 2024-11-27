@@ -17,21 +17,21 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -45,6 +45,7 @@ import com.example.spreng.text2speech.TTS
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReviewVocabsScreen(
     showRevision: () -> Unit,
@@ -77,53 +78,85 @@ fun ReviewVocabsScreen(
                     numbOfVocab = vocabList.size,
                 )
             }
-        }
+        },
+        containerColor = colorResource(R.color.container)
     ) { contentPadding ->
         Column(
             modifier = Modifier
                 .padding(top = contentPadding.calculateTopPadding())
                 .fillMaxSize()
-                .background(colorResource(id = R.color.container))
+//                .background(colorResource(id = R.color.container))
         ) {
             // Thanh tìm kiếm sử dụng TextField
-            TextField(
-                value = query,
-                onValueChange = { vocabViewModel.updateQuery(it)
-                    vocabViewModel.performSearch()},
-                placeholder = { Text("Gõ vào đây từ bạn muốn tìm") },
-                trailingIcon = {
-                    Icon(imageVector = Icons.Filled.Search,
-                        contentDescription = "Tìm",
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clickable {
-                                vocabViewModel.performSearch()
-                            })
-                },
-                modifier = Modifier
-                    .padding(dimensionResource(R.dimen.small_medium))
-                    .fillMaxWidth()
-                    .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.medium_large)))
-            )
-            // Danh sách từ vựng
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(dimensionResource(R.dimen.small_medium))
-                    .background(Color(226, 232, 240))
-                    .border(1.dp, Color.Black, shape = RoundedCornerShape(dimensionResource(R.dimen.medium)))
-                    .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.medium)))
+            CustomRoundedBorderBox(
+                modifier = modifier
+                    .padding(
+                        top = dimensionResource(R.dimen.small_medium),
+                        start = dimensionResource(R.dimen.small_medium),
+                        end = dimensionResource(R.dimen.small_medium)
+                    ),
+                cornerRadius = dimensionResource(R.dimen.medium_large),
+                startBorderWidth = dimensionResource(R.dimen.very_tiny),
+                bottomBorderWidth = dimensionResource(R.dimen.tiny),
+                containerColor = Color.White,
+                borderColor = Color(60, 71, 88)
             ) {
-                items(filteredList) { vocab ->
-                    Column() {
-                        // một từ trong list
-                        VocabItem(
-                            vocab = vocab,
-                            context = context,
-                            onToggleCheck = { vocabViewModel.toggleChecked(it) },
-                            onToggleVolume = { vocabViewModel.toggleVolume(it) }
+                TextField(
+                    value = query,
+                    onValueChange = { vocabViewModel.updateQuery(it)
+                        vocabViewModel.performSearch()},
+                    placeholder = { Text(
+                        text = "Gõ vào đây từ bạn muốn tìm",
+                        color = Color.Gray) },
+                    trailingIcon = {
+                        Icon(imageVector = Icons.Filled.Search,
+                            contentDescription = "Tìm",
+                            tint = Color.DarkGray,
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clickable {
+                                    vocabViewModel.performSearch()
+                                })
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+
+            // Danh sách từ vựng
+            CustomRoundedBorderBox(
+                modifier = modifier
+                    .padding(dimensionResource(R.dimen.small_medium)),
+                cornerRadius = dimensionResource(R.dimen.medium_large),
+                startBorderWidth = dimensionResource(R.dimen.very_tiny),
+                bottomBorderWidth = dimensionResource(R.dimen.tiny),
+                containerColor = Color(135, 183, 239),
+                borderColor = Color(60, 71, 88)
+            ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .border(
+                            1.dp,
+                            Color.LightGray,
+                            shape = RoundedCornerShape(dimensionResource(R.dimen.medium_large))
                         )
-                        HorizontalDivider(color = Color.Black, thickness = 1.dp)
+                        .fillMaxSize()
+                        .background(Color(226, 232, 240))
+                ) {
+                    items(filteredList) { vocab ->
+                        Column() {
+                            // một từ trong list
+                            VocabItem(
+                                vocab = vocab,
+                                context = context,
+                                onToggleCheck = { vocabViewModel.toggleChecked(it) },
+//                            onToggleVolume = { vocabViewModel.toggleVolume(it) }
+                            )
+                            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+                        }
                     }
                 }
             }
@@ -138,28 +171,24 @@ fun VocabItem(
     context: Context,
     modifier: Modifier = Modifier,
     onToggleCheck: (Vocab) -> Unit,
-    onToggleVolume: (Vocab) -> Unit
+//    onToggleVolume: (Vocab) -> Unit
 ) {
     Row(
         modifier = modifier
             .padding(top = 16.dp, bottom = 16.dp, start = 8.dp, end = 8.dp)
             .fillMaxWidth()
     ) {
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.VolumeUp,
-//            imageVector = if (vocab.isVolumeOn) Icons.AutoMirrored.Filled.VolumeUp else Icons.AutoMirrored.Filled.VolumeOff,
-            contentDescription = "volumn",
+        Image(
+            painter = painterResource(R.drawable.volume),
+            contentDescription = "volume",
             modifier = modifier
+                .padding(top = 4.dp)
                 .weight(1f)
                 .clickable {
                     TTS(context = context, sentence = vocab.word)
-//                    if (!vocab.isVolumeOn) {
-//                        TTS(context = context, sentence = vocab.word)
-//                        onToggleVolume(vocab)
-//                    }
-//                    onToggleVolume(vocab)
                 }
         )
+
         Column(
             modifier = Modifier
                 .weight(10f)
@@ -167,17 +196,20 @@ fun VocabItem(
         ) {
             Text(
                 text = vocab.word,
-                fontSize = 22.sp
+                fontSize = 22.sp,
+                color = Color.Black
             )
             Text(
-                text = vocab.transcription,
-                fontSize = 18.sp
+                text = vocab.meaning,
+                fontSize = 18.sp,
+                color = Color.Black
             )
         }
         Image(
             painter = painterResource(if (vocab.isChecked) R.drawable.checked else R.drawable.unchecked),
             contentDescription = "check",
             modifier = modifier
+                .padding(top = 2.dp)
                 .weight(1f)
                 .clickable { onToggleCheck(vocab) }
         )
@@ -205,24 +237,19 @@ fun ReviewVocabTopBar(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Quay lại"
+                contentDescription = "Quay lại",
+                tint = Color.Black
             )
         }
 
         // số lượng từ vựng nằm giữa
         Text(
             text = "$numbOfVocab từ vựng",
+            color = Color.Black,
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
             modifier = Modifier.align(Alignment.Center)
         )
-//        Button(
-//            onClick = {},
-//            modifier = Modifier
-//                .align(Alignment.CenterEnd),
-//            colors = ButtonDefaults.buttonColors(containerColor = Color(48, 138, 203))) {
-//            Text(text = "Lưu")
-//        }
     }
 }
 
