@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
@@ -93,7 +95,7 @@ fun StudyFlowScreen(
 
                     is QuestionUIState.Listening -> {
                         BaseListeningQuestionScreen(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth().weight(0.5f),
                             context = context,
                             sentence = (
                                     uiState.questionUIState as QuestionUIState.Listening
@@ -153,6 +155,7 @@ fun StudyFlowScreen(
 
                     is AnswerUIState.TextTyping -> {
 
+                        Spacer(Modifier.height(48.dp))
                         BaseWritingScreen(
                             modifier = Modifier.fillMaxWidth().weight(1f),
                             inputAnswer = (uiState.answerUIState as AnswerUIState.TextTyping).answerWriting,

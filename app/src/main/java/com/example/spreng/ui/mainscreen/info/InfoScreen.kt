@@ -44,6 +44,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.spreng.R
+import com.example.spreng.ui.mainscreen.ranking.Card
 
 @Composable
 fun InfoScreen(modifier: Modifier = Modifier) {
@@ -367,31 +369,19 @@ private fun ActionButtons() {
 
 @Composable
 internal fun StatsSection() {
-    Text(
-        text = "Thống Kê",
-        fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.Center,
-        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-    )
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        StatItem(
-            icon = Icons.Default.Star,
-            label = "Chuỗi",
-            value = "15 Ngày"
+    Column() {
+        Text(
+            text = "Thống kê",
+            fontSize = 32.sp
         )
-        StatItem(
-            icon = Icons.Default.Star,
-            label = "XP Tổng Số",
-            value = "2500"
-        )
-        StatItem(
-            icon = Icons.Default.Star,
-            label = "Top 3",
-            value = "5 thời gian"
-        )
+        Row() {
+            Card(3, "Streak", R.drawable.streak,modifier = Modifier.weight(1f))
+            Card(5, "Tổng Xp", R.drawable.xp, modifier = Modifier.weight(1f))
+        }
+        Row() {
+            Card(3, "Hạng", R.drawable.bronze, modifier = Modifier.weight(1f))
+            Card(5, "Số lần top 3", R.drawable.medal, modifier = Modifier.weight(1f))
+        }
     }
 }
 
