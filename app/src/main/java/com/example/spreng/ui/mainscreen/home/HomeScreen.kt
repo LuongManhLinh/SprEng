@@ -67,7 +67,7 @@ fun HomeScreen(
 
         LazyColumn(
             modifier = Modifier
-                .background(Color(246, 251, 243))
+//                .background(Color(246, 251, 243))
                 .padding(
                     top = innerPadding.calculateTopPadding(),
                 )
