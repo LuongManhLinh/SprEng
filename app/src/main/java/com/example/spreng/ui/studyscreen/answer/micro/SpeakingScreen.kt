@@ -1,11 +1,13 @@
 package com.example.spreng.ui.studyscreen.answer.micro
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.example.spreng.R
 import com.example.spreng.speech2Text.SpeechRecognizer
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
+import com.example.spreng.ui.mainscreen.revision.ReviewVocabTopBar
 
 @Composable
 fun SpeakingScreen(
@@ -46,46 +50,58 @@ fun SpeakingScreen(
         }
     )
 
-    Column(modifier = modifier
-        .padding(dimensionResource(R.dimen.medium))
-        .fillMaxSize()) {
-        CustomRoundedBorderBox(
-            modifier = modifier
-                .padding(
-                    top = dimensionResource(R.dimen.tiny),
-                    start = dimensionResource(R.dimen.tiny),
-                    end = dimensionResource(R.dimen.tiny)
-                )
-                .align(Alignment.CenterHorizontally),
-            cornerRadius = dimensionResource(R.dimen.small),
-            startBorderWidth = dimensionResource(R.dimen.tiny),
-            bottomBorderWidth = dimensionResource(R.dimen.small),
-            borderColor = Color(108, 126, 225),
-            containerColor = Color(198, 215, 235)
+    Column(
+        modifier = modifier
+            .padding(dimensionResource(R.dimen.medium))
+            .fillMaxSize()
+            .background(colorResource(R.color.container))
         ) {
-            Button(
-                onClick = {
-                    speechRecognizer.startListening()
-                },
+        Box(
+            modifier = modifier
+                .width(200.dp)
+                .height(64.dp)
+        ) {
+            CustomRoundedBorderBox(
                 modifier = Modifier
-                    .height(dimensionResource(R.dimen.very_large))
-                    .width(200.dp),
-                shape = RoundedCornerShape(48.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(199, 210, 254))
+                    .padding(
+                        top = dimensionResource(R.dimen.very_large),
+                        start = dimensionResource(R.dimen.tiny),
+                        end = dimensionResource(R.dimen.tiny)
+                    )
+                    .align(Alignment.TopCenter),
+                cornerRadius = dimensionResource(R.dimen.small),
+                startBorderWidth = dimensionResource(R.dimen.tiny),
+                bottomBorderWidth = dimensionResource(R.dimen.small),
+                borderColor = Color(108, 126, 225),
+                containerColor = Color(198, 215, 235),
+                contentWidthDp = 200.dp,
+                contentHeightDp = 64.dp
             ) {
-                Icon(imageVector = Icons.Filled.Mic,
-                    contentDescription = "Tìm",
-                    modifier = Modifier.size(40.dp))
-                Text(
-                    text = "Nhấn để nói",
-                    color = Color.Black,
-                    fontSize = 18.sp
-                )
+                Button(
+                    onClick = {
+                        speechRecognizer.startListening()
+                    },
+                    modifier = modifier,
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.small)),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(198, 215, 235))
+                ) {
+                    Icon(imageVector = Icons.Filled.Mic,
+                        contentDescription = "micro",
+                        modifier = Modifier.size(40.dp),
+                        tint = Color.Black)
+                    Text(
+                        text = "Nhấn để nói",
+                        color = Color.Black,
+                        fontSize = 18.sp
+                    )
+                }
             }
         }
-        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium)))
+
+
+        Spacer(modifier = modifier.height(dimensionResource(R.dimen.medium)))
         if(inputAnswer.isNotEmpty()) {
-            Box(modifier = Modifier
+            Box(modifier = modifier
                 .padding(dimensionResource(R.dimen.small))
                 .align(Alignment.CenterHorizontally)
                 .clip(RoundedCornerShape(dimensionResource(R.dimen.very_tiny)))
@@ -94,9 +110,11 @@ fun SpeakingScreen(
                     color = Color.Black,
                     shape = RoundedCornerShape(dimensionResource(R.dimen.small))
                 )
+                .background(Color(226, 232, 240))
                 .padding(dimensionResource(R.dimen.small))) {
                 Text(
                     text = inputAnswer,
+                    color = Color.Black,
                     modifier = Modifier,
                     fontSize = 22.sp
                 )

@@ -53,11 +53,12 @@ fun RevisionScreen(
             ) {
                 RevisionTopBar()
             }
-        }
+        },
+        containerColor = colorResource(R.color.container)
     ) { contentPadding ->
         Column(
             modifier = Modifier
-                .background(colorResource(id = R.color.container))
+//                .background(colorResource(id = R.color.container))
                 .padding(contentPadding)
                 .padding(16.dp)
                 .fillMaxSize(),
