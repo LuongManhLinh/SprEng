@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,20 +18,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.spreng.R
+import com.example.spreng.data.RevisionRoute
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 
 @Composable
 fun RevisionScreen(
-    showMistakes: () -> Unit,
-    showVocabs: () -> Unit,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -48,20 +49,18 @@ fun RevisionScreen(
                 cornerRadius = dimensionResource(R.dimen.small),
                 startBorderWidth = dimensionResource(R.dimen.tiny),
                 bottomBorderWidth = dimensionResource(R.dimen.small),
-                containerColor = colorResource(R.color.teal_200),
-                borderColor = colorResource(R.color.gray_teal)
+//                containerColor = Color.LightGray,
+                borderColor = Color.Gray
             ) {
                 RevisionTopBar()
             }
-        },
-        containerColor = colorResource(R.color.container)
+        }
     ) { contentPadding ->
         Column(
             modifier = Modifier
-//                .background(colorResource(id = R.color.container))
                 .padding(contentPadding)
                 .padding(16.dp)
-                .fillMaxSize(),
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(16.dp))
@@ -80,16 +79,18 @@ fun RevisionScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 CustomRoundedBorderBox (
-                    cornerRadius = dimensionResource(R.dimen.large),
-                    startBorderWidth = dimensionResource(R.dimen.tiny),
-                    bottomBorderWidth = dimensionResource(R.dimen.small),
+                    cornerRadius = 8.dp,
+                    bottomBorderWidth = 8.dp,
                     borderColor = Color.Gray,
+//                    containerColor = Color(199, 210, 254)
                 ) {
                     Button(
-                        onClick = { showMistakes() },
+                        onClick = {
+                            navController.navigate(RevisionRoute.MISTAKE.name)
+                        },
                         modifier = Modifier
                             .size(240.dp),
-                        shape = RoundedCornerShape(dimensionResource(R.dimen.large)),
+                        shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(199, 210, 254))
                     ) {
                         Text(
@@ -103,17 +104,19 @@ fun RevisionScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 CustomRoundedBorderBox (
-                    cornerRadius = dimensionResource(R.dimen.large),
-                    startBorderWidth = dimensionResource(R.dimen.tiny),
-                    bottomBorderWidth = dimensionResource(R.dimen.small),
-                    borderColor = Color.Gray,
+                    cornerRadius = 8.dp,
+                    bottomBorderWidth = 8.dp,
+                    borderColor = Color.Gray
                 ) {
                     Button(
-                        onClick = { showVocabs() },
+                        onClick = {
+                            navController.navigate(RevisionRoute.VOCAB.name)
+                        },
                         modifier = Modifier
                             .size(240.dp),
-                        shape = RoundedCornerShape(dimensionResource(R.dimen.large)),
+                        shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(199, 210, 254))
+
                     ) {
                         Text(
                             text = "Từ vựng",
@@ -131,8 +134,10 @@ fun RevisionScreen(
 private fun RevisionTopBar(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
+            .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.small)))
+            .background(Color.LightGray)
             .fillMaxWidth()
-            .height(56.dp)
+            .height(dimensionResource(R.dimen.very_large))
             .padding(dimensionResource(R.dimen.small)),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
@@ -148,5 +153,5 @@ private fun RevisionTopBar(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun PreviewRevision() {
-    RevisionScreen({}, {})
+    RevisionScreen(navController = rememberNavController())
 }

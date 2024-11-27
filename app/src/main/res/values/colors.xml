@@ -13,15 +13,4 @@
     <color name="xp">#FFFED726</color>
     <color name="word_holder_unselected">#FF7fffd6</color>
     <color name="word_holder_selected">#FF5f9f9e</color>
-
-    <color name="study_button">#FFf0a500</color>
-    <color name="study_button_border">#FFd49e29</color>
-
-    <color name="error">#FFe5191a</color>
-    <color name="error_border">#FFb21616</color>
-    <color name="warning">#FFf0a500</color>
-    <color name="warning_border">#FFef9b0f</color>
-    <color name="success">#FF30c730</color>
-    <color name="success_border">#FF1f9f1f</color>
-
 </resources>

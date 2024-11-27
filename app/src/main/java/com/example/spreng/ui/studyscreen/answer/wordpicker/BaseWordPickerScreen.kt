@@ -116,7 +116,7 @@ private fun WordHolder(
 ) {
     CustomRoundedBorderBox(
         cornerRadius = dimensionResource(R.dimen.small_medium),
-        bottomBorderWidth = dimensionResource(R.dimen.tiny),
+        bottomBorderWidth = dimensionResource(R.dimen.small),
         borderColor = colorResource(R.color.word_holder_selected),
         containerColor = if (textAlpha == 1f) {
             colorResource(R.color.word_holder_unselected)
@@ -130,7 +130,6 @@ private fun WordHolder(
             text = wordHolder,
             style = MaterialTheme.typography.titleLarge,
             fontSize = 20.sp,
-            color = Color.Black,
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.small))
                 .alpha(textAlpha)

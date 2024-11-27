@@ -26,6 +26,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.spreng.R
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 @Composable
@@ -38,6 +39,11 @@ fun HomeScreen(
 
     var topPadding by remember { mutableStateOf(0.dp) }
 
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setSystemBarsColor(
+        color = colorResource(id = R.color.container),
+        darkIcons = true
+    )
 
     Scaffold(
         modifier = modifier,
@@ -61,6 +67,7 @@ fun HomeScreen(
 
         LazyColumn(
             modifier = Modifier
+//                .background(Color(246, 251, 243))
                 .padding(
                     top = innerPadding.calculateTopPadding(),
                 )

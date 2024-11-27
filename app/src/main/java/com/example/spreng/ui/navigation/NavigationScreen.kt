@@ -3,7 +3,6 @@ package com.example.spreng.ui.navigation
 import InfoScreen
 import android.content.Intent
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -19,9 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -43,19 +43,11 @@ import com.example.spreng.ui.mainscreen.ranking.RankingScreen
 import com.example.spreng.ui.mainscreen.revision.ReviewMistakesScreen
 import com.example.spreng.ui.mainscreen.revision.ReviewVocabsScreen
 import com.example.spreng.ui.mainscreen.revision.RevisionScreen
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setStatusBarColor(
-        color = colorResource(id = R.color.container),
-        darkIcons = true
-    )
-
     Scaffold(
         bottomBar = {
             BaseBottomBar(
@@ -94,22 +86,15 @@ private fun NavigationScreen(
         }
 
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.REVISION)) {
-            RevisionScreen(
-                showMistakes = {navController.navigate(RevisionRoute.MISTAKE.name)},
-                showVocabs = {navController.navigate(RevisionRoute.VOCAB.name)}
-            )
+            RevisionScreen(navController)
         }
 
         composable(route = RevisionRoute.MISTAKE.name) {
-            ReviewMistakesScreen(
-                showRevision = {navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.REVISION))}
-            )
+            ReviewMistakesScreen(navController)
         }
 
         composable(route = RevisionRoute.VOCAB.name) {
-            ReviewVocabsScreen(
-                showRevision = {navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.REVISION))}
-            )
+            ReviewVocabsScreen(navController)
         }
 
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING)) {
@@ -160,9 +145,9 @@ private fun BaseBottomBar(
                 },
                 selected = selected,
                 icon = {
-                    Image(
+                    Icon(
                         painter = painterResource(navItem.icon),
-                        contentDescription = null,
+                        contentDescription = stringResource(navItem.contentDescription),
                         modifier = if (selected) {
                             Modifier
                                 .border(
@@ -177,7 +162,6 @@ private fun BaseBottomBar(
                             Modifier
                         }
                     )
-//
                 },
                 colors = NavigationBarItemDefaults.colors(
                     indicatorColor = Color.Transparent,
@@ -185,13 +169,14 @@ private fun BaseBottomBar(
                     unselectedIconColor = Color.Black
                 )
             )
+
         }
     }
     Box(
         modifier = Modifier
-            .height(dimensionResource(R.dimen.tiny))
+            .height(dimensionResource(R.dimen.very_tiny))
             .fillMaxWidth()
-            .background(colorResource(R.color.gray_teal))
+            .background(Color.Gray)
     )
 }
 

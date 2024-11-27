@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,18 +28,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.spreng.R
+import com.example.spreng.data.MainNavRoute
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 
 @Composable
 fun ReviewMistakesScreen(
-    showRevision: () -> Unit,
+    navController: NavHostController,
     modifier: Modifier = Modifier,
     mistakeViewModel: MistakeViewModel = viewModel()
 ) {
@@ -55,54 +59,38 @@ fun ReviewMistakesScreen(
                 cornerRadius = dimensionResource(R.dimen.small),
                 startBorderWidth = dimensionResource(R.dimen.tiny),
                 bottomBorderWidth = dimensionResource(R.dimen.small),
-                containerColor = Color(135, 183, 239),
-                borderColor = Color(60, 71, 88)
+//                containerColor = Color.LightGray,
+                borderColor = Color.Gray
             ) {
                 ReviewMistakeTopBar(
-                    showRevision = {showRevision()},
+                    navController = navController,
                     numbOfMistake = mistakeList.size
                 )
             }
-        },
-        containerColor = colorResource(R.color.container)
-
+        }
     ) { contentPadding ->
         //hiển thị các lỗi sai
-        Column(modifier = Modifier
-            .padding(top = contentPadding.calculateTopPadding())
-            .fillMaxSize()
-            .padding(dimensionResource(R.dimen.small_medium))
-
+        LazyColumn(
+            modifier = Modifier
+                .padding(top = contentPadding.calculateTopPadding())
+                .fillMaxSize()
+                .padding(dimensionResource(R.dimen.small_medium))
+                .border(
+                    1.dp,
+                    Color.Black,
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.medium))
+                )
+                .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.medium)))
+                .fillMaxSize()
         ) {
-            CustomRoundedBorderBox(
-                modifier = modifier,
-                cornerRadius = dimensionResource(R.dimen.medium_large),
-                startBorderWidth = dimensionResource(R.dimen.very_tiny),
-                bottomBorderWidth = dimensionResource(R.dimen.tiny),
-                containerColor = Color(226, 232, 240),
-                borderColor = Color(60, 71, 88)
-            ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .border(
-                            1.dp,
-                            Color.LightGray,
-                            shape = RoundedCornerShape(dimensionResource(R.dimen.medium_large))
-                        )
-                        .fillMaxSize()
-                        .background(Color(226, 232, 240))
-                ) {
-                    items(mistakeList) { mistake ->
-                        Column() {
-                            MistakeItem(
-                                mistake = mistake
-                            )
-                            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
-                        }
-                    }
+            items(mistakeList) { mistake ->
+                Column() {
+                    MistakeItem(
+                        mistake = mistake
+                    )
+                    HorizontalDivider(color = Color.Black, thickness = 1.dp)
                 }
             }
-
         }
     }
 }
@@ -115,6 +103,7 @@ fun MistakeItem(
 ) {
     Row(
         modifier = modifier
+//            .background(Color.Cyan)
             .padding(top = 16.dp, bottom = 16.dp, start = 8.dp, end = 8.dp)
             .fillMaxWidth()
     ) {
@@ -125,13 +114,11 @@ fun MistakeItem(
         ) {
             Text(
                 text = mistake.questionDescription,
-                fontSize = 18.sp,
-                color = Color.Black
+                fontSize = 18.sp
             )
             Text(
                 text = mistake.question,
-                fontSize = 22.sp,
-                color = Color.Black
+                fontSize = 22.sp
             )
         }
     }
@@ -141,23 +128,26 @@ fun MistakeItem(
 @Composable
 fun ReviewMistakeTopBar(
     modifier: Modifier = Modifier,
-    showRevision: () -> Unit,
+    navController: NavHostController,
     numbOfMistake: Int
 ) {
     Box(
         modifier = modifier
+            .height(dimensionResource(R.dimen.very_large))
             .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(dimensionResource(R.dimen.small))
     ) {
         // arrowback nằm bên trái
         IconButton(
-            onClick = showRevision,
+            onClick = {
+                navController.navigate(MainNavRoute.REVISION.name)
+            },
             modifier = Modifier.align(Alignment.CenterStart)
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Quay lại",
-                tint = Color.Black
+                contentDescription = "Quay lại"
             )
         }
 
@@ -166,9 +156,7 @@ fun ReviewMistakeTopBar(
             text = "$numbOfMistake lỗi sai",
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
-            color = Color.Black,
-            modifier = Modifier
-                .align(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center)
         )
     }
 }
@@ -176,5 +164,5 @@ fun ReviewMistakeTopBar(
 @Preview
 @Composable
 fun PreviewMistakes() {
-    ReviewMistakesScreen({})
+    ReviewMistakesScreen(navController = rememberNavController())
 }

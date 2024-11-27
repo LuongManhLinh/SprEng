@@ -1,13 +1,19 @@
 package com.example.spreng.ui.mainscreen.revision
 
+import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 data class Vocab(
     val word: String,
-    val meaning: String,
+    val transcription: String,
     var isChecked: Boolean = true,
     var isVolumeOn: Boolean = false
 )
@@ -15,16 +21,16 @@ data class Vocab(
 class VocabViewModel : ViewModel() {
     private val _vocabList = MutableStateFlow(
         listOf(
-            Vocab("Apple", "Quả táo"),
-            Vocab("Banana", "Quả chuối"),
-            Vocab("Cat", "Con mèo"),
-            Vocab("Dog", "Con chó"),
-            Vocab("Elephant", "Con voi"),
-            Vocab("Quay", "Bến cảng"),
-            Vocab("Bird", "Con chim"),
-            Vocab("Fish", "Con cá"),
-            Vocab("Human", "Con người"),
-            Vocab("Red", "Màu đỏ")
+            Vocab("Apple", "Phiên âm"),
+            Vocab("Banana", "Phiên âm"),
+            Vocab("Cat", "Phiên âm"),
+            Vocab("Dog", "Phiên âm"),
+            Vocab("Elephant", "Phiên âm"),
+            Vocab("Quay", "Phiên âm"),
+            Vocab("Bird", "Phiên âm"),
+            Vocab("Fish", "Phiên âm"),
+            Vocab("Human", "Phiên âm"),
+            Vocab("Blue", "Phiên âm")
         )
     )
     val vocabList: StateFlow<List<Vocab>> = _vocabList
@@ -33,25 +39,23 @@ class VocabViewModel : ViewModel() {
     private val _query = MutableStateFlow("")
     val query: StateFlow<String> = _query
 
-    //danh sách từ đã được lọc
-    private val _filteredList = MutableStateFlow<List<Vocab>>(_vocabList.value)
-    val filteredList: StateFlow<List<Vocab>> = _filteredList
+    //màu của icon tìm kiếm
+    val iconColor = MutableLiveData(Color.Black)
+
+    // Đếm số từ chưa được chọn
+    val uncheckedCount: StateFlow<Int> = _vocabList
+        .map { list -> list.count { !it.isChecked } }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, 0)
 
     // Cập nhật query theo những gì hiển thị trên thanh tìm kiếm
     fun updateQuery(newQuery: String) {
         _query.value = newQuery
     }
 
-    fun performSearch() {
-        _filteredList.value = if (_query.value.isBlank()) {
-            _vocabList.value
-        } else {
-            _vocabList.value.filter { vocab ->
-                vocab.word.contains(_query.value, ignoreCase = true)
-            }
-        }
+    //cập nhật color icon tìm kiếm
+    fun updateIconColor() {
+        iconColor.value = if(iconColor.value == Color.Black) Color.Blue else Color.Black
     }
-
 
     // Chuyển giữa checked và unchecked
     fun toggleChecked(vocab: Vocab) {
@@ -71,6 +75,11 @@ class VocabViewModel : ViewModel() {
                 else it
             }
         }
+    }
+
+    // Xóa các từ chưa được chọn
+    fun removeUnchecked() {
+        _vocabList.update { list -> list.filter { it.isChecked } }
     }
 }
 
