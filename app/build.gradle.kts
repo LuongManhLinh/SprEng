@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.accompanist.systemuicontroller)
 
     implementation(libs.androidx.material.icons.extended)
+
     implementation(libs.coil3.coil.compose)
     implementation(libs.coil3.coil.gif)
 

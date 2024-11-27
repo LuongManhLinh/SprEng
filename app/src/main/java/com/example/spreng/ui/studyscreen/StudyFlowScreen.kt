@@ -9,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,14 +21,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
-import com.example.spreng.ui.studyscreen.answer.micro.TalkingScreen
+import com.example.spreng.ui.studyscreen.answer.micro.SpeakingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerFillingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerSequenceScreen
 import com.example.spreng.ui.studyscreen.answer.writing.BaseWritingScreen
@@ -78,7 +77,6 @@ fun StudyFlowScreen(
 
         Box {
 
-
             Column {
 
                 when (uiState.questionUIState) {
@@ -95,7 +93,7 @@ fun StudyFlowScreen(
 
                     is QuestionUIState.Listening -> {
                         BaseListeningQuestionScreen(
-                            modifier = modifier.fillMaxWidth().weight(0.5f),
+                            modifier = Modifier.fillMaxWidth(),
                             context = context,
                             sentence = (
                                     uiState.questionUIState as QuestionUIState.Listening
@@ -144,7 +142,7 @@ fun StudyFlowScreen(
 
                     is AnswerUIState.Talking -> {
 
-                        TalkingScreen(
+                        SpeakingScreen(
                             modifier = Modifier.fillMaxWidth().weight(1f),
                             inputAnswer = (uiState.answerUIState as AnswerUIState.Talking).answerTalking,
                             saveInputAnswer = { viewModel.updateAnswerTalking(it) }
@@ -154,7 +152,7 @@ fun StudyFlowScreen(
 
 
                     is AnswerUIState.TextTyping -> {
-                        Spacer(Modifier.height(48.dp))
+
                         BaseWritingScreen(
                             modifier = Modifier.fillMaxWidth().weight(1f),
                             inputAnswer = (uiState.answerUIState as AnswerUIState.TextTyping).answerWriting,
@@ -187,10 +185,7 @@ fun StudyFlowScreen(
             )
 
         }
-
-
     }
-
 }
 
 
@@ -209,25 +204,31 @@ private fun PopupResult(
     ) {
         CustomRoundedBorderBox(
             cornerRadius = dimensionResource(R.dimen.medium),
-            borderColor = Color.Gray,
-            bottomBorderWidth = dimensionResource(R.dimen.small),
-            topBorderWidth = dimensionResource(R.dimen.very_tiny),
-            startBorderWidth = dimensionResource(R.dimen.tiny),
-            endBorderWidth = dimensionResource(R.dimen.very_tiny),
+            borderColor = if (isCorrect) {
+                colorResource(R.color.success_border)
+            } else {
+                colorResource(R.color.error_border)
+            },
+            bottomBorderWidth = dimensionResource(R.dimen.small)
         ) {
             Column (
                 modifier = Modifier
                     .height(dimensionResource(R.dimen.popup_height))
                     .fillMaxWidth()
                     .background(
-                        if (isCorrect) Color.Green else Color.Red
+                        if (isCorrect) {
+                            colorResource(R.color.success)
+                        } else {
+                            colorResource(R.color.error)
+                        }
                     ),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = if (isCorrect) "Chính xác" else "Không chính xác",
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = Color.White,
                     modifier = Modifier
                         .padding(dimensionResource(R.dimen.small))
                 )
@@ -235,6 +236,7 @@ private fun PopupResult(
                     Text(
                         text = "\"$correctAnswer\"",
                         style = MaterialTheme.typography.titleLarge,
+                        color = Color.White,
                         modifier = Modifier
                             .padding(dimensionResource(R.dimen.small)),
                         textAlign = TextAlign.Justify

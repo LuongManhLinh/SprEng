@@ -79,6 +79,7 @@ internal fun HomeTopBar(
             Text(
                 text = userName,
                 fontWeight = FontWeight.Bold,
+                color = Color.Black,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.titleLarge,
@@ -160,6 +161,7 @@ private fun ExpandButton(
     Icon(
         imageVector = icon,
         contentDescription = null,
+        tint = Color.Black,
         modifier = modifier.clickable(
             interactionSource = null,
             indication = null
@@ -215,12 +217,14 @@ private fun StudyProgressBarContent(
                 Spacer(Modifier.weight(0.1f))
                 Text(
                     text = stringResource(R.string.progress),
+                    color = Color.Black,
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
                     text = "$numCompletedLesson/$numTotalLesson",
+                    color = Color.Black,
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp
                 )
