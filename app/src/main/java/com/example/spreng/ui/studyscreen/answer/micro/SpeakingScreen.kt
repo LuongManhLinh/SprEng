@@ -98,7 +98,7 @@ fun SpeakingScreen(
             }
         }
 
-
+        //this is comment
         Spacer(modifier = modifier.height(dimensionResource(R.dimen.medium)))
         if(inputAnswer.isNotEmpty()) {
             Box(modifier = modifier
