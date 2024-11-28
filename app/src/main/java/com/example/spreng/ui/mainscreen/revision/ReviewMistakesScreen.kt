@@ -90,7 +90,7 @@ fun ReviewMistakesScreen(
                             shape = RoundedCornerShape(dimensionResource(R.dimen.medium_large))
                         )
                         .fillMaxSize()
-                        .background(Color(226, 232, 240))
+                        .background(Color(245, 245, 245))
                 ) {
                     items(mistakeList) { mistake ->
                         Column() {

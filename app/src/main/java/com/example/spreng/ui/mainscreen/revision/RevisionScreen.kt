@@ -1,6 +1,8 @@
 package com.example.spreng.ui.mainscreen.revision
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,11 +24,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.spreng.R
+import com.example.spreng.text2speech.TTS
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 
 @Composable
@@ -92,11 +96,26 @@ fun RevisionScreen(
                         shape = RoundedCornerShape(dimensionResource(R.dimen.large)),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(199, 210, 254))
                     ) {
-                        Text(
-                            text = "Lỗi sai",
-                            color = Color.Black,
-                            fontSize = 36.sp
-                        )
+                        Column(
+                            modifier = modifier
+                                .fillMaxSize()
+                                .padding(8.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Image(
+                                painter = painterResource(R.drawable.mistake),
+                                contentDescription = "mistake",
+                                modifier = modifier
+                                    .padding(top = 4.dp)
+                                    .size(82.dp)
+                            )
+                            Text(
+                                text = "Lỗi sai",
+                                color = Color.Black,
+                                fontSize = 36.sp,
+                            )
+                        }
                     }
                 }
 
@@ -115,11 +134,26 @@ fun RevisionScreen(
                         shape = RoundedCornerShape(dimensionResource(R.dimen.large)),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(199, 210, 254))
                     ) {
-                        Text(
-                            text = "Từ vựng",
-                            color = Color.Black,
-                            fontSize = 36.sp
-                        )
+                        Column(
+                            modifier = modifier
+                                .fillMaxSize()
+                                .padding(8.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Image(
+                                painter = painterResource(R.drawable.vocab),
+                                contentDescription = "vocab",
+                                modifier = modifier
+                                    .padding(top = 4.dp)
+                                    .size(82.dp)
+                            )
+                            Text(
+                                text = "Từ vựng",
+                                color = Color.Black,
+                                fontSize = 36.sp,
+                            )
+                        }
                     }
                 }
             }
@@ -140,7 +174,8 @@ private fun RevisionTopBar(modifier: Modifier = Modifier) {
         Text(
             text = "Ôn tập",
             fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            color = Color.Black
         )
     }
 }
