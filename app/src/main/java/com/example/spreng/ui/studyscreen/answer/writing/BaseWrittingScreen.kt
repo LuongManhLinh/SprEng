@@ -15,12 +15,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.spreng.R
+import com.example.spreng.ui.custom.CustomRoundedBorderBox
 
 @Composable
 fun BaseWritingScreen(
     modifier: Modifier = Modifier,
     inputAnswer: String,
-    saveInputAnswer: (String) -> Unit
+    saveInputAnswer: (String) -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -29,16 +30,24 @@ fun BaseWritingScreen(
             .clip(RoundedCornerShape(dimensionResource(R.dimen.small)))
             .border(
                 width = 1.dp,
-                color = Color.Black,
+                color = Color(108, 126, 225),
                 shape = RoundedCornerShape(dimensionResource(R.dimen.small))
             )
     ) {
-        TextField(
-            value = inputAnswer,
-            onValueChange ={ saveInputAnswer(it) },
-            textStyle = MaterialTheme.typography.titleLarge,
-            modifier = modifier.fillMaxSize()
-        )
+        CustomRoundedBorderBox(
+            modifier = modifier,
+            cornerRadius = 8.dp,
+            borderColor = Color(108, 126, 225),
+            containerColor = Color(198, 215, 235),
+            bottomBorderWidth = 4.dp
+        ) {
+            TextField(
+                value = inputAnswer,
+                onValueChange = { saveInputAnswer(it) },
+                textStyle = MaterialTheme.typography.titleLarge,
+                modifier = modifier.fillMaxSize()
+            )
+        }
     }
 }
 

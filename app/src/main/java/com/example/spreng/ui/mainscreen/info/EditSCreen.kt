@@ -17,7 +17,6 @@ import androidx.navigation.NavController
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditScreen(navController: NavController) {
-
     Column(
         modifier = androidx.compose.ui.Modifier
             .fillMaxSize()
@@ -32,5 +31,4 @@ fun EditScreen(navController: NavController) {
                 Text("Hello")
             }
     }
-
 }

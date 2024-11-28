@@ -49,46 +49,35 @@ import com.example.spreng.ui.mainscreen.ranking.Card
 
 @Composable
 fun InfoScreen(modifier: Modifier = Modifier) {
-    var username by remember { mutableStateOf("JohnDoe123") }
-    var fullName by remember { mutableStateOf("John Doe") }
+    var username by remember { mutableStateOf("Nguyễn Văn A") }
+    var fullName by remember { mutableStateOf("NguyenVanA") }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Profile Header
         ProfileHeader(
             username = username,
             fullName = fullName,
-            //onEditProfile = { /* Handle edit profile */ }
         )
         Spacer(modifier = Modifier.height(24.dp))
-
-        // Join Date
         JoinDateSection()
-
-        // Action Buttons
         ActionButtons()
         Spacer(modifier = Modifier.height(24.dp))
-
-        // Stats Section
         StatsSection()
     }
 }
-
 @Composable
 private fun ProfileHeader(
     username: String,
     fullName: String,
-    //onEditProfile: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Profile Image
         Box(
             modifier = Modifier
                 .size(100.dp)
@@ -127,7 +116,6 @@ private fun ProfileHeader(
         }
     }
 }
-
 @Composable
 fun SelectCourseScreen(onSelect: (String) -> Unit) {
     val courses = listOf("Tiếng Anh", "Tiếng Trung", "Tiếng Việt")
@@ -148,7 +136,6 @@ fun SelectCourseScreen(onSelect: (String) -> Unit) {
         }
     }
 }
-
 @Composable
 private fun ActionButtons(
     navController: NavController,
@@ -186,7 +173,6 @@ private fun ActionButtons(
         }
     }
 }
-
 @Composable
 fun InfoScreen(
     viewModel: ProfileViewModel,
@@ -201,7 +187,6 @@ fun InfoScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Header hiển thị thông tin người dùng
         ProfileHeader(
             username = profileData.username,
             fullName = profileData.fullName,
@@ -211,16 +196,7 @@ fun InfoScreen(
             }
         )
         Spacer(modifier = Modifier.height(24.dp))
-
-        // Action buttons
-//        ActionButtons(
-//            onSelectCourse = onNavigateToSelectCourse,
-//            onAddFriend = onNavigateToAddFriend,
-//            onEditProfile = onNavigateToEditProfile
-//        )
         Spacer(modifier = Modifier.height(24.dp))
-
-        // Stats
         StatsSection()
     }
 }
@@ -228,7 +204,6 @@ fun InfoScreen(
 fun AppNavigation() {
     val viewModel = remember { ProfileViewModel() }
     val navController = rememberNavController()
-
     NavHost(navController = navController, startDestination = "infoScreen") {
         composable("infoScreen") {
             InfoScreen(
@@ -247,14 +222,12 @@ fun AppNavigation() {
         composable("selectCourseScreen") {
             SelectCourseScreen(
                 onSelect = { course ->
-                    // Lưu trữ khóa học đã chọn hoặc xử lý logic khác
                     navController.popBackStack()
                 }
             )
         }
     }
 }
-
 @Composable
 private fun ProfileHeader(
     username: String,
@@ -321,7 +294,6 @@ private fun StatItem(
         )
     }
 }
-
 @Composable
 private fun ActionButtons() {
     Column(
@@ -366,7 +338,6 @@ private fun ActionButtons() {
         }
     }
 }
-
 @Composable
 internal fun StatsSection() {
     Column() {
@@ -384,8 +355,6 @@ internal fun StatsSection() {
         }
     }
 }
-
-
 @Composable
 fun JoinDateSection() {
     Row(
@@ -404,7 +373,6 @@ fun JoinDateSection() {
         )
     }
 }
-
 @Composable
 fun EditProfileScreen(
     viewModel: ProfileViewModel,
@@ -413,7 +381,6 @@ fun EditProfileScreen(
     var fullName by remember { mutableStateOf(viewModel.profileData.value.fullName) }
     var email by remember { mutableStateOf(viewModel.profileData.value.email) }
     var phoneNumber by remember { mutableStateOf(viewModel.profileData.value.phoneNumber) }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -421,7 +388,6 @@ fun EditProfileScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(text = "Chỉnh Sửa Hồ Sơ", fontWeight = FontWeight.Bold, fontSize = 20.sp)
-
         TextField(
             value = fullName,
             onValueChange = { fullName = it },
@@ -439,7 +405,6 @@ fun EditProfileScreen(
         )
         Button(
             onClick = {
-                // Cập nhật dữ liệu trong ViewModel
                 viewModel.updateProfile(
                     viewModel.profileData.value.copy(
                         fullName = fullName,
@@ -447,7 +412,7 @@ fun EditProfileScreen(
                         phoneNumber = phoneNumber
                     )
                 )
-                onSave() // Quay lại màn hình trước đó
+                onSave()
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -465,7 +430,6 @@ fun EditProfileScreen(
     var fullName by remember { mutableStateOf(viewModel.profileData.value.fullName) }
     var email by remember { mutableStateOf(viewModel.profileData.value.email) }
     var phoneNumber by remember { mutableStateOf(viewModel.profileData.value.phoneNumber) }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -473,8 +437,6 @@ fun EditProfileScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text("Chỉnh sửa hồ sơ", fontWeight = FontWeight.Bold, fontSize = 24.sp)
-
-        // Input fields
         TextField(
             value = fullName,
             onValueChange = { fullName = it },
@@ -493,10 +455,7 @@ fun EditProfileScreen(
             label = { Text("Số điện thoại") },
             modifier = Modifier.fillMaxWidth()
         )
-
         Spacer(modifier = Modifier.height(16.dp))
-
-        // Action buttons
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -521,6 +480,3 @@ fun EditProfileScreen(
         }
     }
 }
-
-
-
