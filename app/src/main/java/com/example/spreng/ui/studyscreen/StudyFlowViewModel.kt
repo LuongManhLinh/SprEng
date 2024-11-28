@@ -2,9 +2,6 @@ package com.example.spreng.ui.studyscreen
 
 import android.content.Context
 import android.content.Intent
-import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.spreng.MainActivity
 import com.example.spreng.data.DemoLessonRepository
@@ -115,11 +112,14 @@ class StudyFlowViewModel(
             return
         }
 
-        _uiState.update {
-            StudyFlowUIState.buildFromChallengeForm(
+        _uiState.update { oldState ->
+            val newState = StudyFlowUIState.buildFromChallengeForm(
                 lesson[currentChallengeIndex],
                 currentChallengeIndex,
-                lesson.size
+                lesson.size,
+            )
+            newState.copy(
+                isCorrect = oldState.isCorrect
             )
         }
     }
