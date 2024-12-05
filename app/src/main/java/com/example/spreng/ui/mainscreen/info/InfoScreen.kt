@@ -1,4 +1,6 @@
 
+import android.content.Intent
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -37,9 +39,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.spreng.AuthActivity
+import com.example.spreng.MainActivity
 import com.example.spreng.R
+import com.example.spreng.preferences.UserManager
 import com.example.spreng.ui.mainscreen.info.ProfileViewModel
 import com.example.spreng.ui.mainscreen.ranking.Card
 
@@ -319,22 +325,11 @@ private fun StatItem(
 }
 @Composable
 private fun ActionButtons() {
+    val context = LocalContext.current
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Button(
-            onClick = { /* Handle course selection */ },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Star,
-                contentDescription = "Chọn Khoá Học"
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Chọn Khoá Học")
-        }
         Button(
             onClick = { /* Handle add friends */ },
             modifier = Modifier.fillMaxWidth(),
@@ -358,6 +353,19 @@ private fun ActionButtons() {
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text("Chỉnh Sửa Hồ Sơ")
+        }
+        Button(
+            onClick = {
+                UserManager.saveLoginState(context = context, isLoggedIn = false)
+                val intent = Intent(context, AuthActivity::class.java)
+                context.startActivity(intent)
+                (context as? ComponentActivity)?.finish()
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Đăng xuất")
         }
     }
 }
