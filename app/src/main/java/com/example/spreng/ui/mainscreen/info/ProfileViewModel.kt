@@ -5,9 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.spreng.repository.LessonBbRepository
-import com.example.spreng.repository.OfflineUserRepository
-import com.example.spreng.repository.UserApplication
-import com.example.spreng.repository.UserManager
+import com.example.spreng.database.UserApplication
+import com.example.spreng.preferences.UserManager
 import com.example.spreng.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -44,33 +43,26 @@ class ProfileViewModel(
                 uiState.copy(
                     username = user?.username ?: uiState.username,
                     exp = lessons?.exp ?: uiState.exp,
-//                     = lessons?.count { it.lessonIsCompleteNumber > 0 } ?: uiState.numCompletedLesson
+                    rank = lessons?.rank ?: uiState.rank,
+                    top3Count = lessons?.top3Count ?: uiState.top3Count
                 )
             }
         }
     }
 
-//    fun updateProfile(updatedData: com.example.spreng.ui.mainscreen.info.ProfileData) {
-//        _uiState.update {
-//            it.copy(
-//
-//            )
-//        }
-//    }
 
     companion object {
         val factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 val application = UserApplication.instance
                 val userDao = application.database.userDao()
-                val repository1 = OfflineUserRepository(userDao)
+                val repository1 = UserRepository(userDao)
                 val lessonDao = application.database.lessonDao()
                 val repository = LessonBbRepository(lessonDao)
                 @Suppress("UNCHECKED_CAST")
                 return ProfileViewModel(repository, repository1) as T
             }
         }
-
     }
 
 //    fun updateProfilePicture(newPicture: Int) {

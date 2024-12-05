@@ -38,8 +38,8 @@ import com.example.spreng.data.NavRanking
 import com.example.spreng.data.RevisionRoute
 import com.example.spreng.ui.mainscreen.home.HomeScreen
 import com.example.spreng.ui.mainscreen.info.EditScreen
-import com.example.spreng.ui.mainscreen.login.SignInScreen
-import com.example.spreng.ui.mainscreen.login.SignUpScreen
+import com.example.spreng.ui.loginscreen.SignInScreen
+import com.example.spreng.ui.loginscreen.SignUpScreen
 import com.example.spreng.ui.mainscreen.ranking.AllRankingScreen
 import com.example.spreng.ui.mainscreen.ranking.InfoUserScreen
 import com.example.spreng.ui.mainscreen.ranking.RankingScreen
@@ -84,21 +84,9 @@ private fun NavigationScreen(
 
     NavHost(
         navController = navController,
-        startDestination = NavLogin.SignIn.name,
+        startDestination = DefaultMainNavItemRepo.getRoute(MainNavRoute.HOME),
         modifier = modifier,
     ) {
-        composable(route = NavLogin.SignIn.name) {
-            SignInScreen(
-                onSignUpClick = {navController.navigate(NavLogin.SignUp.name)},
-                onSignInSuccess = {navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.HOME))}
-            )
-        }
-        composable(route = NavLogin.SignUp.name) {
-            SignUpScreen(
-                onSignInClick = {navController.navigate(NavLogin.SignIn.name)},
-                onSignUpSuccess = {navController.navigate(NavLogin.SignIn.name)}
-            )
-        }
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.HOME)) {
             HomeScreen(
                 onLessonStarted = {
@@ -134,7 +122,8 @@ private fun NavigationScreen(
             RankingScreen(
                 modifier = Modifier.background(colorResource(R.color.container)),
                 showInfoUser = {navController.navigate(NavRanking.Profile.name)},
-                showAllRanking = {navController.navigate(NavRanking.AllRank.name)}
+                showAllRanking = {navController.navigate(NavRanking.AllRank.name)},
+                rank = "Đồng"
                 )
         }
 

@@ -33,9 +33,8 @@ import com.example.spreng.R
 fun HomeScreen(
     modifier: Modifier = Modifier,
     onLessonStarted: () -> Unit = { },
-    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.factory)
-    onAvatarClicked: () -> Unit = { },
-
+    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.factory),
+    onAvatarClicked: () -> Unit = { }
 ) {
     val uiState by viewModel.uiState.collectAsState()
 

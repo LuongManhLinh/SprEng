@@ -1,17 +1,13 @@
-package com.example.spreng.ui.mainscreen.login
+package com.example.spreng.ui.loginscreen
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.spreng.repository.Lesson
+import com.example.spreng.database.Lesson
 import com.example.spreng.repository.LessonBbRepository
-import com.example.spreng.repository.OfflineUserRepository
-import com.example.spreng.repository.User
-import com.example.spreng.repository.UserApplication
-import com.example.spreng.repository.UserManager
+import com.example.spreng.database.User
+import com.example.spreng.database.UserApplication
 import com.example.spreng.repository.UserRepository
-import com.example.spreng.repository.UserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -73,15 +69,55 @@ class SignUpViewModel(
                     top3Count = 0
                 )
             )
+//            createRandomUsers()
         }
     }
+//    private fun createRandomUsers() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val users = mutableListOf<User>()
+//            val lessonList = mutableListOf<Lesson>()
+//
+//            // Tạo 50 người dùng
+//            for (i in 2..50) {
+//                // Tạo XP ngẫu nhiên từ 100 đến 5000
+//                val randomXp = (100..5000).random()
+//
+//                // Tạo User với tên người dùng khác nhau, email giả định và một XP ngẫu nhiên
+//                val user = User(
+//                    username = "User$i",
+//                    email = "user$i@example.com",
+//                    password = "password$i"
+//                )
+//
+//                // Chèn user vào database và nhận lại userId
+//                val userId = userRepository.insertUser(user)
+//
+//                // Tạo Lesson cho mỗi user, với XP được gán ngẫu nhiên, nhưng cùng rank "Bạc"
+//                val lesson = Lesson(
+//                    userId = userId,
+//                    lessonIsCompleteNumber = 0,
+//                    exp = randomXp,  // Lương XP ngẫu nhiên
+//                    streak = 0,
+//                    rank = "Đồng",  // Cùng rank "Bạc" cho tất cả user
+//                    top3Count = 0
+//                )
+//
+//                // Thêm Lesson vào lessonList
+//                lessonList.add(lesson)
+//            }
+//
+//            // Sau khi tạo tất cả user và lesson, insert vào database
+//            lessonList.forEach { lessonBbRepository.insertUser(it) }
+//        }
+//    }
+
 
     companion object {
         val factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 val application = UserApplication.instance
                 val userDao = application.database.userDao()
-                val repository = OfflineUserRepository(userDao)
+                val repository = UserRepository(userDao)
                 val lessonDao = application.database.lessonDao()
                 val repository1 = LessonBbRepository(lessonDao)
                 @Suppress("UNCHECKED_CAST")

@@ -5,16 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.spreng.data.DemoLessonSummarizationRepository
-import com.example.spreng.data.LessonRepository
 import com.example.spreng.data.LessonSummarizationRepository
 import com.example.spreng.form.LessonSummarizationForm
 import com.example.spreng.repository.LessonBbRepository
-import com.example.spreng.repository.LessonDao
-import com.example.spreng.repository.OfflineUserRepository
-import com.example.spreng.repository.UserApplication
-import com.example.spreng.repository.UserManager
+import com.example.spreng.database.UserApplication
+import com.example.spreng.preferences.UserManager
 import com.example.spreng.repository.UserRepository
-import com.example.spreng.ui.mainscreen.login.SignInViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -103,7 +99,7 @@ class HomeViewModel(
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 val application = UserApplication.instance
                 val userDao = application.database.userDao()
-                val repository1 = OfflineUserRepository(userDao)
+                val repository1 = UserRepository(userDao)
                 val lessonDao = application.database.lessonDao()
                 val repository = LessonBbRepository(lessonDao)
                 @Suppress("UNCHECKED_CAST")

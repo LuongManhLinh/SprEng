@@ -1,4 +1,4 @@
-package com.example.spreng.repository
+package com.example.spreng.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

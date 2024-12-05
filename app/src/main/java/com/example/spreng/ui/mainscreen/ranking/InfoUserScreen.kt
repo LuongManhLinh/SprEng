@@ -56,7 +56,9 @@ fun InfoUserScreen(
         Spacer(Modifier.height(16.dp))
         HorizontalDivider(thickness = 2.dp, color = Color.Gray)
         Spacer(Modifier.height(16.dp))
-        DetailScreen()
+//        DetailScreen(
+//            streak =
+//        )
     }
 
 }
@@ -139,25 +141,25 @@ fun Header(showRankingScreen: () -> Unit) {
 }
 
 @Composable
-fun DetailScreen() {
+fun DetailScreen(streak: String, xp: String, rank: String, top3count: String) {
     Column() {
         Text(
             text = "Thống kê",
             fontSize = 32.sp
         )
         Row() {
-            Card(3, "Streak", R.drawable.streak,modifier = Modifier.weight(1f))
-            Card(5, "Tổng Xp", R.drawable.xp, modifier = Modifier.weight(1f))
+            Card(streak, "Streak", R.drawable.streak,modifier = Modifier.weight(1f))
+            Card(xp, "Tổng Xp", R.drawable.xp, modifier = Modifier.weight(1f))
         }
         Row() {
-            Card(3, "Hạng", R.drawable.bronze, modifier = Modifier.weight(1f))
-            Card(5, "Số lần top 3", R.drawable.medal, modifier = Modifier.weight(1f))
+            Card(rank, "Hạng", R.drawable.bronze, modifier = Modifier.weight(1f))
+            Card(top3count, "Số lần top 3", R.drawable.medal, modifier = Modifier.weight(1f))
         }
     }
 }
 
 @Composable
-fun Card(amount: Int, type: String, img: Int, modifier: Modifier = Modifier) {
+fun Card(amount: String, type: String, img: Int, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier.fillMaxWidth().padding(8.dp),
         color = Color(207, 244, 210),
@@ -175,7 +177,7 @@ fun Card(amount: Int, type: String, img: Int, modifier: Modifier = Modifier) {
             )
             Column() {
                 Text(
-                    text = "$amount",
+                    text = amount,
                     modifier = Modifier.padding(4.dp)
                 )
                 Text(
