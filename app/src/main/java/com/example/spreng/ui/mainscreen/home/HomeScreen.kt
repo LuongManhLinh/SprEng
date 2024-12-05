@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,14 +33,18 @@ import com.example.spreng.R
 fun HomeScreen(
     modifier: Modifier = Modifier,
     onLessonStarted: () -> Unit = { },
+    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.factory)
     onAvatarClicked: () -> Unit = { },
-    viewModel: HomeViewModel = viewModel()
+
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     var topPadding by remember { mutableStateOf(0.dp) }
+    val context = LocalContext.current
 
-
+    LaunchedEffect(Unit) {
+        viewModel.updateAccount(context)
+    }
     Scaffold(
         modifier = modifier,
 

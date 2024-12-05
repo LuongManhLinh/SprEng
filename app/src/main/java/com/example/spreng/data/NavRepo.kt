@@ -21,6 +21,9 @@ enum class NavRanking {
     AllRank, Profile
 }
 
+enum class NavLogin {
+    SignUp, SignIn
+}
 interface MainNavItemRepo {
     fun getItems() : List<MainNavItem>
     fun getRoute(route: MainNavRoute) : String
