@@ -39,8 +39,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -68,38 +66,28 @@ fun InfoScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Profile Header
         ProfileHeader(
             username = uiState.username,
             fullName = uiState.fullName,
             //onEditProfile = { /* Handle edit profile */ }
         )
         Spacer(modifier = Modifier.height(24.dp))
-
-        // Join Date
         JoinDateSection()
-
-        // Action Buttons
         ActionButtons()
         Spacer(modifier = Modifier.height(24.dp))
-
-        // Stats Section
         StatsSection()
     }
 }
-
 @Composable
 private fun ProfileHeader(
     username: String,
     fullName: String,
-    //onEditProfile: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Profile Image
         Box(
             modifier = Modifier
                 .size(100.dp)
@@ -138,7 +126,6 @@ private fun ProfileHeader(
         }
     }
 }
-
 @Composable
 fun SelectCourseScreen(onSelect: (String) -> Unit) {
     val courses = listOf("Tiếng Anh", "Tiếng Trung", "Tiếng Việt")
@@ -159,7 +146,6 @@ fun SelectCourseScreen(onSelect: (String) -> Unit) {
         }
     }
 }
-
 @Composable
 private fun ActionButtons(
     navController: NavController,
@@ -197,7 +183,6 @@ private fun ActionButtons(
         }
     }
 }
-
 //@Composable
 //fun InfoScreen(
 //    username: String,
@@ -332,7 +317,6 @@ private fun StatItem(
         )
     }
 }
-
 @Composable
 private fun ActionButtons() {
     Column(
@@ -377,7 +361,6 @@ private fun ActionButtons() {
         }
     }
 }
-
 @Composable
 internal fun StatsSection() {
     Column() {
@@ -395,8 +378,6 @@ internal fun StatsSection() {
         }
     }
 }
-
-
 @Composable
 fun JoinDateSection() {
     Row(
@@ -410,7 +391,7 @@ fun JoinDateSection() {
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = "Joined since March 2024",
+            text = "NguyenVanA since March 2024",
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
         )
     }
@@ -466,6 +447,4 @@ fun JoinDateSection() {
 //        }
 //    }
 //}
-
-
 

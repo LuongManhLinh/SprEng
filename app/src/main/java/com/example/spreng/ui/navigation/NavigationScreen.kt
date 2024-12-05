@@ -104,6 +104,9 @@ private fun NavigationScreen(
                 onLessonStarted = {
                     val studyIntent = Intent(context, StudyActivity::class.java)
                     context.startActivity(studyIntent)
+                },
+                onAvatarClicked = {
+                    navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.INFO))
                 }
             )
         }

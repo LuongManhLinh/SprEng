@@ -70,6 +70,7 @@ class ProfileViewModel(
                 return ProfileViewModel(repository, repository1) as T
             }
         }
+
     }
 
 //    fun updateProfilePicture(newPicture: Int) {

@@ -34,6 +34,8 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     onLessonStarted: () -> Unit = { },
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.factory)
+    onAvatarClicked: () -> Unit = { },
+
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -53,7 +55,8 @@ fun HomeScreen(
                     uiState.userXp.toString()
                 } else {
                     "9999+"
-                }
+                },
+                onAvatarClicked = onAvatarClicked
             )
         },
 

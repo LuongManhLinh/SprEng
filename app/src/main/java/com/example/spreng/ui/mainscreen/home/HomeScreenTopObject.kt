@@ -47,7 +47,8 @@ import com.example.spreng.ui.custom.CustomRoundedBorderBox
 internal fun HomeTopBar(
     modifier: Modifier = Modifier,
     userName: String,
-    userXp: String
+    userXp: String,
+    onAvatarClicked: () -> Unit
 ) {
     CustomRoundedBorderBox(
         modifier = modifier
@@ -73,7 +74,10 @@ internal fun HomeTopBar(
                     .size(dimensionResource(R.dimen.middle_large))
                     .clip(
                         RoundedCornerShape(dimensionResource(R.dimen.large))
-                    ),
+                    )
+                    .clickable {
+                        onAvatarClicked()
+                    },
                 contentScale = ContentScale.Crop
             )
             Text(
@@ -242,7 +246,8 @@ private fun Preview() {
     ) {
         HomeTopBar(
             userName = "Nguyễn Trần Hoàng Văn A",
-            userXp = "1000"
+            userXp = "1000",
+            onAvatarClicked = {}
         )
         StudyProgressBar(
             numCompletedLesson = 5,
