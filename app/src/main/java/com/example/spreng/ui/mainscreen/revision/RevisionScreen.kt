@@ -1,8 +1,6 @@
 package com.example.spreng.ui.mainscreen.revision
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +28,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.spreng.R
-import com.example.spreng.text2speech.TTS
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 
 @Composable
@@ -85,7 +82,6 @@ fun RevisionScreen(
             ) {
                 CustomRoundedBorderBox (
                     cornerRadius = dimensionResource(R.dimen.large),
-                    startBorderWidth = dimensionResource(R.dimen.tiny),
                     bottomBorderWidth = dimensionResource(R.dimen.small),
                     borderColor = Color.Gray,
                 ) {
@@ -123,7 +119,6 @@ fun RevisionScreen(
 
                 CustomRoundedBorderBox (
                     cornerRadius = dimensionResource(R.dimen.large),
-                    startBorderWidth = dimensionResource(R.dimen.tiny),
                     bottomBorderWidth = dimensionResource(R.dimen.small),
                     borderColor = Color.Gray,
                 ) {

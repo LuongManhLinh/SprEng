@@ -96,7 +96,6 @@ fun ReviewVocabsScreen(
                         end = dimensionResource(R.dimen.small_medium)
                     ),
                 cornerRadius = dimensionResource(R.dimen.medium_large),
-                startBorderWidth = dimensionResource(R.dimen.very_tiny),
                 bottomBorderWidth = dimensionResource(R.dimen.tiny),
                 containerColor = Color.White,
                 borderColor = Color(60, 71, 88)

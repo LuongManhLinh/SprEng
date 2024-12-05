@@ -54,7 +54,7 @@ class SignInViewModel(private val userRepository: UserRepository) : ViewModel() 
                 _signInState.value = SignInState.Success(true)
                 UserManager.saveUserId(context, userId)
             } else {
-                _signInState.value = SignInState.Error("Invalid username or password.")
+                _signInState.value = SignInState.Error("Tên người dùng hoặc mật khẩu không hợp lệ")
             }
         }
     }

@@ -38,8 +38,6 @@ import com.example.spreng.data.NavRanking
 import com.example.spreng.data.RevisionRoute
 import com.example.spreng.ui.mainscreen.home.HomeScreen
 import com.example.spreng.ui.mainscreen.info.EditScreen
-import com.example.spreng.ui.loginscreen.SignInScreen
-import com.example.spreng.ui.loginscreen.SignUpScreen
 import com.example.spreng.ui.mainscreen.ranking.AllRankingScreen
 import com.example.spreng.ui.mainscreen.ranking.InfoUserScreen
 import com.example.spreng.ui.mainscreen.ranking.RankingScreen

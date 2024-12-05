@@ -70,7 +70,6 @@ fun SpeakingScreen(
                     )
                     .align(Alignment.TopCenter),
                 cornerRadius = dimensionResource(R.dimen.small),
-                startBorderWidth = dimensionResource(R.dimen.tiny),
                 bottomBorderWidth = dimensionResource(R.dimen.small),
                 borderColor = Color(108, 126, 225),
                 containerColor = Color(198, 215, 235),
