@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -23,6 +24,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,10 +37,15 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.spreng.R
+import com.example.spreng.ui.custom.CustomRoundedBorderBox
+import com.example.spreng.ui.custom.pressHandling
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * Base screen for all study screens
@@ -90,6 +101,7 @@ fun BaseStudyScreen(
     }
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun StudyTopBar(
@@ -138,8 +150,8 @@ private fun StudyTopBar(
         )
     }
 
-
 }
+
 
 @Composable
 private fun StudyBottomBar(
@@ -168,6 +180,61 @@ private fun StudyBottomBar(
     }
 }
 
+
+@Composable
+internal fun StudyBottomButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    onBottomButtonPressed: () -> Unit
+) {
+    var isPressed by remember { mutableStateOf(false) }
+
+    val coroutineScope = rememberCoroutineScope()
+
+    CustomRoundedBorderBox(
+        cornerRadius = dimensionResource(R.dimen.small_medium),
+        modifier = modifier
+            .padding(
+                top = if (isPressed) {
+                    dimensionResource(R.dimen.small)
+                } else {
+                    0.dp
+                }
+            )
+            .width(320.dp)
+            .pressHandling {
+                isPressed = it
+                if (isPressed) {
+                    coroutineScope.launch {
+                        delay(100)
+                        onBottomButtonPressed()
+                    }
+                }
+            },
+        bottomBorderWidth = if (isPressed) {
+            0.dp
+        } else {
+            dimensionResource(R.dimen.small)
+        },
+        contentWidthDp = 320.dp,
+        containerColor = colorResource(R.color.study_button),
+        borderColor = colorResource(R.color.study_button_border),
+    ) {
+        Text(
+            text = text,
+            color = Color.Black,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(dimensionResource(R.dimen.small))
+        )
+    }
+}
+
+@Preview
+@Composable
+fun StudyBottomButtonPreview() {
+    StudyBottomButton(text = "Next", onBottomButtonPressed = {})
+}
 
 @Preview(showBackground = true)
 @Composable

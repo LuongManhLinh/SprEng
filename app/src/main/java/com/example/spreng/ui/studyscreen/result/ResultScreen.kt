@@ -22,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +38,7 @@ import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import com.example.spreng.ui.studyscreen.StudyBottomButton
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -48,10 +50,13 @@ fun ResultScreen(
     val context = LocalContext.current
 
     val systemUiController = rememberSystemUiController()
+
     systemUiController.setSystemBarsColor(
         color = colorResource(R.color.container),
         darkIcons = true
     )
+
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         bottomBar = {
@@ -67,7 +72,10 @@ fun ResultScreen(
                     StudyBottomButton(
                         text = "Về trang chủ",
                         onBottomButtonPressed = {
-                            context.startActivity(Intent(context, MainActivity::class.java))
+                            coroutineScope.launch {
+                                delay(100)
+                                context.startActivity(Intent(context, MainActivity::class.java))
+                            }
                         }
                     )
                 }

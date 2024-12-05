@@ -7,11 +7,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,13 +30,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEvent
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -51,7 +47,9 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.example.spreng.R
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
+import com.example.spreng.ui.custom.pressHandling
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -128,18 +126,8 @@ private fun LessonImage(
                 ),
                 contentDescription = null,
                 modifier = Modifier
-                    .pointerInput(Unit) {
-                        awaitPointerEventScope {
-                            while (true) {
-                                val event = awaitPointerEvent()
-
-                                val isPressed = handlePressAction(
-                                    event = event,
-                                    size = size
-                                )
-                                onPressChanged(lessonIdx, isPressed)
-                            }
-                        }
+                    .pressHandling {
+                        onPressChanged(lessonIdx, it)
                     }
             )
 
@@ -288,15 +276,10 @@ private fun LessonContent(
 ) {
     val mediumPadding = dimensionResource(R.dimen.medium)
 
-    val interactionSource = remember { MutableInteractionSource() }
-
     var isPressed by remember { mutableStateOf(false) }
 
-    LaunchedEffect(interactionSource) {
-        interactionSource.interactions.collect {
-            isPressed = it is PressInteraction.Press
-        }
-    }
+    val coroutineScope = rememberCoroutineScope()
+
 
     Column(
         modifier = modifier.background(
@@ -342,11 +325,14 @@ private fun LessonContent(
                         bottom = dimensionResource(R.dimen.medium),
                         end = dimensionResource(R.dimen.medium)
                     )
-                    .clickable(
-                        interactionSource = interactionSource,
-                        indication = LocalIndication.current
-                    ) {
-                        onLessonClicked()
+                    .pressHandling {
+                        isPressed = it
+                        if (isPressed) {
+                            coroutineScope.launch {
+                                delay(125)
+                                onLessonClicked()
+                            }
+                        }
                     },
                 cornerRadius = dimensionResource(R.dimen.large),
                 containerColor = colorResource(R.color.purple_200),

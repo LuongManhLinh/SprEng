@@ -32,6 +32,7 @@ import com.example.spreng.R
 fun HomeScreen(
     modifier: Modifier = Modifier,
     onLessonStarted: () -> Unit = { },
+    onAvatarClicked: () -> Unit = { },
     viewModel: HomeViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -49,7 +50,8 @@ fun HomeScreen(
                     uiState.userXp.toString()
                 } else {
                     "9999+"
-                }
+                },
+                onAvatarClicked = onAvatarClicked
             )
         },
 
