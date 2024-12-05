@@ -167,8 +167,7 @@ fun StudyFlowScreen(
                 }
 
             }
-
-
+            
             PopupResult(
                 modifier = Modifier
                     .padding(
@@ -202,7 +201,8 @@ private fun PopupResult(
         visible = isVisible,
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
     ) {
         CustomRoundedBorderBox(
             cornerRadius = dimensionResource(R.dimen.medium),

@@ -64,7 +64,12 @@ internal fun HomeTopBar(
         borderColor = colorResource(R.color.gray_teal)
     ) {
         Row(
-            modifier = Modifier.padding(dimensionResource(R.dimen.tiny)),
+            modifier = Modifier.padding(
+                start = dimensionResource(R.dimen.small),
+                end = dimensionResource(R.dimen.small),
+                top = dimensionResource(R.dimen.tiny),
+                bottom = dimensionResource(R.dimen.tiny)
+            ),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
