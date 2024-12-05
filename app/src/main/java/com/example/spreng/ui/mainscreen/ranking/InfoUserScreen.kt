@@ -1,5 +1,7 @@
 package com.example.spreng.ui.mainscreen.ranking
 
+import android.provider.ContactsContract.CommonDataKinds.Email
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -32,6 +34,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,30 +46,51 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
 
 
 @Composable
 fun InfoUserScreen(
+    userId: Long,
     showRankingScreen: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: InfoUserViewModel = viewModel(factory = InfoUserViewModel.factory)
 ) {
+    val uiState by viewModel.userDetail.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.fetchUserDetail(userId)
+    }
+
     Column(modifier = modifier.fillMaxSize()) {
-        Header(
-            showRankingScreen = showRankingScreen
-        )
+        uiState?.let {
+            Header(
+                username = it.username,
+                email = it.email,
+                showRankingScreen = showRankingScreen
+            )
+        }
         Spacer(Modifier.height(16.dp))
         HorizontalDivider(thickness = 2.dp, color = Color.Gray)
         Spacer(Modifier.height(16.dp))
-//        DetailScreen(
-//            streak =
-//        )
+        uiState?.let {
+            DetailScreen(
+                streak = it.streak.toString(),
+                xp = it.xp.toString(),
+                rank = it.rank.toString(),
+                top3count = it.top3Count.toString()
+            )
+        }
     }
 
 }
 
 @Composable
-fun Header(showRankingScreen: () -> Unit) {
+fun Header(
+    username: String,
+    email: String,
+    showRankingScreen: () -> Unit
+) {
     Box() {
         Column(modifier = Modifier.fillMaxWidth()) {
             Surface(
@@ -88,8 +114,8 @@ fun Header(showRankingScreen: () -> Unit) {
                         contentDescription = null
                     )
                     Column(modifier = Modifier.weight(6.5f)) {
-                        Text("chien", fontSize = 24.sp)
-                        Text("chien04")
+                        Text(username, fontSize = 24.sp)
+                        Text(email)
                     }
                     IconButton(
                         onClick = {},
@@ -189,8 +215,8 @@ fun Card(amount: String, type: String, img: Int, modifier: Modifier = Modifier) 
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-    InfoUserScreen({})
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun Preview() {
+//    InfoUserScreen({})
+//}

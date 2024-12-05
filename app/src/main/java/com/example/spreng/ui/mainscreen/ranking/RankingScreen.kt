@@ -45,10 +45,10 @@ import kotlin.random.Random
 @Composable
 fun RankingScreen(
     modifier: Modifier = Modifier,
-    showInfoUser: () -> Unit,
+    showInfoUser: (Long) -> Unit,
     showAllRanking: () -> Unit,
     rank: String,
-    rankingViewModel: RankingViewModel = viewModel(factory = RankingViewModel.factory)
+    rankingViewModel: RankingViewModel = viewModel(factory = RankingViewModel.factory),
 ) {
     val uiState by rankingViewModel.uiState.collectAsState()
     val context = LocalContext.current
@@ -58,7 +58,9 @@ fun RankingScreen(
         rankingViewModel.fetchRanking(rank, currentUserId)
     }
 
-    Column(modifier = Modifier.fillMaxSize().padding(top = 8.dp)) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(top = 8.dp)) {
         TopBar(showAllRanking)
         Spacer(Modifier.height(16.dp))
         HorizontalDivider(thickness = 2.dp)
@@ -72,8 +74,10 @@ fun RankingScreen(
                     stt = index + 1,
                     userName = user.username,
                     exp = user.xp,
-                    showInfoUser = {showInfoUser()} ,
-                    )
+                    showInfoUser = {
+                        showInfoUser(user.id)
+                    },
+                )
 //                HorizontalDivider(thickness = 2.dp)
                 if (index + 1 == 10) {
                     Spacer(Modifier.height(8.dp))
@@ -106,7 +110,7 @@ fun RankingScreen(
 
 @Composable
 fun TopBar(
-    showAllRanking: () -> Unit
+    showAllRanking: () -> Unit,
 ) {
     Row(modifier = Modifier.fillMaxWidth()) {
         Text(
@@ -118,7 +122,8 @@ fun TopBar(
         Image(
             painter = painterResource(R.drawable.diamond),
             contentDescription = "bronze",
-            modifier = Modifier.size(60.dp)
+            modifier = Modifier
+                .size(60.dp)
                 .align(Alignment.CenterVertically)
                 .padding(start = 0.dp)
                 .clickable {
@@ -147,7 +152,7 @@ fun Card(
     userName: String,
     exp: Int,
     showInfoUser: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var colorIndex: Color
     if (stt <= 10)
@@ -156,16 +161,16 @@ fun Card(
         colorIndex = Color(88, 95, 99)
     else
         colorIndex = Color(207, 23, 30)
-    Row(modifier = modifier
-        .fillMaxWidth()
-        .height(60.dp)
-        .padding(start = 8.dp, end = 8.dp)
-        .clip(RoundedCornerShape(16.dp))
-        .background(Color(205, 231, 236))
-        .clickable{
-//            navController.navigate(NavRanking.Profile)
-            showInfoUser()
-        },
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(60.dp)
+            .padding(start = 8.dp, end = 8.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color(205, 231, 236))
+            .clickable {
+                showInfoUser()
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

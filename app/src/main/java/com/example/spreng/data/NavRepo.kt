@@ -17,8 +17,9 @@ enum class MainNavRoute {
     HOME, REVISION, RANKING, INFO, SETTING
 }
 
-enum class NavRanking {
-    AllRank, Profile
+enum class NavRanking(val route: String) {
+    AllRank("all_rank"),
+    Profile("profile/{userId}");  // Đảm bảo Profile có tham số {userId}
 }
 
 enum class NavLogin {

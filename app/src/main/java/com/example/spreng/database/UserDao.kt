@@ -24,7 +24,7 @@ interface UserDao {
     fun getUserByUsername(username: String): Flow<User?>
 
     @Query("""
-    SELECT user_table.username, lesson_table.exp 
+    SELECT user_table.id, user_table.username, lesson_table.exp 
     FROM user_table 
     INNER JOIN lesson_table ON user_table.id = lesson_table.userId 
     WHERE lesson_table.rank = :rank AND user_table.id != :userId 
@@ -36,7 +36,7 @@ interface UserDao {
 
 
     @Query("""
-    SELECT user_table.username, lesson_table.exp 
+    SELECT user_table.id, user_table.username, lesson_table.exp
     FROM user_table 
     INNER JOIN lesson_table ON user_table.id = lesson_table.userId 
     WHERE user_table.id = :userId AND lesson_table.rank = :rank

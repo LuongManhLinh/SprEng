@@ -36,6 +36,7 @@ class UserRepository(private val userDao: UserDao){
 }
 
 data class UserWithExp(
+    val id: Long,
     val username: String,
     val exp: Int
 )

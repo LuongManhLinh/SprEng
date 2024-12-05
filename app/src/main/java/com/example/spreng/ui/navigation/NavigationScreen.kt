@@ -2,6 +2,7 @@ package com.example.spreng.ui.navigation
 
 import InfoScreen
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,10 +25,12 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.spreng.R
 import com.example.spreng.StudyActivity
 import com.example.spreng.data.DefaultMainNavItemRepo
@@ -119,7 +122,12 @@ private fun NavigationScreen(
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING)) {
             RankingScreen(
                 modifier = Modifier.background(colorResource(R.color.container)),
-                showInfoUser = {navController.navigate(NavRanking.Profile.name)},
+                showInfoUser = {
+                    Log.d("RankingScreen", "Clicked userId: $it")
+//                    navController.navigate("${NavRanking.Profile.name}/$it")
+                    navController.navigate(NavRanking.Profile.route.replace("{userId}", it.toString()))
+
+                },
                 showAllRanking = {navController.navigate(NavRanking.AllRank.name)},
                 rank = "Đồng"
                 )
@@ -131,10 +139,18 @@ private fun NavigationScreen(
             )
         }
 
-        composable(route = NavRanking.Profile.name) {
-            InfoUserScreen(
-                showRankingScreen = {navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING))}
-            )
+        composable(
+            route = NavRanking.Profile.route,
+            arguments = listOf(navArgument("userId") { type = NavType.LongType })) {
+            backStackEntry ->
+            val userId = backStackEntry.arguments?.getLong("userId")
+            Log.d("InfoUserScreen", "Received userId: $userId")
+            userId?.let {
+                InfoUserScreen(
+                    userId = it,
+                    showRankingScreen = { navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING)) }
+                )
+            }
         }
 
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.INFO)) {

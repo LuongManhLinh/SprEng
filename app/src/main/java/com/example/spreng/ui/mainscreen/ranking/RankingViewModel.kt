@@ -26,7 +26,11 @@ class RankingViewModel(
             val rankingList = mutableListOf<RankingUIState>()
 
             rankingList.addAll(otherUsers.map { user ->
-                RankingUIState(username = user.username, xp = user.exp)
+                RankingUIState(
+                    id = user.id,
+                    username = user.username,
+                    xp = user.exp
+                )
             })
 
             if (currentUser != null) {
@@ -55,6 +59,7 @@ class RankingViewModel(
 }
 
 data class RankingUIState(
+    val id: Long = 0,
     val username: String = "",
     val xp: Int = 0,
 )
