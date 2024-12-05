@@ -180,7 +180,6 @@ fun StudyFlowScreen(
                         interactionSource = null,
                         indication = null
                     ) {
-                        viewModel.changeResultPopupVisibility()
                     },
                 isVisible = uiState.isShowingResultPopup,
                 isCorrect = uiState.isCorrect,

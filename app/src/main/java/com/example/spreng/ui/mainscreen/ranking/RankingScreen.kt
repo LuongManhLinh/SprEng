@@ -40,6 +40,7 @@ import com.example.spreng.data.DefaultMainNavItemRepo
 import com.example.spreng.data.MainNavRoute
 import com.example.spreng.data.NavRanking
 import com.example.spreng.preferences.UserManager
+import com.example.spreng.R
 import kotlin.random.Random
 
 @Composable

@@ -1,3 +1,5 @@
+package com.example.spreng.ui.mainscreen.info
+
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

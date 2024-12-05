@@ -120,6 +120,7 @@ private fun NavigationScreen(
 
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING)) {
             RankingScreen(
+                modifier = Modifier.background(colorResource(R.color.container)),
                 showInfoUser = {navController.navigate(NavRanking.Profile.name)},
                 showAllRanking = {navController.navigate(NavRanking.AllRank.name)},
                 rank = "Đồng"
@@ -139,7 +140,9 @@ private fun NavigationScreen(
         }
 
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.INFO)) {
-            InfoScreen()
+            InfoScreen(
+                modifier = Modifier.background(colorResource(R.color.container))
+            )
         }
 
         composable("edit") { EditScreen(navController)}
