@@ -35,7 +35,7 @@ class RankingViewModel(
 
             if (currentUser != null) {
                 rankingList.add(
-                    RankingUIState(username = currentUser.username, xp = currentUser.exp)
+                    RankingUIState(id = currentUserId, username = currentUser.username, xp = currentUser.exp)
                 )
             }
             rankingList.sortByDescending { it.xp }
