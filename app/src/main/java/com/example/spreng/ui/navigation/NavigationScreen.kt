@@ -33,10 +33,13 @@ import com.example.spreng.StudyActivity
 import com.example.spreng.data.DefaultMainNavItemRepo
 import com.example.spreng.data.MainNavItem
 import com.example.spreng.data.MainNavRoute
+import com.example.spreng.data.NavLogin
 import com.example.spreng.data.NavRanking
 import com.example.spreng.data.RevisionRoute
 import com.example.spreng.ui.mainscreen.home.HomeScreen
 import com.example.spreng.ui.mainscreen.info.EditScreen
+import com.example.spreng.ui.mainscreen.login.SignInScreen
+import com.example.spreng.ui.mainscreen.login.SignUpScreen
 import com.example.spreng.ui.mainscreen.ranking.AllRankingScreen
 import com.example.spreng.ui.mainscreen.ranking.InfoUserScreen
 import com.example.spreng.ui.mainscreen.ranking.RankingScreen
@@ -81,9 +84,21 @@ private fun NavigationScreen(
 
     NavHost(
         navController = navController,
-        startDestination = DefaultMainNavItemRepo.getRoute(MainNavRoute.HOME),
+        startDestination = NavLogin.SignIn.name,
         modifier = modifier,
     ) {
+        composable(route = NavLogin.SignIn.name) {
+            SignInScreen(
+                onSignUpClick = {navController.navigate(NavLogin.SignUp.name)},
+                onSignInSuccess = {navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.HOME))}
+            )
+        }
+        composable(route = NavLogin.SignUp.name) {
+            SignUpScreen(
+                onSignInClick = {navController.navigate(NavLogin.SignIn.name)},
+                onSignUpSuccess = {navController.navigate(NavLogin.SignIn.name)}
+            )
+        }
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.HOME)) {
             HomeScreen(
                 onLessonStarted = {

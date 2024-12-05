@@ -25,6 +25,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,12 +36,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -48,10 +52,17 @@ import com.example.spreng.R
 import com.example.spreng.ui.mainscreen.ranking.Card
 
 @Composable
-fun InfoScreen(modifier: Modifier = Modifier) {
-    var username by remember { mutableStateOf("JohnDoe123") }
-    var fullName by remember { mutableStateOf("John Doe") }
-
+fun InfoScreen(
+    profileViewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.factory),
+    modifier: Modifier = Modifier
+) {
+//    var username by remember { mutableStateOf("JohnDoe123") }
+//    var fullName by remember { mutableStateOf("John Doe") }
+    val context = LocalContext.current
+    val uiState by profileViewModel.uiState.collectAsState()
+    LaunchedEffect(Unit) {
+        profileViewModel.updateProfile(context)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -59,8 +70,8 @@ fun InfoScreen(modifier: Modifier = Modifier) {
     ) {
         // Profile Header
         ProfileHeader(
-            username = username,
-            fullName = fullName,
+            username = uiState.username,
+            fullName = uiState.fullName,
             //onEditProfile = { /* Handle edit profile */ }
         )
         Spacer(modifier = Modifier.height(24.dp))
@@ -187,73 +198,73 @@ private fun ActionButtons(
     }
 }
 
-@Composable
-fun InfoScreen(
-    viewModel: ProfileViewModel,
-    onNavigateToEditProfile: () -> Unit,
-    onNavigateToSelectCourse: () -> Unit,
-    onNavigateToAddFriend: () -> Unit
-) {
-    val profileData = viewModel.profileData.value
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        // Header hiển thị thông tin người dùng
-        ProfileHeader(
-            username = profileData.username,
-            fullName = profileData.fullName,
-            onEditProfile = onNavigateToEditProfile,
-            onEditProfilePicture = {
-                viewModel.updateProfilePicture(android.R.drawable.ic_menu_camera)
-            }
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Action buttons
-//        ActionButtons(
-//            onSelectCourse = onNavigateToSelectCourse,
-//            onAddFriend = onNavigateToAddFriend,
-//            onEditProfile = onNavigateToEditProfile
+//@Composable
+//fun InfoScreen(
+//    username: String,
+//    fullName: String,
+//    onNavigateToEditProfile: () -> Unit,
+//    onNavigateToSelectCourse: () -> Unit,
+//    onNavigateToAddFriend: () -> Unit
+//) {
+//
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .padding(16.dp)
+//    ) {
+//        // Header hiển thị thông tin người dùng
+//        ProfileHeader(
+//            username = username,
+//            fullName = fullName,
+//            onEditProfile = onNavigateToEditProfile,
+//            onEditProfilePicture = {
+////                viewModel.updateProfilePicture(android.R.drawable.ic_menu_camera)
+//            }
 //        )
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Stats
-        StatsSection()
-    }
-}
-@Composable
-fun AppNavigation() {
-    val viewModel = remember { ProfileViewModel() }
-    val navController = rememberNavController()
-
-    NavHost(navController = navController, startDestination = "infoScreen") {
-        composable("infoScreen") {
-            InfoScreen(
-                viewModel = viewModel,
-                onNavigateToEditProfile = { navController.navigate("editProfileScreen") },
-                onNavigateToSelectCourse = { navController.navigate("selectCourseScreen") },
-                onNavigateToAddFriend = { /* Điều hướng tới trang thêm bạn bè */ }
-            )
-        }
-        composable("editProfileScreen") {
-            EditProfileScreen(
-                viewModel = viewModel,
-                onSave = { navController.popBackStack() }
-            )
-        }
-        composable("selectCourseScreen") {
-            SelectCourseScreen(
-                onSelect = { course ->
-                    // Lưu trữ khóa học đã chọn hoặc xử lý logic khác
-                    navController.popBackStack()
-                }
-            )
-        }
-    }
-}
+//        Spacer(modifier = Modifier.height(24.dp))
+//
+//        // Action buttons
+////        ActionButtons(
+////            onSelectCourse = onNavigateToSelectCourse,
+////            onAddFriend = onNavigateToAddFriend,
+////            onEditProfile = onNavigateToEditProfile
+////        )
+//        Spacer(modifier = Modifier.height(24.dp))
+//
+//        // Stats
+//        StatsSection()
+//    }
+//}
+//@Composable
+//fun AppNavigation() {
+//    val viewModel = remember { ProfileViewModel() }
+//    val navController = rememberNavController()
+//
+//    NavHost(navController = navController, startDestination = "infoScreen") {
+//        composable("infoScreen") {
+//            InfoScreen(
+//                viewModel = viewModel,
+//                onNavigateToEditProfile = { navController.navigate("editProfileScreen") },
+//                onNavigateToSelectCourse = { navController.navigate("selectCourseScreen") },
+//                onNavigateToAddFriend = { /* Điều hướng tới trang thêm bạn bè */ }
+//            )
+//        }
+//        composable("editProfileScreen") {
+//            EditProfileScreen(
+//                viewModel = viewModel,
+//                onSave = { navController.popBackStack() }
+//            )
+//        }
+//        composable("selectCourseScreen") {
+//            SelectCourseScreen(
+//                onSelect = { course ->
+//                    // Lưu trữ khóa học đã chọn hoặc xử lý logic khác
+//                    navController.popBackStack()
+//                }
+//            )
+//        }
+//    }
+//}
 
 @Composable
 private fun ProfileHeader(
@@ -405,122 +416,56 @@ fun JoinDateSection() {
     }
 }
 
-@Composable
-fun EditProfileScreen(
-    viewModel: ProfileViewModel,
-    onSave: () -> Unit
-) {
-    var fullName by remember { mutableStateOf(viewModel.profileData.value.fullName) }
-    var email by remember { mutableStateOf(viewModel.profileData.value.email) }
-    var phoneNumber by remember { mutableStateOf(viewModel.profileData.value.phoneNumber) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text(text = "Chỉnh Sửa Hồ Sơ", fontWeight = FontWeight.Bold, fontSize = 20.sp)
-
-        TextField(
-            value = fullName,
-            onValueChange = { fullName = it },
-            label = { Text("Họ và Tên") }
-        )
-        TextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") }
-        )
-        TextField(
-            value = phoneNumber,
-            onValueChange = { phoneNumber = it },
-            label = { Text("Số Điện Thoại") }
-        )
-        Button(
-            onClick = {
-                // Cập nhật dữ liệu trong ViewModel
-                viewModel.updateProfile(
-                    viewModel.profileData.value.copy(
-                        fullName = fullName,
-                        email = email,
-                        phoneNumber = phoneNumber
-                    )
-                )
-                onSave() // Quay lại màn hình trước đó
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Ghi Nhận Thông Tin")
-        }
-    }
-}
-@Composable
-fun EditProfileScreen(
-    viewModel: ProfileViewModel,
-    onSaveProfile: () -> Unit,
-    onCancel: () -> Unit
-) {
-    var username by remember { mutableStateOf(viewModel.profileData.value.username) }
-    var fullName by remember { mutableStateOf(viewModel.profileData.value.fullName) }
-    var email by remember { mutableStateOf(viewModel.profileData.value.email) }
-    var phoneNumber by remember { mutableStateOf(viewModel.profileData.value.phoneNumber) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text("Chỉnh sửa hồ sơ", fontWeight = FontWeight.Bold, fontSize = 24.sp)
-
-        // Input fields
-        TextField(
-            value = fullName,
-            onValueChange = { fullName = it },
-            label = { Text("Họ và tên") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        TextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        TextField(
-            value = phoneNumber,
-            onValueChange = { phoneNumber = it },
-            label = { Text("Số điện thoại") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Action buttons
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Button(onClick = onCancel) {
-                Text("Hủy")
-            }
-            Button(onClick = {
-                viewModel.updateProfile(
-                    ProfileData(
-                        username = username,
-                        fullName = fullName,
-                        email = email,
-                        phoneNumber = phoneNumber,
-                        profilePicture = viewModel.profileData.value.profilePicture
-                    )
-                )
-                onSaveProfile()
-            }) {
-                Text("Lưu")
-            }
-        }
-    }
-}
+//@Composable
+//fun EditProfileScreen(
+//    viewModel: ProfileViewModel,
+//    onSave: () -> Unit
+//) {
+//    var fullName by remember { mutableStateOf(viewModel.profileData.value.fullName) }
+//    var email by remember { mutableStateOf(viewModel.profileData.value.email) }
+//    var phoneNumber by remember { mutableStateOf(viewModel.profileData.value.phoneNumber) }
+//
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .padding(16.dp),
+//        verticalArrangement = Arrangement.spacedBy(16.dp)
+//    ) {
+//        Text(text = "Chỉnh Sửa Hồ Sơ", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+//
+//        TextField(
+//            value = fullName,
+//            onValueChange = { fullName = it },
+//            label = { Text("Họ và Tên") }
+//        )
+//        TextField(
+//            value = email,
+//            onValueChange = { email = it },
+//            label = { Text("Email") }
+//        )
+//        TextField(
+//            value = phoneNumber,
+//            onValueChange = { phoneNumber = it },
+//            label = { Text("Số Điện Thoại") }
+//        )
+//        Button(
+//            onClick = {
+//                // Cập nhật dữ liệu trong ViewModel
+//                viewModel.updateProfile(
+//                    viewModel.profileData.value.copy(
+//                        fullName = fullName,
+//                        email = email,
+//                        phoneNumber = phoneNumber
+//                    )
+//                )
+//                onSave() // Quay lại màn hình trước đó
+//            },
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            Text("Ghi Nhận Thông Tin")
+//        }
+//    }
+//}
 
 
 
