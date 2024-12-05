@@ -1,5 +1,6 @@
+package com.example.spreng.ui.mainscreen.info
+
 import android.content.Context
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -8,7 +9,6 @@ import com.example.spreng.repository.OfflineUserRepository
 import com.example.spreng.repository.UserApplication
 import com.example.spreng.repository.UserManager
 import com.example.spreng.repository.UserRepository
-import com.example.spreng.ui.mainscreen.home.HomeViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -50,7 +50,7 @@ class ProfileViewModel(
         }
     }
 
-//    fun updateProfile(updatedData: ProfileData) {
+//    fun updateProfile(updatedData: com.example.spreng.ui.mainscreen.info.ProfileData) {
 //        _uiState.update {
 //            it.copy(
 //

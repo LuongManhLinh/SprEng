@@ -28,12 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.spreng.R
-import com.example.spreng.data.DefaultMainNavItemRepo
-import com.example.spreng.data.MainNavRoute
-import com.example.spreng.data.NavRanking
 import kotlin.random.Random
 
 @Composable
@@ -44,7 +39,7 @@ fun RankingScreen(
     showAllRanking: () -> Unit
 ) {
     val listCard: MutableList<userCard> = mutableListOf()
-    Column(modifier = Modifier.fillMaxSize().padding(top = 8.dp)) {
+    Column(modifier = modifier.fillMaxSize().padding(top = 8.dp)) {
         TopBar(showAllRanking)
         Spacer(Modifier.height(16.dp))
         HorizontalDivider(thickness = 2.dp)

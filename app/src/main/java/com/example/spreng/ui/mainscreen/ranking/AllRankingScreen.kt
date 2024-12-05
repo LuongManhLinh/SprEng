@@ -28,13 +28,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.spreng.data.MainNavRoute
+import com.example.spreng.R
 import com.example.spreng.data.RankCardItem
 import com.example.spreng.data.getRankCardItem
 
@@ -69,7 +67,7 @@ fun AllRankingScreen(
                 }
             )
         },
-        bottomBar = {}
+        containerColor = colorResource(R.color.container)
     ) { innerPadding ->
         DisplayRank(modifier = Modifier
             .padding(innerPadding)
@@ -128,10 +126,4 @@ fun RankCard(rankCardItem: RankCardItem) {
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Pre() {
-//    AllRankingScreen(navController = rememberNavController())
 }

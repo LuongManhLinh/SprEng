@@ -23,14 +23,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,10 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.spreng.R
+import com.example.spreng.ui.mainscreen.info.ProfileViewModel
 import com.example.spreng.ui.mainscreen.ranking.Card
 
 @Composable
@@ -62,7 +56,7 @@ fun InfoScreen(
         profileViewModel.updateProfile(context)
     }
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
@@ -78,6 +72,7 @@ fun InfoScreen(
         StatsSection()
     }
 }
+
 @Composable
 private fun ProfileHeader(
     username: String,
@@ -222,7 +217,7 @@ private fun ActionButtons(
 //}
 //@Composable
 //fun AppNavigation() {
-//    val viewModel = remember { ProfileViewModel() }
+//    val viewModel = remember { com.example.spreng.ui.mainscreen.info.ProfileViewModel() }
 //    val navController = rememberNavController()
 //
 //    NavHost(navController = navController, startDestination = "infoScreen") {
@@ -399,7 +394,7 @@ fun JoinDateSection() {
 
 //@Composable
 //fun EditProfileScreen(
-//    viewModel: ProfileViewModel,
+//    viewModel: com.example.spreng.ui.mainscreen.info.ProfileViewModel,
 //    onSave: () -> Unit
 //) {
 //    var fullName by remember { mutableStateOf(viewModel.profileData.value.fullName) }
