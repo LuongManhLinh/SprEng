@@ -19,51 +19,58 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.spreng.R
 import com.example.spreng.data.DefaultMainNavItemRepo
 import com.example.spreng.data.MainNavRoute
 import com.example.spreng.data.NavRanking
+import com.example.spreng.preferences.UserManager
 import kotlin.random.Random
 
 @Composable
 fun RankingScreen(
-//    navController: NavHostController,
     modifier: Modifier = Modifier,
     showInfoUser: () -> Unit,
-    showAllRanking: () -> Unit
+    showAllRanking: () -> Unit,
+    rank: String,
+    rankingViewModel: RankingViewModel = viewModel(factory = RankingViewModel.factory)
 ) {
-    val listCard: MutableList<userCard> = mutableListOf()
+    val uiState by rankingViewModel.uiState.collectAsState()
+    val context = LocalContext.current
+
+    val currentUserId = UserManager.getUserId(context)
+    LaunchedEffect(rank) {
+        rankingViewModel.fetchRanking(rank, currentUserId)
+    }
+
     Column(modifier = Modifier.fillMaxSize().padding(top = 8.dp)) {
         TopBar(showAllRanking)
         Spacer(Modifier.height(16.dp))
         HorizontalDivider(thickness = 2.dp)
         Spacer(Modifier.height(16.dp))
 
-        // sort
-        for (i in 1..50) {
-            val randomExp = Random.nextInt(10, 201)
-            listCard.add(userCard("Nguoi thu $i", randomExp))
-        }
-        listCard.sortByDescending { it.xp }
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            itemsIndexed(listCard) { index, user ->
+            itemsIndexed(uiState) { index, user ->
                 Card(
-//                    navController,
                     stt = index + 1,
-                    userName = user.userName,
+                    userName = user.username,
                     exp = user.xp,
                     showInfoUser = {showInfoUser()} ,
                     )
@@ -136,7 +143,6 @@ fun TopBar(
 
 @Composable
 fun Card(
-//    navController: NavHostController,
     stt: Int,
     userName: String,
     exp: Int,
@@ -183,7 +189,7 @@ fun Card(
                 .weight(5f)
         )
         Text(
-            text = exp.toString() + " xp",
+            text = "$exp xp",
             fontSize = 24.sp,
             modifier = Modifier
                 .weight(2f)
@@ -194,11 +200,6 @@ fun Card(
 @Preview(showBackground = true)
 @Composable
 fun RankingPre() {
-//    RankingScreen(navController = rememberNavController())
 }
 
-data class userCard(
-    val userName: String,
-    val xp: Int
-)
 

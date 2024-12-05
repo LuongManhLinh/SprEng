@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">SprEng</string>
     <string name="study_activity_title">Study</string>
+    <string name="auth_activity_title">Auth</string>
 
     <!-- String values for content description of home navigation item -->
     <string name="home_nav_item_home">Home</string>

@@ -1,7 +1,6 @@
-package com.example.spreng.repository
+package com.example.spreng.database
 
 import android.app.Application
-import android.content.Context
 
 
 class UserApplication : Application() {

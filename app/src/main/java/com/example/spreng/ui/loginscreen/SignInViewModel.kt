@@ -1,13 +1,11 @@
-package com.example.spreng.ui.mainscreen.login
+package com.example.spreng.ui.loginscreen
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.spreng.repository.OfflineUserRepository
-import com.example.spreng.repository.User
-import com.example.spreng.repository.UserApplication
-import com.example.spreng.repository.UserManager
+import com.example.spreng.database.UserApplication
+import com.example.spreng.preferences.UserManager
 import com.example.spreng.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -66,7 +64,7 @@ class SignInViewModel(private val userRepository: UserRepository) : ViewModel() 
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 val application = UserApplication.instance
                 val userDao = application.database.userDao()
-                val repository = OfflineUserRepository(userDao)
+                val repository = UserRepository(userDao)
                 @Suppress("UNCHECKED_CAST")
                 return SignInViewModel(repository) as T
             }

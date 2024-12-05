@@ -1,4 +1,4 @@
-package com.example.spreng.repository
+package com.example.spreng.preferences
 
 import android.content.Context
 import android.content.SharedPreferences

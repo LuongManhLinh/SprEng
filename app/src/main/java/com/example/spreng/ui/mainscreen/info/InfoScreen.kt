@@ -75,7 +75,12 @@ fun InfoScreen(
         JoinDateSection()
         ActionButtons()
         Spacer(modifier = Modifier.height(24.dp))
-        StatsSection()
+        StatsSection(
+            streak = uiState.streak.toString(),
+            xp = uiState.exp.toString(),
+            rank = uiState.rank,
+            top3count = uiState.top3Count.toString()
+        )
     }
 }
 @Composable
@@ -362,19 +367,19 @@ private fun ActionButtons() {
     }
 }
 @Composable
-internal fun StatsSection() {
+internal fun StatsSection(streak: String, xp: String, rank: String, top3count: String) {
     Column() {
         Text(
             text = "Thống kê",
             fontSize = 32.sp
         )
         Row() {
-            Card(3, "Streak", R.drawable.streak,modifier = Modifier.weight(1f))
-            Card(5, "Tổng Xp", R.drawable.xp, modifier = Modifier.weight(1f))
+            Card(streak, "Streak", R.drawable.streak,modifier = Modifier.weight(1f))
+            Card(xp, "Tổng Xp", R.drawable.xp, modifier = Modifier.weight(1f))
         }
         Row() {
-            Card(3, "Hạng", R.drawable.bronze, modifier = Modifier.weight(1f))
-            Card(5, "Số lần top 3", R.drawable.medal, modifier = Modifier.weight(1f))
+            Card(rank, "Hạng", R.drawable.bronze, modifier = Modifier.weight(1f))
+            Card(top3count, "Số lần top 3", R.drawable.medal, modifier = Modifier.weight(1f))
         }
     }
 }

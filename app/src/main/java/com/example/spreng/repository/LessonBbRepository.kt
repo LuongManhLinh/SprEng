@@ -1,5 +1,7 @@
 package com.example.spreng.repository
 
+import com.example.spreng.database.Lesson
+import com.example.spreng.database.LessonDao
 import kotlinx.coroutines.flow.Flow
 
 class LessonBbRepository(private val lessonDao: LessonDao) {
