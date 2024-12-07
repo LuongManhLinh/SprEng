@@ -67,7 +67,7 @@ class SignUpViewModel(
             lessonBbRepository.insertUser(
                 Lesson(
                     userId = userId,
-                    lessonIsCompleteNumber = 0,
+                    numCompletedLessons = 0,
                     exp = 0,
                     streak = 0,
                     rank = "Đồng",

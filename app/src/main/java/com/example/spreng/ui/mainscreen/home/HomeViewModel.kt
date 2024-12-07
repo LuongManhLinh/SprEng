@@ -1,6 +1,7 @@
 package com.example.spreng.ui.mainscreen.home
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -9,7 +10,6 @@ import com.example.spreng.data.LessonSummarizationRepository
 import com.example.spreng.form.LessonSummarizationForm
 import com.example.spreng.repository.LessonBbRepository
 import com.example.spreng.database.UserApplication
-import com.example.spreng.preferences.UserManager
 import com.example.spreng.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,35 +22,45 @@ import kotlin.math.cos
 class HomeViewModel(
     private val lessonDbRepository: LessonBbRepository,
     private val userRepository: UserRepository,
-    lessonSummarizationRepository: LessonSummarizationRepository = DemoLessonSummarizationRepository()
+    private val lessonSummarizationRepository: LessonSummarizationRepository = DemoLessonSummarizationRepository()
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
         HomeUiState(
-            lessonList = LessonUIState.buildFromLessonSummarizationForm(
-                lessonSummarizationRepository.getAllLessonSummarization()
-            ),
+//            lessonList = LessonUIState.buildFromLessonSummarizationForm(
+//                lessonSummarizationRepository.getAllLessonSummarization(0),
+//                0
+//            ),
         )
     )
 
     val uiState = _uiState.asStateFlow()
-
-    fun updateAccount(context: Context) {
+    fun updateAccount(userId: Long) {
         viewModelScope.launch {
-            val userId = UserManager.getUserId(context)
             val user = userRepository.getUserById(userId).firstOrNull()
             val lessons = lessonDbRepository.getLessonsByUserId(userId).firstOrNull()
-
             _uiState.update { uiState ->
                 uiState.copy(
+                    lessonList = LessonUIState.buildFromLessonSummarizationForm(
+                        lessonSummarizationRepository.getAllLessonSummarization(lessons?.numCompletedLessons ?: uiState.numCompletedLesson),
+                    ),
                     userName = user?.username ?: uiState.userName,
                     userXp = lessons?.exp ?: uiState.userXp,
-//                     = lessons?.count { it.lessonIsCompleteNumber > 0 } ?: uiState.numCompletedLesson
+                    numCompletedLesson = lessons?.numCompletedLessons ?: uiState.numCompletedLesson,
                 )
             }
+            Log.i("Helloword", _uiState.value.numCompletedLesson.toString())
         }
     }
 
+    fun updateCompletedLesson(userId: Long) {
+        viewModelScope.launch {
+            val lessons = lessonDbRepository.getLessonsByUserId(userId).firstOrNull()
+            val newCompletedLessons = (lessons?.numCompletedLessons ?: _uiState.value.numCompletedLesson) + 1
+            lessonDbRepository.updateCompletedLessonCount(userId, newCompletedLessons)
+        }
+        updateAccount(userId)
+    }
 
     fun onPressChanged(lessonIdx: Int, isPressed: Boolean) {
         val newLessonList = _uiState.value.lessonList.toMutableList()
@@ -111,15 +121,17 @@ class HomeViewModel(
 }
 
 data class HomeUiState(
-    val lessonList: List<LessonUIState>,
+    val lessonList: List<LessonUIState> = emptyList(),
     val userName: String = "Nguyễn Văn A",
     val userXp: Int = 1888,
-    val isProgressBarAppeared: Boolean = false
-) {
-    val numCompletedLesson: Int
-        get() = lessonList.count { it.isCompleted }
+    val isProgressBarAppeared: Boolean = false,
+    val numCompletedLesson: Int = 0
+)
+//{
+//    val numCompletedLesson: Int
+//        get() = lessonList.count { it.isCompleted }
 
-}
+//}
 
 data class LessonUIState(
     val id: Int,
