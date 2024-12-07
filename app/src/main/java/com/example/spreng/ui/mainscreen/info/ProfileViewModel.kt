@@ -15,9 +15,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class ProfileData(
-    val username: String = "JohnDoe123",
-    val fullName: String = "John Doe",
-    val email: String = "john.doe@example.com",
+    val username: String = "",
+    val fullName: String = "",
+    val email: String = "@example.com",
     val phoneNumber: String = "0123456789",
     val exp: Int = 0,
     val streak: Int = 0,
@@ -25,20 +25,17 @@ data class ProfileData(
     val rank: String = "",
     var profilePicture: Int = android.R.drawable.ic_menu_gallery // Placeholder image resource ID
 )
-
 class ProfileViewModel(
     private val lessonDbRepository: LessonBbRepository,
     private val userRepository: UserRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileData())
     val uiState = _uiState.asStateFlow()
-
     fun updateProfile(context: Context) {
         viewModelScope.launch {
             val userId = UserManager.getUserId(context)
             val user = userRepository.getUserById(userId).firstOrNull()
             val lessons = lessonDbRepository.getLessonsByUserId(userId).firstOrNull()
-
             _uiState.update { uiState ->
                 uiState.copy(
                     username = user?.username ?: uiState.username,
@@ -49,8 +46,6 @@ class ProfileViewModel(
             }
         }
     }
-
-
     companion object {
         val factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -64,8 +59,4 @@ class ProfileViewModel(
             }
         }
     }
-
-//    fun updateProfilePicture(newPicture: Int) {
-//        profileData.value = profileData.value.copy(profilePicture = newPicture)
-//    }
 }

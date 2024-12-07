@@ -54,8 +54,6 @@ fun InfoScreen(
     profileViewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.factory),
     modifier: Modifier = Modifier
 ) {
-//    var username by remember { mutableStateOf("JohnDoe123") }
-//    var fullName by remember { mutableStateOf("John Doe") }
     val context = LocalContext.current
     val uiState by profileViewModel.uiState.collectAsState()
     LaunchedEffect(Unit) {
@@ -83,7 +81,6 @@ fun InfoScreen(
         )
     }
 }
-
 @Composable
 private fun ProfileHeader(
     username: String,
@@ -189,74 +186,6 @@ private fun ActionButtons(
         }
     }
 }
-//@Composable
-//fun InfoScreen(
-//    username: String,
-//    fullName: String,
-//    onNavigateToEditProfile: () -> Unit,
-//    onNavigateToSelectCourse: () -> Unit,
-//    onNavigateToAddFriend: () -> Unit
-//) {
-//
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(16.dp)
-//    ) {
-//        // Header hiển thị thông tin người dùng
-//        ProfileHeader(
-//            username = username,
-//            fullName = fullName,
-//            onEditProfile = onNavigateToEditProfile,
-//            onEditProfilePicture = {
-////                viewModel.updateProfilePicture(android.R.drawable.ic_menu_camera)
-//            }
-//        )
-//        Spacer(modifier = Modifier.height(24.dp))
-//
-//        // Action buttons
-////        ActionButtons(
-////            onSelectCourse = onNavigateToSelectCourse,
-////            onAddFriend = onNavigateToAddFriend,
-////            onEditProfile = onNavigateToEditProfile
-////        )
-//        Spacer(modifier = Modifier.height(24.dp))
-//
-//        // Stats
-//        StatsSection()
-//    }
-//}
-//@Composable
-//fun AppNavigation() {
-//    val viewModel = remember { com.example.spreng.ui.mainscreen.info.ProfileViewModel() }
-//    val navController = rememberNavController()
-//
-//    NavHost(navController = navController, startDestination = "infoScreen") {
-//        composable("infoScreen") {
-//            InfoScreen(
-//                viewModel = viewModel,
-//                onNavigateToEditProfile = { navController.navigate("editProfileScreen") },
-//                onNavigateToSelectCourse = { navController.navigate("selectCourseScreen") },
-//                onNavigateToAddFriend = { /* Điều hướng tới trang thêm bạn bè */ }
-//            )
-//        }
-//        composable("editProfileScreen") {
-//            EditProfileScreen(
-//                viewModel = viewModel,
-//                onSave = { navController.popBackStack() }
-//            )
-//        }
-//        composable("selectCourseScreen") {
-//            SelectCourseScreen(
-//                onSelect = { course ->
-//                    // Lưu trữ khóa học đã chọn hoặc xử lý logic khác
-//                    navController.popBackStack()
-//                }
-//            )
-//        }
-//    }
-//}
-
 @Composable
 private fun ProfileHeader(
     username: String,
@@ -399,60 +328,8 @@ fun JoinDateSection() {
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = "NguyenVanA since March 2024",
+            text = "Since December 2024",
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
         )
     }
 }
-
-//@Composable
-//fun EditProfileScreen(
-//    viewModel: com.example.spreng.ui.mainscreen.info.ProfileViewModel,
-//    onSave: () -> Unit
-//) {
-//    var fullName by remember { mutableStateOf(viewModel.profileData.value.fullName) }
-//    var email by remember { mutableStateOf(viewModel.profileData.value.email) }
-//    var phoneNumber by remember { mutableStateOf(viewModel.profileData.value.phoneNumber) }
-//
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(16.dp),
-//        verticalArrangement = Arrangement.spacedBy(16.dp)
-//    ) {
-//        Text(text = "Chỉnh Sửa Hồ Sơ", fontWeight = FontWeight.Bold, fontSize = 20.sp)
-//
-//        TextField(
-//            value = fullName,
-//            onValueChange = { fullName = it },
-//            label = { Text("Họ và Tên") }
-//        )
-//        TextField(
-//            value = email,
-//            onValueChange = { email = it },
-//            label = { Text("Email") }
-//        )
-//        TextField(
-//            value = phoneNumber,
-//            onValueChange = { phoneNumber = it },
-//            label = { Text("Số Điện Thoại") }
-//        )
-//        Button(
-//            onClick = {
-//                // Cập nhật dữ liệu trong ViewModel
-//                viewModel.updateProfile(
-//                    viewModel.profileData.value.copy(
-//                        fullName = fullName,
-//                        email = email,
-//                        phoneNumber = phoneNumber
-//                    )
-//                )
-//                onSave() // Quay lại màn hình trước đó
-//            },
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            Text("Ghi Nhận Thông Tin")
-//        }
-//    }
-//}
-
