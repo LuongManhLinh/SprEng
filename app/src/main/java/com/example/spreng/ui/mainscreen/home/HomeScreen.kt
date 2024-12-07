@@ -27,6 +27,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.spreng.R
+import com.example.spreng.preferences.UserManager
 
 
 @Composable
@@ -34,15 +35,16 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     onLessonStarted: () -> Unit = { },
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.factory),
-    onAvatarClicked: () -> Unit = { }
+    onAvatarClicked: () -> Unit = { },
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     var topPadding by remember { mutableStateOf(0.dp) }
     val context = LocalContext.current
+    val currentUserId = UserManager.getUserId(context)
 
     LaunchedEffect(Unit) {
-        viewModel.updateAccount(context)
+        viewModel.updateAccount(currentUserId)
     }
     Scaffold(
         modifier = modifier,
@@ -81,7 +83,10 @@ fun HomeScreen(
                         lessonIdx = idx,
                         isCurrentLesson = isCurrentLesson,
                         onPressChanged = viewModel::onPressChanged,
-                        onLessonStarted = onLessonStarted,
+                        onLessonStarted = {
+                            onLessonStarted()
+                            viewModel.updateCompletedLesson(userId = currentUserId)
+                        },
                         onOpeningCompleted = { viewModel.onCardOpeningCompleted(idx) },
                         onClosingCompleted = { viewModel.onCardClosingCompleted(idx) },
                         modifier = Modifier
@@ -114,7 +119,7 @@ fun HomeScreen(
 
 @Composable
 private fun FireAnimation(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
@@ -127,7 +132,6 @@ private fun FireAnimation(
             .size(dimensionResource(R.dimen.large))
     )
 }
-
 
 
 @Preview(showBackground = false)

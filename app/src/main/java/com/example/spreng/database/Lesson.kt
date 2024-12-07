@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey
 data class Lesson(
 //    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @PrimaryKey val userId: Long,               // Khóa ngoại liên kết với bảng User
-    val lessonIsCompleteNumber: Int,          // Số bài học
+    val numCompletedLessons: Int,          // Số bài học
     val exp: Int,                   // Kinh nghiệm đạt được
     val streak: Int,                // Chuỗi chiến thắng liên tiếp
     val rank: String,               // Hạng của người dùng

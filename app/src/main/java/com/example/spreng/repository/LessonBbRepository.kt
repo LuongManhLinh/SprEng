@@ -9,4 +9,11 @@ class LessonBbRepository(private val lessonDao: LessonDao) {
     fun getLessonsByUserId(userId: Long): Flow<Lesson?> {
         return lessonDao.getLessonByUserId(userId)
     }
+    fun getCompletedLessonCount(userId: Long): Flow<Int> {
+        return lessonDao.getCompletedLessonCount(userId)
+    }
+    suspend fun updateCompletedLessonCount(userId: Long, completedLessons: Int) {
+        lessonDao.updateCompletedLessonCount(userId, completedLessons)
+    }
+
 }

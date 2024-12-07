@@ -22,4 +22,10 @@ interface LessonDao {
 //
     @Query("SELECT * FROM lesson_table WHERE userId = :id")
     fun getLessonByUserId(id: Long): Flow<Lesson?>
+    @Query("SELECT numCompletedLessons FROM lesson_table WHERE userId = :userId")
+    fun getCompletedLessonCount(userId: Long): Flow<Int>
+    @Query("UPDATE lesson_table SET numCompletedLessons = :completedLessons WHERE userId = :userId")
+    suspend fun updateCompletedLessonCount(userId: Long, completedLessons: Int)
+
+
 }
