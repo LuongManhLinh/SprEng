@@ -91,7 +91,9 @@ private fun NavigationScreen(
         composable(route = DefaultMainNavItemRepo.getRoute(MainNavRoute.HOME)) {
             HomeScreen(
                 onLessonStarted = {
-                    val studyIntent = Intent(context, StudyActivity::class.java)
+                    val studyIntent = Intent(context, StudyActivity::class.java).apply {
+                        putExtra("LESSON_ID", it)
+                    }
                     context.startActivity(studyIntent)
                 },
                 onAvatarClicked = {
@@ -124,7 +126,6 @@ private fun NavigationScreen(
                 modifier = Modifier.background(colorResource(R.color.container)),
                 showInfoUser = {
                     Log.d("RankingScreen", "Clicked userId: $it")
-//                    navController.navigate("${NavRanking.Profile.name}/$it")
                     navController.navigate(NavRanking.Profile.route.replace("{userId}", it.toString()))
 
                 },

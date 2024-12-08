@@ -11,6 +11,7 @@ import com.example.spreng.form.LessonSummarizationForm
 import com.example.spreng.repository.LessonBbRepository
 import com.example.spreng.database.UserApplication
 import com.example.spreng.repository.UserRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -36,7 +37,7 @@ class HomeViewModel(
 
     val uiState = _uiState.asStateFlow()
     fun updateAccount(userId: Long) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val user = userRepository.getUserById(userId).firstOrNull()
             val lessons = lessonDbRepository.getLessonsByUserId(userId).firstOrNull()
             _uiState.update { uiState ->
@@ -49,17 +50,7 @@ class HomeViewModel(
                     numCompletedLesson = lessons?.numCompletedLessons ?: uiState.numCompletedLesson,
                 )
             }
-            Log.i("Helloword", _uiState.value.numCompletedLesson.toString())
         }
-    }
-
-    fun updateCompletedLesson(userId: Long) {
-        viewModelScope.launch {
-            val lessons = lessonDbRepository.getLessonsByUserId(userId).firstOrNull()
-            val newCompletedLessons = (lessons?.numCompletedLessons ?: _uiState.value.numCompletedLesson) + 1
-            lessonDbRepository.updateCompletedLessonCount(userId, newCompletedLessons)
-        }
-        updateAccount(userId)
     }
 
     fun onPressChanged(lessonIdx: Int, isPressed: Boolean) {

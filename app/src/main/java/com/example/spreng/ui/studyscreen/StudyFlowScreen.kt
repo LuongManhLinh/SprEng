@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
+import com.example.spreng.preferences.UserManager
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import com.example.spreng.ui.studyscreen.answer.micro.SpeakingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerFillingScreen
@@ -40,17 +41,20 @@ import com.example.spreng.ui.studyscreen.result.ResultScreen
 
 @Composable
 fun StudyFlowScreen(
+    lessonId: Int,
     modifier: Modifier = Modifier,
-    viewModel: StudyFlowViewModel = viewModel()
+    viewModel: StudyFlowViewModel = viewModel(factory = StudyFlowViewModel.factory)
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
+    val userId = UserManager.getUserId(context)
     if (uiState.isLessonDone) {
         ResultScreen(
             numCorrect = uiState.numCorrect,
             numTotal = uiState.totalChallenge
         )
+        viewModel.updateCompletedLesson(userId, lessonId)
         return
     }
 
@@ -253,7 +257,7 @@ private fun PopupResult(
 @Preview
 @Composable
 private fun StudyFlowScreenPreview() {
-    StudyFlowScreen()
+    StudyFlowScreen(1)
 }
 
 
