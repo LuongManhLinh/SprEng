@@ -16,4 +16,9 @@ class LessonBbRepository(private val lessonDao: LessonDao) {
         lessonDao.updateCompletedLessonCount(userId, completedLessons)
     }
 
+    suspend fun updateUserXp(userId: Long, newXp: Int) {
+        lessonDao.updateUserXp(userId, newXp)
+    }
+
+
 }

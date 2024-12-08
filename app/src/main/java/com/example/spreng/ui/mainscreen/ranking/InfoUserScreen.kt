@@ -58,9 +58,9 @@ fun InfoUserScreen(
     viewModel: InfoUserViewModel = viewModel(factory = InfoUserViewModel.factory)
 ) {
     val uiState by viewModel.userDetail.collectAsState()
-    LaunchedEffect(Unit) {
+//    LaunchedEffect(Unit) {
         viewModel.fetchUserDetail(userId)
-    }
+//    }
 
     Column(modifier = modifier.fillMaxSize()) {
         uiState?.let {

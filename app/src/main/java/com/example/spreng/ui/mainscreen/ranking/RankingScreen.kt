@@ -54,9 +54,9 @@ fun RankingScreen(
     val context = LocalContext.current
 
     val currentUserId = UserManager.getUserId(context)
-    LaunchedEffect(rank) {
+//    LaunchedEffect(rank) {
         rankingViewModel.fetchRanking(rank, currentUserId)
-    }
+//    }
 
     Column(modifier = Modifier
         .fillMaxSize()

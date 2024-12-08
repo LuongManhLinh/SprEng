@@ -33,7 +33,7 @@ import com.example.spreng.preferences.UserManager
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    onLessonStarted: () -> Unit = { },
+    onLessonStarted: (Int) -> Unit = { },
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.factory),
     onAvatarClicked: () -> Unit = { },
 ) {
@@ -84,8 +84,7 @@ fun HomeScreen(
                         isCurrentLesson = isCurrentLesson,
                         onPressChanged = viewModel::onPressChanged,
                         onLessonStarted = {
-                            onLessonStarted()
-                            viewModel.updateCompletedLesson(userId = currentUserId)
+                            onLessonStarted(idx)
                         },
                         onOpeningCompleted = { viewModel.onCardOpeningCompleted(idx) },
                         onClosingCompleted = { viewModel.onCardClosingCompleted(idx) },

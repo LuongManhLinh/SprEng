@@ -26,6 +26,9 @@ interface LessonDao {
     fun getCompletedLessonCount(userId: Long): Flow<Int>
     @Query("UPDATE lesson_table SET numCompletedLessons = :completedLessons WHERE userId = :userId")
     suspend fun updateCompletedLessonCount(userId: Long, completedLessons: Int)
+    @Query("UPDATE lesson_table SET exp = :newXp WHERE userId = :userId")
+    suspend fun updateUserXp(userId: Long, newXp: Int)
+
 
 
 }

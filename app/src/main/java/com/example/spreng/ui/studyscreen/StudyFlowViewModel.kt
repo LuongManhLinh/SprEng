@@ -3,19 +3,29 @@ package com.example.spreng.ui.studyscreen
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.spreng.MainActivity
 import com.example.spreng.data.DemoLessonRepository
 import com.example.spreng.data.LessonRepository
+import com.example.spreng.database.UserApplication
 import com.example.spreng.form.AnswerType
 import com.example.spreng.form.ChallengeForm
 import com.example.spreng.form.QuestionType
+import com.example.spreng.repository.LessonBbRepository
+import com.example.spreng.repository.UserRepository
+import com.example.spreng.ui.mainscreen.home.HomeViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class StudyFlowViewModel(
+    private val lessonBbRepository: LessonBbRepository,
     lessonRepository: LessonRepository = DemoLessonRepository(),
-    lessonId: Int = 0
+    lessonId: Int = 0,
 ) : ViewModel() {
 
     private val lesson: List<ChallengeForm> = lessonRepository.getLesson(lessonId)
@@ -59,6 +69,7 @@ class StudyFlowViewModel(
                     answerUIState.answerTalking
                 )
             }
+
             is AnswerUIState.TextTyping -> {
                 isCorrect = checkWritingAnswer(
                     currentLesson.questionContent,
@@ -75,9 +86,11 @@ class StudyFlowViewModel(
                 AnswerType.WORD_PICKER_FILLING -> {
                     (currentLesson.answer as List<*>).joinToString("")
                 }
+
                 AnswerType.WORD_PICKER_SEQUENCE -> {
                     (currentLesson.answer as List<*>).joinToString(" ")
                 }
+
                 AnswerType.TALKING -> {
                     currentLesson.answer as String
                 }
@@ -256,7 +269,7 @@ class StudyFlowViewModel(
 
     private fun checkWordPickerFillingAnswer(
         sentenceUI: MutableList<Any?>,
-        answer: List<String>
+        answer: List<String>,
     ): Boolean {
         for (i in sentenceUI.indices) {
             val word = sentenceUI[i]
@@ -273,7 +286,7 @@ class StudyFlowViewModel(
 
     private fun checkWordPickerSequenceAnswer(
         selectedWords: List<SelectedWord>,
-        answer: List<String>
+        answer: List<String>,
     ): Boolean {
         if (selectedWords.size != answer.size) {
             return false
@@ -286,24 +299,50 @@ class StudyFlowViewModel(
         return true
     }
 
-    private fun checkWritingAnswer(rightAnswer: String, userAnswer: String): Boolean{
+    private fun checkWritingAnswer(rightAnswer: String, userAnswer: String): Boolean {
         val lowQs = rightAnswer.lowercase().replace("\\s+".toRegex(), "").trim()
         val asQs = userAnswer.lowercase().replace("\\s+".toRegex(), "").trim()
         return lowQs == asQs
     }
 
     // kiểm tra câu trả lời dạng nói với đáp án đúng
-    private fun checkTalkingAnswer(rightAnswer: String, userAnswer: String) : Boolean {
+    private fun checkTalkingAnswer(rightAnswer: String, userAnswer: String): Boolean {
         return rightAnswer.lowercase() == userAnswer.lowercase()
+    }
+
+    fun updateCompletedLesson(userId: Long, lessonId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val lessons = lessonBbRepository.getLessonsByUserId(userId).firstOrNull()
+
+            if (lessons?.numCompletedLessons == lessonId) {
+                val newCompletedLessons = (lessons.numCompletedLessons) + 1
+                lessonBbRepository.updateCompletedLessonCount(userId, newCompletedLessons)
+            }
+            val newXp = _uiState.value.numCorrect * 10 + (lessons?.exp ?: 0)
+            lessonBbRepository.updateUserXp(userId, newXp)
+        }
     }
 
     fun exit(context: Context) {
         context.startActivity(Intent(context, MainActivity::class.java))
     }
 
+    companion object {
+        val factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                val application = UserApplication.instance
+                val lessonDao = application.database.lessonDao()
+                val repository = LessonBbRepository(lessonDao)
+                @Suppress("UNCHECKED_CAST")
+                return StudyFlowViewModel(repository) as T
+            }
+        }
+    }
+
 }
 
 data class StudyFlowUIState(
+    val currentLesson: Int = 1,
     val title: String = "",
     val learningProgress: Float = 0F,
     val questionUIState: QuestionUIState,
@@ -314,20 +353,20 @@ data class StudyFlowUIState(
     val correctAnswer: String? = null,
     val isLessonDone: Boolean = false,
     val numCorrect: Int = 0,
-    val totalChallenge: Int = 0
+    val totalChallenge: Int = 0,
 ) {
     companion object {
         fun buildFromChallengeForm(
             challengeForm: ChallengeForm,
             challengeIndex: Int,
-            totalChallenge: Int
-        ) : StudyFlowUIState {
-            val questionUIState : QuestionUIState = when (challengeForm.questionType) {
+            totalChallenge: Int,
+        ): StudyFlowUIState {
+            val questionUIState: QuestionUIState = when (challengeForm.questionType) {
                 QuestionType.TEXT -> QuestionUIState.Text(challengeForm.questionContent)
                 QuestionType.LISTENING -> QuestionUIState.Listening(challengeForm.questionContent)
             }
 
-            val answerUIState : AnswerUIState = when (challengeForm.answerType) {
+            val answerUIState: AnswerUIState = when (challengeForm.answerType) {
 
                 AnswerType.WORD_PICKER_FILLING -> {
                     AnswerUIState.WordPickerFilling()
@@ -354,7 +393,7 @@ data class StudyFlowUIState(
                     selectedWords = emptyList(),
                     unselectedWords = (
                             challengeForm.answerOptions!! + challengeForm.answer as List<String>
-                    ).shuffled().map { UnselectedWord(it) }
+                            ).shuffled().map { UnselectedWord(it) }
                 )
 
                 AnswerType.TYPING -> AnswerUIState.TextTyping(
@@ -378,42 +417,42 @@ data class StudyFlowUIState(
 
 sealed interface QuestionUIState {
     data class Text(
-        val questionContent: String = ""
+        val questionContent: String = "",
     ) : QuestionUIState
 
     class Listening(
-        val questionContent: String = ""
+        val questionContent: String = "",
     ) : QuestionUIState
 }
 
 sealed interface AnswerUIState {
     data class WordPickerFilling(
         val unselectedWords: List<UnselectedWord> = emptyList(),
-        var sentenceUI: MutableList<Any?> = mutableListOf()
+        var sentenceUI: MutableList<Any?> = mutableListOf(),
     ) : AnswerUIState
 
     data class WordPickerSequence(
         var selectedWords: List<SelectedWord>,
-        val unselectedWords: List<UnselectedWord>
+        val unselectedWords: List<UnselectedWord>,
     ) : AnswerUIState
 
     class TextTyping(
-        val answerWriting: String
+        val answerWriting: String,
     ) : AnswerUIState
 
     class Talking(
-        val answerTalking: String
+        val answerTalking: String,
     ) : AnswerUIState
 }
 
 data class UnselectedWord(
     val word: String,
-    var selected: Boolean = false
+    var selected: Boolean = false,
 )
 
 data class SelectedWord(
     val word: String,
-    val indexInUnselected: Int
+    val indexInUnselected: Int,
 )
 
 

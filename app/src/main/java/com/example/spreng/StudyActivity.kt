@@ -26,7 +26,9 @@ class StudyActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SprEngTheme {
-                StudyFlowScreen()
+                val lessonId = intent.getIntExtra("LESSON_ID", -1)
+
+                StudyFlowScreen(lessonId)
             }
         }
     }
