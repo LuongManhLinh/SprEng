@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -42,12 +44,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
+import com.example.spreng.ui.custom.CustomRoundedBorderBox
 
 
 @Composable
@@ -59,16 +65,34 @@ fun InfoUserScreen(
 ) {
     val uiState by viewModel.userDetail.collectAsState()
 //    LaunchedEffect(Unit) {
-        viewModel.fetchUserDetail(userId)
+    viewModel.fetchUserDetail(userId)
 //    }
 
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = colorResource(R.color.container))
+    ) {
         uiState?.let {
-            Header(
-                username = it.username,
-                email = it.email,
-                showRankingScreen = showRankingScreen
-            )
+            CustomRoundedBorderBox(
+                modifier = Modifier
+                    .padding(
+                        top = dimensionResource(R.dimen.tiny),
+                        start = dimensionResource(R.dimen.tiny),
+                        end = dimensionResource(R.dimen.tiny)
+                    ),
+                cornerRadius = dimensionResource(R.dimen.medium),
+                bottomBorderWidth = 6.dp,
+                containerColor = Color(135, 183, 239),
+                borderColor = Color(160, 171, 200),
+            ) {
+                Header(
+                    username = it.username,
+                    email = it.email,
+                    showRankingScreen = showRankingScreen
+                )
+            }
+
         }
         Spacer(Modifier.height(16.dp))
         HorizontalDivider(thickness = 2.dp, color = Color.Gray)
@@ -91,90 +115,131 @@ fun Header(
     email: String,
     showRankingScreen: () -> Unit
 ) {
-    Box() {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Surface(
-                modifier = Modifier
-                    .background(Color(198, 215, 235))
-                    .padding(top = 75.dp),
-                color = Color(198, 215, 235)
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.sample_avatar),
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .size(64.dp)
-                            .clip(CircleShape)
-                            .weight(2f),
-                        contentScale = ContentScale.Crop,
-                        contentDescription = null
-                    )
-                    Column(modifier = Modifier.weight(6.5f)) {
-                        Text(username, fontSize = 24.sp)
-                        Text(email)
-                    }
-                    IconButton(
-                        onClick = {},
-                        modifier = Modifier.weight(1.5f)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Block,
-                            contentDescription = "block"
-                        )
-                    }
-                }
-            }
-
-            Spacer(Modifier.height(20.dp))
-            Text(
-                text = "Đã tham gia vào ngày 20/11/2024",
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-            Button(
-                onClick = {},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                Row() {
-                    Icon(
-                        imageVector = Icons.Filled.GroupAdd,
-                        contentDescription = "add friend",
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                    Text("Theo dõi")
-                }
-            }
-        }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp)
+    ) {
         IconButton(
-            onClick = {
-                showRankingScreen()
-            },
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(8.dp)
+            onClick = { showRankingScreen() },
+            modifier = Modifier.align(Alignment.CenterVertically)
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "ArrowBack"
+                contentDescription = "ArrowBack",
+                tint = Color.Black
             )
         }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
+        ) {
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.sample_avatar),
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(CircleShape)
+                        .border(1.dp, Color.Gray, CircleShape),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = "avt"
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Column(modifier = Modifier.weight(6f)) {
+                    Text(
+                        text = username,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                    Text(
+                        text = email,
+                        fontSize = 16.sp,
+                        color = Color.Black
+                    )
+                }
+                IconButton(
+                    onClick = {},
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Block,
+                        contentDescription = "Block user",
+                        tint = Color.Black
+                    )
+                }
+
+            }
+        }
     }
+
 }
 
 @Composable
 fun DetailScreen(streak: String, xp: String, rank: String, top3count: String) {
-    Column() {
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+    ) {
+        Text(
+            text = "Đã tham gia vào ngày 20/11/2024",
+            fontSize = 22.sp,
+            color = Color.Black,
+            modifier = Modifier
+                .padding(start = 8.dp, top = 16.dp, bottom = 16.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+        Box(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .width(190.dp)
+                .height(64.dp)
+                .align(Alignment.CenterHorizontally)
+        ) {
+            CustomRoundedBorderBox(
+                cornerRadius = 28.dp,
+                bottomBorderWidth = 4.dp,
+                borderColor = Color(120, 240, 230),
+                containerColor = colorResource(R.color.teal_200)
+            ) {
+                Button(
+                    onClick = {},
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.teal_200))
+
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.GroupAdd,
+                            contentDescription = "Add friend",
+                            tint = Color.Black,
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                        Text("Theo dõi", color = Color.Black, fontSize = 18.sp)
+                    }
+                }
+            }
+        }
         Text(
             text = "Thống kê",
-            fontSize = 32.sp
+            fontSize = 32.sp,
+            color = Color.Black,
+            modifier = Modifier
+                .padding(8.dp)
+                .align(Alignment.CenterHorizontally)
         )
+        Spacer(Modifier.height(16.dp))
         Row() {
-            Card(streak, "Streak", R.drawable.streak,modifier = Modifier.weight(1f))
+            Card(streak, "Streak", R.drawable.streak, modifier = Modifier.weight(1f))
             Card(xp, "Tổng Xp", R.drawable.xp, modifier = Modifier.weight(1f))
         }
         Row() {
@@ -186,28 +251,40 @@ fun DetailScreen(streak: String, xp: String, rank: String, top3count: String) {
 
 @Composable
 fun Card(amount: String, type: String, img: Int, modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier.fillMaxWidth().padding(8.dp),
-        color = Color(207, 244, 210),
-        shape = RoundedCornerShape(16.dp)
-    ) {
+    CustomRoundedBorderBox(
+        modifier = modifier.padding(8.dp),
+        cornerRadius = 24.dp,
+        bottomBorderWidth = 4.dp,
+        contentHeightDp = 90.dp,
+        contentWidthDp = 180.dp,
+        containerColor = Color(95, 210, 185),
+        borderColor = Color(207, 244, 210),
+        )
+    {
         Row(
-            modifier = modifier.padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+            modifier = modifier
+                .padding(8.dp)
+                .fillMaxWidth()
         ) {
             Image(
                 painter = painterResource(img),
                 contentDescription = "streak",
-                modifier = Modifier.size(42.dp).padding(4.dp)
+                modifier = Modifier
+                    .size(42.dp)
+                    .padding(4.dp)
+
             )
             Column() {
                 Text(
                     text = amount,
+                    color = Color.Black,
+                    fontSize = 18.sp,
                     modifier = Modifier.padding(4.dp)
                 )
                 Text(
                     text = type,
+                    color = Color.Black,
+                    fontSize = 18.sp,
                     modifier = Modifier.padding(4.dp)
                 )
             }

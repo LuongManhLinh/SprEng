@@ -156,7 +156,7 @@ fun SignUpScreen(
             CustomRoundedBorderBox(
                 cornerRadius = 28.dp,
                 bottomBorderWidth = 4.dp,
-                borderColor = Color.LightGray,
+                borderColor = Color(120, 240, 230),
                 containerColor = colorResource(R.color.teal_200)
             ) {
                 Button(

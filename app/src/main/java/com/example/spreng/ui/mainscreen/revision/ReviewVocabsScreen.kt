@@ -32,6 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -67,14 +68,14 @@ fun ReviewVocabsScreen(
                         start = dimensionResource(R.dimen.tiny),
                         end = dimensionResource(R.dimen.tiny)
                     ),
-                cornerRadius = dimensionResource(R.dimen.small),
-                startBorderWidth = dimensionResource(R.dimen.tiny),
-                bottomBorderWidth = dimensionResource(R.dimen.small),
+                cornerRadius = dimensionResource(R.dimen.medium),
+                bottomBorderWidth = 6.dp,
                 containerColor = Color(135, 183, 239),
-                borderColor = Color(60, 71, 88)
+                borderColor = Color(160, 171, 200),
+                contentHeightDp = 64.dp
             ) {
                 ReviewVocabTopBar(
-                    showRevision = {showRevision()},
+                    showRevision = { showRevision() },
                     numbOfVocab = vocabList.size,
                 )
             }
@@ -98,15 +99,20 @@ fun ReviewVocabsScreen(
                 cornerRadius = dimensionResource(R.dimen.medium_large),
                 bottomBorderWidth = dimensionResource(R.dimen.tiny),
                 containerColor = Color.White,
-                borderColor = Color(60, 71, 88)
+                borderColor = Color.LightGray
             ) {
                 TextField(
                     value = query,
-                    onValueChange = { vocabViewModel.updateQuery(it)
-                        vocabViewModel.performSearch()},
-                    placeholder = { Text(
-                        text = "Gõ vào đây từ bạn muốn tìm",
-                        color = Color.Gray) },
+                    onValueChange = {
+                        vocabViewModel.updateQuery(it)
+                        vocabViewModel.performSearch()
+                    },
+                    placeholder = {
+                        Text(
+                            text = "Gõ vào đây từ bạn muốn tìm",
+                            color = Color.Gray
+                        )
+                    },
                     trailingIcon = {
                         Icon(imageVector = Icons.Filled.Search,
                             contentDescription = "Tìm",
@@ -118,44 +124,36 @@ fun ReviewVocabsScreen(
                                 })
                     },
                     colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.White
+                        containerColor = Color.White,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
                 )
             }
 
-            // Danh sách từ vựng
-            CustomRoundedBorderBox(
-                modifier = modifier
-                    .padding(dimensionResource(R.dimen.small_medium)),
-                cornerRadius = dimensionResource(R.dimen.medium_large),
-                startBorderWidth = dimensionResource(R.dimen.very_tiny),
-                bottomBorderWidth = dimensionResource(R.dimen.tiny),
-                containerColor = Color(135, 183, 239),
-                borderColor = Color(60, 71, 88)
+            LazyColumn(
+                modifier = Modifier
+                    .padding(dimensionResource(R.dimen.small_medium))
+                    .border(
+                        1.dp,
+                        Color.DarkGray,
+                        shape = RoundedCornerShape(dimensionResource(R.dimen.medium_large))
+                    )
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(dimensionResource(R.dimen.medium_large)))
+                    .background(Color(245, 250, 250))
             ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .border(
-                            1.dp,
-                            Color.LightGray,
-                            shape = RoundedCornerShape(dimensionResource(R.dimen.medium_large))
+                items(filteredList) { vocab ->
+                    Column() {
+                        // một từ trong list
+                        VocabItem(
+                            vocab = vocab,
+                            context = context,
+                            onToggleCheck = { vocabViewModel.toggleChecked(it) },
                         )
-                        .fillMaxSize()
-                        .background(Color(245, 245, 245))
-                ) {
-                    items(filteredList) { vocab ->
-                        Column() {
-                            // một từ trong list
-                            VocabItem(
-                                vocab = vocab,
-                                context = context,
-                                onToggleCheck = { vocabViewModel.toggleChecked(it) },
-//                            onToggleVolume = { vocabViewModel.toggleVolume(it) }
-                            )
-                            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
-                        }
+                        HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
                     }
                 }
             }
@@ -177,6 +175,7 @@ fun VocabItem(
             .padding(top = 16.dp, bottom = 16.dp, start = 8.dp, end = 8.dp)
             .fillMaxWidth()
     ) {
+
         Image(
             painter = painterResource(R.drawable.volume),
             contentDescription = "volume",
@@ -251,9 +250,3 @@ fun ReviewVocabTopBar(
         )
     }
 }
-
-//@Preview
-//@Composable
-//fun PreviewVocabs() {
-//    ReviewVocabsScreen(navController = rememberNavController())
-//}

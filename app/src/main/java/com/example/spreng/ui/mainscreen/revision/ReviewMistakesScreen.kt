@@ -52,14 +52,14 @@ fun ReviewMistakesScreen(
                         start = dimensionResource(R.dimen.tiny),
                         end = dimensionResource(R.dimen.tiny)
                     ),
-                cornerRadius = dimensionResource(R.dimen.small),
-                startBorderWidth = dimensionResource(R.dimen.tiny),
-                bottomBorderWidth = dimensionResource(R.dimen.small),
+                cornerRadius = dimensionResource(R.dimen.medium),
+                bottomBorderWidth = 6.dp,
                 containerColor = Color(135, 183, 239),
-                borderColor = Color(60, 71, 88)
+                borderColor = Color(160, 171, 200),
+                contentHeightDp = 64.dp
             ) {
                 ReviewMistakeTopBar(
-                    showRevision = {showRevision()},
+                    showRevision = { showRevision() },
                     numbOfMistake = mistakeList.size
                 )
             }
@@ -68,37 +68,30 @@ fun ReviewMistakesScreen(
 
     ) { contentPadding ->
         //hiển thị các lỗi sai
-        Column(modifier = Modifier
-            .padding(top = contentPadding.calculateTopPadding())
-            .fillMaxSize()
-            .padding(dimensionResource(R.dimen.small_medium))
+        Column(
+            modifier = Modifier
+                .padding(top = contentPadding.calculateTopPadding())
+                .fillMaxSize()
+                .padding(dimensionResource(R.dimen.small_medium))
 
         ) {
-            CustomRoundedBorderBox(
-                modifier = modifier,
-                cornerRadius = dimensionResource(R.dimen.medium_large),
-                startBorderWidth = dimensionResource(R.dimen.very_tiny),
-                bottomBorderWidth = dimensionResource(R.dimen.tiny),
-                containerColor = Color(226, 232, 240),
-                borderColor = Color(60, 71, 88)
+            LazyColumn(
+                modifier = Modifier
+                    .border(
+                        1.dp,
+                        Color.DarkGray,
+                        shape = RoundedCornerShape(dimensionResource(R.dimen.medium_large))
+                    )
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(dimensionResource(R.dimen.medium_large)))
+                    .background(Color(245, 245, 245))
             ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .border(
-                            1.dp,
-                            Color.LightGray,
-                            shape = RoundedCornerShape(dimensionResource(R.dimen.medium_large))
+                items(mistakeList) { mistake ->
+                    Column() {
+                        MistakeItem(
+                            mistake = mistake
                         )
-                        .fillMaxSize()
-                        .background(Color(245, 245, 245))
-                ) {
-                    items(mistakeList) { mistake ->
-                        Column() {
-                            MistakeItem(
-                                mistake = mistake
-                            )
-                            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
-                        }
+                        HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
                     }
                 }
             }
