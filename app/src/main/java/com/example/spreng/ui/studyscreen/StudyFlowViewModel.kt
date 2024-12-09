@@ -319,7 +319,7 @@ class StudyFlowViewModel(
                 lessonBbRepository.updateCompletedLessonCount(userId, newCompletedLessons)
             }
             val newXp = _uiState.value.numCorrect * 10 + (lessons?.exp ?: 0)
-            lessonBbRepository.updateUserXp(userId, newXp)
+            lessonBbRepository.updateUserXp(userId, 1000)
         }
     }
 

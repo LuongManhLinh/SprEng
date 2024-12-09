@@ -47,7 +47,6 @@ fun RevisionScreen(
                         end = dimensionResource(R.dimen.tiny)
                     ),
                 cornerRadius = dimensionResource(R.dimen.small),
-                startBorderWidth = dimensionResource(R.dimen.tiny),
                 bottomBorderWidth = dimensionResource(R.dimen.small),
                 containerColor = colorResource(R.color.teal_200),
                 borderColor = colorResource(R.color.gray_teal)
@@ -82,15 +81,16 @@ fun RevisionScreen(
             ) {
                 CustomRoundedBorderBox (
                     cornerRadius = dimensionResource(R.dimen.large),
-                    bottomBorderWidth = dimensionResource(R.dimen.small),
-                    borderColor = Color.Gray,
+                    bottomBorderWidth = 6.dp,
+                    containerColor = Color(141, 189, 250),
+                    borderColor = Color(180, 220, 255),
                 ) {
                     Button(
                         onClick = { showMistakes() },
                         modifier = Modifier
-                            .size(240.dp),
+                            .size(220.dp),
                         shape = RoundedCornerShape(dimensionResource(R.dimen.large)),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(199, 210, 254))
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(141, 189, 250))
                     ) {
                         Column(
                             modifier = modifier
@@ -119,15 +119,16 @@ fun RevisionScreen(
 
                 CustomRoundedBorderBox (
                     cornerRadius = dimensionResource(R.dimen.large),
-                    bottomBorderWidth = dimensionResource(R.dimen.small),
-                    borderColor = Color.Gray,
+                    bottomBorderWidth = 6.dp,
+                    containerColor = Color(131, 230, 201),
+                    borderColor = Color(180, 225, 215),
                 ) {
                     Button(
                         onClick = { showVocabs() },
                         modifier = Modifier
-                            .size(240.dp),
+                            .size(220.dp),
                         shape = RoundedCornerShape(dimensionResource(R.dimen.large)),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(199, 210, 254))
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(131, 230, 201))
                     ) {
                         Column(
                             modifier = modifier
