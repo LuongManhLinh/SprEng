@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import com.example.spreng.R
 import com.example.spreng.speech2Text.SpeechRecognizer
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
-import com.example.spreng.ui.mainscreen.revision.ReviewVocabTopBar
 
 @Composable
 fun SpeakingScreen(
@@ -70,7 +69,7 @@ fun SpeakingScreen(
                     )
                     .align(Alignment.TopCenter),
                 cornerRadius = dimensionResource(R.dimen.small),
-                bottomBorderWidth = dimensionResource(R.dimen.small),
+                bottomBorderWidth = dimensionResource(R.dimen.tiny),
                 borderColor = Color(108, 126, 225),
                 containerColor = Color(198, 215, 235),
                 contentWidthDp = 200.dp,
