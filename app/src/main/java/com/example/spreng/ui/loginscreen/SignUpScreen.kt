@@ -13,11 +13,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -35,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -90,7 +95,8 @@ fun SignUpScreen(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedLabelColor = colorResource(R.color.teal_200),
-                unfocusedLabelColor = Color.Gray,
+                focusedTextColor = Color.Black,
+                unfocusedLabelColor = Color.Black,
             )
         )
 
@@ -109,7 +115,8 @@ fun SignUpScreen(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedLabelColor = colorResource(R.color.teal_200),
-                unfocusedLabelColor = Color.Gray,
+                focusedTextColor = Color.Black,
+                unfocusedLabelColor = Color.Black,
             )
         )
 
@@ -118,18 +125,33 @@ fun SignUpScreen(
             value = uiState.password,
             onValueChange = { signUpViewModel.updatePassword(it) },
             label = { Text("Nhập mật khẩu", color = Color.Gray) },
-            visualTransformation = PasswordVisualTransformation(),
+            visualTransformation = if (signUpViewModel.passwordVisible.collectAsState().value)
+                VisualTransformation.None
+            else
+                PasswordVisualTransformation(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp)
                 .border(1.dp, color = Color.LightGray, shape = RoundedCornerShape(16.dp)),
             shape = RoundedCornerShape(16.dp),
+            trailingIcon = {
+                val isVisible = signUpViewModel.passwordVisible.collectAsState().value
+                val image = if (isVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                val description = if (isVisible) "visible" else "visible off"
+
+                Icon(
+                    imageVector = image,
+                    contentDescription = description,
+                    modifier = Modifier.clickable { signUpViewModel.togglePasswordVisibility() }
+                )
+            },
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Color.White,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedLabelColor = colorResource(R.color.teal_200),
-                unfocusedLabelColor = Color.Gray,
+                focusedTextColor = Color.Black,
+                unfocusedLabelColor = Color.Black,
             )
         )
 

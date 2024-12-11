@@ -92,7 +92,7 @@ fun InfoUserScreen(
                 cornerRadius = dimensionResource(R.dimen.medium),
                 bottomBorderWidth = 6.dp,
                 containerColor = Color(135, 183, 239),
-                borderColor = Color(160, 171, 200),
+                borderColor = Color(185, 215, 245),
             ) {
                 Header(
                     username = it.username,

@@ -18,6 +18,8 @@ class SignInViewModel(private val userRepository: UserRepository) : ViewModel() 
     val uiState = _uiState.asStateFlow()
     private val _signInState = MutableStateFlow<SignInState>(SignInState.Loading)
     val signInState = _signInState.asStateFlow()
+    private val _passwordVisible = MutableStateFlow(false)
+    val passwordVisible = _passwordVisible.asStateFlow()
 
     fun updateUsername(username: String) {
         _uiState.update {
@@ -33,6 +35,10 @@ class SignInViewModel(private val userRepository: UserRepository) : ViewModel() 
                 password = password
             )
         }
+    }
+
+    fun togglePasswordVisibility() {
+        _passwordVisible.update { !it }
     }
 
     sealed class SignInState {
