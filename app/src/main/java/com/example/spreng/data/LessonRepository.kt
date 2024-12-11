@@ -91,6 +91,7 @@ val environmentalChallenges = listOf(
     )
 )
 
+// Bai 2
 val vehicleChallenges = listOf(
     ChallengeForm(
         title = "Nhắc lại câu sau",
@@ -138,7 +139,7 @@ val vehicleChallenges = listOf(
     ),
     ChallengeForm(
         title = "Hoàn thiện câu sau",
-        questionContent = "Xe điện đang trở thành xu hướng trong ngành công nghiệp ô tô",
+        questionContent = "Xe điện đang trở thành xu hướng trong ngành công nghiệp ô tô.",
         questionType = QuestionType.TEXT,
         answer = listOf("electric", " vehicles", " are", " becoming", " a", " trend", " in", " the", " automotive", " industry"),
         answerType = AnswerType.WORD_PICKER_FILLING,
@@ -147,7 +148,7 @@ val vehicleChallenges = listOf(
     ),
     ChallengeForm(
         title = "Hoàn thiện câu sau",
-        questionContent = "Xe bus công cộng là một cách tuyệt vời để giảm ùn tắc giao thông",
+        questionContent = "Xe bus công cộng là một cách tuyệt vời để giảm ùn tắc giao thông.",
         questionType = QuestionType.TEXT,
         answer = listOf("public", " buses", " are", " a", " great", " way", " to", " reduce", " traffic", " congestion"),
         answerType = AnswerType.WORD_PICKER_FILLING,
@@ -1675,9 +1676,32 @@ val travelChallenges = listOf(
     )
 )
 
+val lessons = listOf(
+    environmentalChallenges,
+    vehicleChallenges,
+    travellingChallenges,
+    foodChallenges,
+    cultureChallenges,
+    historyChallenges,
+    technologyChallenges,
+    healthChallenges,
+    sportsChallenges,
+    musicChallenges,
+    artChallenges,
+    scienceChallenges,
+    literatureChallenges,
+    geographyChallenges,
+    economyChallenges,
+    politicsChallenges,
+    educationChallenges,
+    fashionChallenges,
+    mediaChallenges,
+    travelChallenges
+
+)
 
 class DemoLessonRepository : LessonRepository {
     override fun getLesson(lessonId: Int): List<ChallengeForm> {
-        return artChallenges
+        return lessons[lessonId]
     }
 }

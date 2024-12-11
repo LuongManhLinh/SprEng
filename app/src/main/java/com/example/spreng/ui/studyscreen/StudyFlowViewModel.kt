@@ -2,6 +2,7 @@ package com.example.spreng.ui.studyscreen
 
 import android.content.Context
 import android.content.Intent
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -24,24 +25,39 @@ import kotlinx.coroutines.launch
 
 class StudyFlowViewModel(
     private val lessonBbRepository: LessonBbRepository,
-    lessonRepository: LessonRepository = DemoLessonRepository(),
-    lessonId: Int = 0,
-) : ViewModel() {
+    private val lessonRepository: LessonRepository = DemoLessonRepository(),
+    lessonId: Int = 0
 
-    private val lesson: List<ChallengeForm> = lessonRepository.getLesson(lessonId)
+) : ViewModel() {
+    private lateinit var lesson: List<ChallengeForm>
+
     private var currentChallengeIndex = 0
     private var numCorrect = 0
-
     private val _uiState = MutableStateFlow(
         StudyFlowUIState.buildFromChallengeForm(
-            lesson[currentChallengeIndex],
-            currentChallengeIndex,
-            lesson.size
+            ChallengeForm(
+                title = "Nghe và điền lại câu",
+                questionContent = "Water is essential for life",
+                questionType = QuestionType.LISTENING,
+                answer = "Water is essential for life",
+                answerType = AnswerType.TYPING
+            ),
+            0,
+            0
         )
     )
-
     val uiState = _uiState.asStateFlow()
 
+    fun initialize(lessonId: Int) {
+        if (!this::lesson.isInitialized) { // Chỉ khởi tạo nếu chưa được khởi tạo
+            lesson = lessonRepository.getLesson(lessonId)
+            _uiState.value = StudyFlowUIState.buildFromChallengeForm(
+                lesson[currentChallengeIndex],
+                currentChallengeIndex,
+                lesson.size
+            )
+        }
+    }
     fun complete() {
 
         var isCorrect = true
@@ -319,7 +335,7 @@ class StudyFlowViewModel(
                 lessonBbRepository.updateCompletedLessonCount(userId, newCompletedLessons)
             }
             val newXp = _uiState.value.numCorrect * 10 + (lessons?.exp ?: 0)
-            lessonBbRepository.updateUserXp(userId, 1000)
+            lessonBbRepository.updateUserXp(userId, newXp)
         }
     }
 

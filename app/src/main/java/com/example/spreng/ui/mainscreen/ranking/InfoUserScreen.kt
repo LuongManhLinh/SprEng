@@ -1,5 +1,6 @@
 package com.example.spreng.ui.mainscreen.ranking
 
+import android.annotation.SuppressLint
 import android.provider.ContactsContract.CommonDataKinds.Email
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -48,6 +49,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -57,23 +59,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
+import com.example.spreng.preferences.UserManager
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun InfoUserScreen(
-    userId: Long,
+    visitedUserId: Long,
     showRankingScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: InfoUserViewModel = viewModel(factory = InfoUserViewModel.factory)
 ) {
+    val context = LocalContext.current
+    val currentUserId = UserManager.getUserId(context)
     val uiState by viewModel.userDetail.collectAsState()
-//    LaunchedEffect(Unit) {
-    viewModel.fetchUserDetail(userId)
-//    }
+    
+    val isLoading by viewModel.isLoading.collectAsState()
+
+    LaunchedEffect(uiState.isFollow) {
+        viewModel.fetchUserDetail(context, visitedUserId)
+    }
     val coroutineScope = rememberCoroutineScope()
 
     Column(
@@ -81,7 +90,7 @@ fun InfoUserScreen(
             .fillMaxSize()
             .background(color = colorResource(R.color.container))
     ) {
-        uiState?.let {
+        uiState.let {
             CustomRoundedBorderBox(
                 modifier = Modifier
                     .padding(
@@ -100,22 +109,145 @@ fun InfoUserScreen(
                     showRankingScreen = showRankingScreen
                 )
             }
-
         }
         Spacer(Modifier.height(16.dp))
         HorizontalDivider(thickness = 2.dp, color = Color.Gray)
         Spacer(Modifier.height(16.dp))
-        uiState?.let {
+        uiState.let {
             DetailScreen(
                 streak = it.streak.toString(),
                 xp = it.xp.toString(),
-                rank = it.rank.toString(),
+                rank = it.rank,
                 top3count = it.top3Count.toString(),
-                coroutineScope = coroutineScope
+                coroutineScope = coroutineScope,
+                follow = it.followers.size,
+                followed = it.followedUsers.size,
+                isFollow = it.isFollow,
+                isLoading = isLoading,
+                onAddFollowClick = {
+                    Log.d("FollowClick", "Add follow clicked")
+
+                    if (!isLoading) viewModel.addFollow(context, visitedUserId)
+                },
+                onDeleteFollowClick = {
+                    Log.d("FollowClick", "Delete follow clicked")
+
+                    if (!isLoading) viewModel.unfollow(context, visitedUserId)
+                },
+                showButtonAddFollow = currentUserId != visitedUserId
             )
         }
     }
+}
 
+@Composable
+fun DetailScreen(
+    streak: String,
+    xp: String,
+    rank: String,
+    top3count: String,
+    coroutineScope = coroutineScope,
+    follow: Int,
+    followed: Int,
+    isFollow: Boolean,
+    isLoading: Boolean,
+    onAddFollowClick: () -> Unit,
+    onDeleteFollowClick: () -> Unit,
+    showButtonAddFollow: Boolean,
+) {
+    var isPressed by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+    ) {
+      
+        Text(
+            text = "Đã tham gia vào ngày 20/11/2024",
+            fontSize = 22.sp,
+            color = Color.Black,
+            modifier = Modifier
+                .padding(start = 8.dp, top = 16.dp, bottom = 16.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+        Follower(follow, followed)
+        if (showButtonAddFollow) {
+            Box(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .width(190.dp)
+                    .height(64.dp)
+                    .align(Alignment.CenterHorizontally)
+            ) {
+                CustomRoundedBorderBox(
+                  modifier = Modifier
+                    .padding(
+                        top = if (isPressed) {
+                            4.dp
+                        } else {
+                            0.dp
+                        }
+                    ),
+                    cornerRadius = 28.dp,
+                  bottomBorderWidth = if(isPressed) 0.dp else 4.dp,
+                    borderColor = Color(120, 240, 230),
+                    containerColor = colorResource(R.color.teal_200)
+                ) {
+                    Button(
+                        onClick = {
+                          isPressed = true;
+                        coroutineScope.launch {
+                            delay(125)
+                            isPressed = false
+                            if (!isLoading) {
+                                if (!isFollow) onAddFollowClick()
+                                else onDeleteFollowClick()
+                            }
+                        }
+                            
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.teal_200)),
+                        enabled = !isLoading
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.GroupAdd,
+                                contentDescription = "Add friend",
+                                tint = Color.Black,
+                                modifier = Modifier.padding(end = 8.dp)
+                            )
+                            Text(
+                                text = if (!isFollow) "Theo dõi" else "Huỷ",
+                                color = Color.Black,
+                                fontSize = 18.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        Text(
+            text = "Thống kê",
+            fontSize = 32.sp,
+            color = Color.Black,
+            modifier = Modifier
+                .padding(8.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+        Spacer(Modifier.height(16.dp))
+        Row {
+            Card(streak, "Streak", R.drawable.streak, modifier = Modifier.weight(1f))
+            Card(xp, "Tổng Xp", R.drawable.xp, modifier = Modifier.weight(1f))
+        }
+        Row {
+            Card(rank, "Hạng", R.drawable.bronze, modifier = Modifier.weight(1f))
+            Card(top3count, "Số lần top 3", R.drawable.medal, modifier = Modifier.weight(1f))
+        }
+    }
 }
 
 @Composable
@@ -192,88 +324,6 @@ fun Header(
 }
 
 @Composable
-fun DetailScreen(streak: String, xp: String, rank: String, top3count: String, coroutineScope: CoroutineScope) {
-    Column(
-        modifier = Modifier
-            .padding(8.dp)
-    ) {
-        var isPressed by remember { mutableStateOf(false) }
-        Text(
-            text = "Đã tham gia vào ngày 20/11/2024",
-            fontSize = 22.sp,
-            color = Color.Black,
-            modifier = Modifier
-                .padding(start = 8.dp, top = 16.dp, bottom = 16.dp)
-                .align(Alignment.CenterHorizontally)
-        )
-        Box(
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .width(190.dp)
-                .height(64.dp)
-                .align(Alignment.CenterHorizontally)
-        ) {
-            CustomRoundedBorderBox(
-                modifier = Modifier
-                    .padding(
-                        top = if (isPressed) {
-                            4.dp
-                        } else {
-                            0.dp
-                        }
-                    ),
-                cornerRadius = 28.dp,
-                bottomBorderWidth = if(isPressed) 0.dp else 4.dp,
-                borderColor = Color(120, 240, 230),
-                containerColor = colorResource(R.color.teal_200)
-            ) {
-                Button(
-                    onClick = {
-                        isPressed = true;
-                        coroutineScope.launch {
-                            delay(125)
-                            isPressed = false
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.teal_200))
-
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.GroupAdd,
-                            contentDescription = "Add friend",
-                            tint = Color.Black,
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                        Text("Theo dõi", color = Color.Black, fontSize = 18.sp)
-                    }
-                }
-            }
-        }
-        Text(
-            text = "Thống kê",
-            fontSize = 32.sp,
-            color = Color.Black,
-            modifier = Modifier
-                .padding(8.dp)
-                .align(Alignment.CenterHorizontally)
-        )
-        Spacer(Modifier.height(16.dp))
-        Row() {
-            Card(streak, "Streak", R.drawable.streak, modifier = Modifier.weight(1f))
-            Card(xp, "Tổng Xp", R.drawable.xp, modifier = Modifier.weight(1f))
-        }
-        Row() {
-            Card(rank, "Hạng", R.drawable.bronze, modifier = Modifier.weight(1f))
-            Card(top3count, "Số lần top 3", R.drawable.medal, modifier = Modifier.weight(1f))
-        }
-    }
-}
-
-@Composable
 fun Card(amount: String, type: String, img: Int, modifier: Modifier = Modifier) {
     CustomRoundedBorderBox(
         modifier = modifier.padding(8.dp),
@@ -316,6 +366,23 @@ fun Card(amount: String, type: String, img: Int, modifier: Modifier = Modifier) 
     }
 }
 
+@Composable
+fun Follower(follow: Int, followed: Int) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "Đang theo dõi $follow",
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = "Được theo dõi $followed",
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+        )
+    }
+}
 //@Preview(showBackground = true)
 //@Composable
 //fun Preview() {

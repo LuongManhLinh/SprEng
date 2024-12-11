@@ -148,7 +148,7 @@ private fun NavigationScreen(
             Log.d("InfoUserScreen", "Received userId: $userId")
             userId?.let {
                 InfoUserScreen(
-                    userId = it,
+                    visitedUserId = it,
                     showRankingScreen = { navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING)) }
                 )
             }

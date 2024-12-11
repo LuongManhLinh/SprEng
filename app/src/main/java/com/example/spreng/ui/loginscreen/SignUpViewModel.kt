@@ -80,7 +80,7 @@ class SignUpViewModel(
                     top3Count = 0
                 )
             )
-//            createRandomUsers()
+            createRandomUsers()
         }
     }
 
