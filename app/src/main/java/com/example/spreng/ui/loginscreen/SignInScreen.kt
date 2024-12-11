@@ -26,6 +26,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,6 +43,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
 import com.example.spreng.preferences.UserManager
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
+import com.example.spreng.ui.custom.pressHandling
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInScreen(
@@ -52,6 +58,8 @@ fun SignInScreen(
     val uiState by signInViewModel.uiState.collectAsState()
     val signInState by signInViewModel.signInState.collectAsState()
     val context = LocalContext.current
+    var isPressed by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -114,21 +122,29 @@ fun SignInScreen(
         )
 
         // State handling
-        when (signInState) {
-            is SignInViewModel.SignInState.Loading -> {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+                .height(24.dp)
+        ) {
+            when (signInState) {
+                is SignInViewModel.SignInState.Loading -> {
 //                CircularProgressIndicator() // Hiển thị loading
-            }
-            is SignInViewModel.SignInState.Success -> {
-                LaunchedEffect(Unit) {
-                    onSignInSuccess()
                 }
-            }
-            is SignInViewModel.SignInState.Error -> {
-                Text(
-                    modifier = Modifier.padding(top = 16.dp),
-                    text = (signInState as SignInViewModel.SignInState.Error).error,
-                    color = Color.Red
-                ) // Hiển thị thông báo lỗi
+                is SignInViewModel.SignInState.Success -> {
+                    LaunchedEffect(Unit) {
+                        onSignInSuccess()
+                    }
+                }
+                is SignInViewModel.SignInState.Error -> {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        text = (signInState as SignInViewModel.SignInState.Error).error,
+                        color = Color.Red
+                    )
+                }
             }
         }
 
@@ -140,16 +156,30 @@ fun SignInScreen(
                 .height(64.dp)
         ) {
             CustomRoundedBorderBox(
+                modifier = Modifier
+                    .padding(
+                        top = if(isPressed) {
+                            4.dp
+                        } else {
+                            0.dp
+                        }
+                    ),
                 cornerRadius = 28.dp,
-                bottomBorderWidth = 4.dp,
+                bottomBorderWidth = if(isPressed) 0.dp else 4.dp,
                 borderColor = Color(120, 240, 230),
                 containerColor = colorResource(R.color.teal_200)
             ) {
                 Button(
                     onClick = {
-                        signInViewModel.signIn(context)
+                        isPressed = true
+                        coroutineScope.launch {
+                            delay(125)
+                            isPressed = false
+                            signInViewModel.signIn(context)
+                        }
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.teal_200))
                 ) {
                     Text("Đăng nhập", color = Color.White, fontSize = 18.sp)

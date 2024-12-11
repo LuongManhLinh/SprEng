@@ -19,12 +19,18 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,6 +53,9 @@ import com.example.spreng.data.MainNavRoute
 import com.example.spreng.data.NavRanking
 import com.example.spreng.preferences.UserManager
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 @Composable
@@ -59,6 +68,7 @@ fun RankingScreen(
 ) {
     val uiState by rankingViewModel.uiState.collectAsState()
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     val currentUserId = UserManager.getUserId(context)
 //    LaunchedEffect(rank) {
@@ -91,6 +101,7 @@ fun RankingScreen(
             verticalArrangement = Arrangement.spacedBy(0.dp)
         ) {
             itemsIndexed(uiState) { index, user ->
+                val isPressed = remember { mutableStateOf(false) }
                 val isCurrentUser = user.id == currentUserId
                 val containerColor = when {
                     isCurrentUser -> Color(0, 250, 154)
@@ -104,12 +115,16 @@ fun RankingScreen(
                 CustomRoundedBorderBox(
                     modifier = modifier
                         .padding(
-                            top = dimensionResource(R.dimen.small),
+                            top = if (isPressed.value) {
+                                dimensionResource(R.dimen.small) + dimensionResource(R.dimen.tiny)
+                            } else {
+                                dimensionResource(R.dimen.small)
+                            },
                             start = dimensionResource(R.dimen.small_medium),
                             end = dimensionResource(R.dimen.small_medium)
                         ),
                     cornerRadius = 24.dp,
-                    bottomBorderWidth = dimensionResource(R.dimen.tiny),
+                    bottomBorderWidth = if(isPressed.value) 0.dp else dimensionResource(R.dimen.tiny),
                     containerColor = containerColor,
                     borderColor = borderColor,
                 ) {
@@ -120,6 +135,8 @@ fun RankingScreen(
                         showInfoUser = {
                             showInfoUser(user.id)
                         },
+                        coroutineScope = coroutineScope,
+                        isPressed = isPressed
                     )
                 }
 
@@ -211,8 +228,9 @@ fun Card(
     exp: Int,
     showInfoUser: () -> Unit,
     modifier: Modifier = Modifier,
+    coroutineScope: CoroutineScope,
+    isPressed: MutableState<Boolean>
 ) {
-    var colorIndex = Color.Black
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -220,31 +238,36 @@ fun Card(
             .padding(start = 4.dp, end = 8.dp)
             .clip(RoundedCornerShape(16.dp))
             .clickable {
-                showInfoUser()
+                isPressed.value = true
+                coroutineScope.launch {
+                    delay(125)
+                    isPressed.value = false
+                    showInfoUser()
+                }
             },
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween // Đảm bảo các phần tử phân bổ đều trong Row
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = stt.toString(),
             fontSize = 18.sp,
-            color = colorIndex,
+            color = Color.Black,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .weight(1f)
+            modifier = Modifier.weight(1f)
         )
         Image(
             painter = painterResource(R.drawable.sample_avatar),
             contentDescription = "avt",
-            modifier = modifier.size(40.dp, 40.dp)
+            modifier = modifier
+                .size(40.dp, 40.dp)
                 .clip(RoundedCornerShape(20.dp))
         )
         Spacer(modifier.width(8.dp))
         Text(
             text = userName,
+            color = Color.Black,
             fontSize = 24.sp,
-            modifier = Modifier
-                .weight(5f)
+            modifier = Modifier.weight(5f)
         )
         Box(
             modifier = Modifier
@@ -254,16 +277,14 @@ fun Card(
         ) {
             Text(
                 text = "$exp xp",
+                color = Color.Black,
                 fontSize = 18.sp,
-                modifier = Modifier
-                    .wrapContentWidth(Alignment.End)
+                modifier = Modifier.wrapContentWidth(Alignment.End)
             )
         }
-
     }
-
-
 }
+
 
 @Preview(showBackground = true)
 @Composable

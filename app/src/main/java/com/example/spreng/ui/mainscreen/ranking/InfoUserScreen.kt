@@ -39,6 +39,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,6 +58,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -67,6 +74,7 @@ fun InfoUserScreen(
 //    LaunchedEffect(Unit) {
     viewModel.fetchUserDetail(userId)
 //    }
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = modifier
@@ -102,7 +110,8 @@ fun InfoUserScreen(
                 streak = it.streak.toString(),
                 xp = it.xp.toString(),
                 rank = it.rank.toString(),
-                top3count = it.top3Count.toString()
+                top3count = it.top3Count.toString(),
+                coroutineScope = coroutineScope
             )
         }
     }
@@ -183,11 +192,12 @@ fun Header(
 }
 
 @Composable
-fun DetailScreen(streak: String, xp: String, rank: String, top3count: String) {
+fun DetailScreen(streak: String, xp: String, rank: String, top3count: String, coroutineScope: CoroutineScope) {
     Column(
         modifier = Modifier
             .padding(8.dp)
     ) {
+        var isPressed by remember { mutableStateOf(false) }
         Text(
             text = "Đã tham gia vào ngày 20/11/2024",
             fontSize = 22.sp,
@@ -204,13 +214,27 @@ fun DetailScreen(streak: String, xp: String, rank: String, top3count: String) {
                 .align(Alignment.CenterHorizontally)
         ) {
             CustomRoundedBorderBox(
+                modifier = Modifier
+                    .padding(
+                        top = if (isPressed) {
+                            4.dp
+                        } else {
+                            0.dp
+                        }
+                    ),
                 cornerRadius = 28.dp,
-                bottomBorderWidth = 4.dp,
+                bottomBorderWidth = if(isPressed) 0.dp else 4.dp,
                 borderColor = Color(120, 240, 230),
                 containerColor = colorResource(R.color.teal_200)
             ) {
                 Button(
-                    onClick = {},
+                    onClick = {
+                        isPressed = true;
+                        coroutineScope.launch {
+                            delay(125)
+                            isPressed = false
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.teal_200))
 
@@ -259,7 +283,7 @@ fun Card(amount: String, type: String, img: Int, modifier: Modifier = Modifier) 
         contentWidthDp = 180.dp,
         containerColor = Color(95, 210, 185),
         borderColor = Color(207, 244, 210),
-        )
+    )
     {
         Row(
             modifier = modifier
