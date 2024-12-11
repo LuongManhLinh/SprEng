@@ -100,6 +100,7 @@ fun InfoUserScreen(
                     ),
                 cornerRadius = dimensionResource(R.dimen.medium),
                 bottomBorderWidth = 6.dp,
+                contentHeightDp = 100.dp,
                 containerColor = Color(135, 183, 239),
                 borderColor = Color(185, 215, 245),
             ) {
@@ -146,7 +147,7 @@ fun DetailScreen(
     xp: String,
     rank: String,
     top3count: String,
-    coroutineScope = coroutineScope,
+    coroutineScope: CoroutineScope,
     follow: Int,
     followed: Int,
     isFollow: Boolean,
