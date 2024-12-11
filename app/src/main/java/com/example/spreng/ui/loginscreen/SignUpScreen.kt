@@ -25,6 +25,10 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +40,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,6 +52,8 @@ fun SignUpScreen(
 ) {
     val context = LocalContext.current
     val uiState by signUpViewModel.uiState.collectAsState()
+    var isPressed by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -154,20 +162,33 @@ fun SignUpScreen(
                 .height(64.dp)
         ) {
             CustomRoundedBorderBox(
+                modifier = Modifier
+                    .padding(
+                        top = if(isPressed) {
+                            4.dp
+                        } else {
+                            0.dp
+                        }
+                    ),
                 cornerRadius = 28.dp,
-                bottomBorderWidth = 4.dp,
+                bottomBorderWidth = if(isPressed) 0.dp else 4.dp,
                 borderColor = Color(120, 240, 230),
                 containerColor = colorResource(R.color.teal_200)
             ) {
                 Button(
                     onClick = {
-                        if (uiState.username.isNotEmpty() &&
-                            uiState.email.isNotEmpty() &&
-                            uiState.password.isNotEmpty() &&
-                            uiState.isTermsAccepted
-                        ) {
-                            signUpViewModel.signUp()
-                            onSignUpSuccess()
+                        isPressed = true
+                        coroutineScope.launch {
+                            delay(125)
+                            isPressed = false
+                            if (uiState.username.isNotEmpty() &&
+                                uiState.email.isNotEmpty() &&
+                                uiState.password.isNotEmpty() &&
+                                uiState.isTermsAccepted
+                            ) {
+                                signUpViewModel.signUp()
+                                onSignUpSuccess()
+                            }
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),

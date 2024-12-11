@@ -20,6 +20,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +38,8 @@ import androidx.compose.ui.unit.sp
 import com.example.spreng.R
 import com.example.spreng.speech2Text.SpeechRecognizer
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun SpeakingScreen(
@@ -48,13 +55,15 @@ fun SpeakingScreen(
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         }
     )
+    var isPressed by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = modifier
             .padding(dimensionResource(R.dimen.medium))
             .fillMaxSize()
             .background(colorResource(R.color.container))
-        ) {
+    ) {
         Box(
             modifier = modifier
                 .width(200.dp)
@@ -63,30 +72,41 @@ fun SpeakingScreen(
             CustomRoundedBorderBox(
                 modifier = Modifier
                     .padding(
-                        top = dimensionResource(R.dimen.very_large),
+                        top = if (isPressed) {
+                            dimensionResource(R.dimen.very_large) + 4.dp
+                        } else {
+                            dimensionResource(R.dimen.very_large)
+                        },
                         start = dimensionResource(R.dimen.tiny),
                         end = dimensionResource(R.dimen.tiny)
                     )
                     .align(Alignment.TopCenter),
-                cornerRadius = dimensionResource(R.dimen.small),
-                bottomBorderWidth = dimensionResource(R.dimen.tiny),
-                borderColor = Color(108, 126, 225),
+                cornerRadius = dimensionResource(R.dimen.medium),
+                bottomBorderWidth = if(isPressed) 0.dp else dimensionResource(R.dimen.tiny),
+                borderColor = Color(108, 126, 185),
                 containerColor = Color(198, 215, 235),
                 contentWidthDp = 200.dp,
                 contentHeightDp = 64.dp
             ) {
                 Button(
                     onClick = {
-                        speechRecognizer.startListening()
+                        isPressed = true;
+                        coroutineScope.launch {
+                            delay(125)
+                            isPressed = false
+                            speechRecognizer.startListening()
+                        }
                     },
                     modifier = modifier,
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.small)),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.medium)),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(198, 215, 235))
                 ) {
-                    Icon(imageVector = Icons.Filled.Mic,
+                    Icon(
+                        imageVector = Icons.Filled.Mic,
                         contentDescription = "micro",
                         modifier = Modifier.size(40.dp),
-                        tint = Color.Black)
+                        tint = Color.Black
+                    )
                     Text(
                         text = "Nhấn để nói",
                         color = Color.Black,
@@ -96,20 +116,23 @@ fun SpeakingScreen(
             }
         }
 
-        //this is comment
         Spacer(modifier = modifier.height(dimensionResource(R.dimen.medium)))
-        if(inputAnswer.isNotEmpty()) {
-            Box(modifier = modifier
-                .padding(dimensionResource(R.dimen.small))
-                .align(Alignment.CenterHorizontally)
-                .clip(RoundedCornerShape(dimensionResource(R.dimen.very_tiny)))
-                .border(
-                    width = dimensionResource(R.dimen.very_tiny),
-                    color = Color.Black,
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.small))
-                )
-                .background(Color(226, 232, 240))
-                .padding(dimensionResource(R.dimen.small))) {
+
+        //answer box
+        if (inputAnswer.isNotEmpty()) {
+            Box(
+                modifier = modifier
+                    .padding(dimensionResource(R.dimen.small))
+                    .align(Alignment.CenterHorizontally)
+                    .clip(RoundedCornerShape(dimensionResource(R.dimen.very_tiny)))
+                    .border(
+                        width = dimensionResource(R.dimen.very_tiny),
+                        color = Color.Black,
+                        shape = RoundedCornerShape(dimensionResource(R.dimen.small))
+                    )
+                    .background(Color(226, 232, 240))
+                    .padding(dimensionResource(R.dimen.small))
+            ) {
                 Text(
                     text = inputAnswer,
                     color = Color.Black,
@@ -125,6 +148,6 @@ fun SpeakingScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewScreen() {
-    SpeakingScreen( inputAnswer = "Hello, World!",
+    SpeakingScreen(inputAnswer = "Hello, World!",
         saveInputAnswer = {})
 }
