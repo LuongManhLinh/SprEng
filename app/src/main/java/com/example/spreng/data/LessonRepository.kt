@@ -138,7 +138,7 @@ val vehicleChallenges = listOf(
     ),
     ChallengeForm(
         title = "Hoàn thiện câu sau",
-        questionContent = "Xe điện đang trở thành xu hướng trong ngành công nghiệp ô tô (Electric vehicles are becoming a trend in the automotive industry).",
+        questionContent = "Xe điện đang trở thành xu hướng trong ngành công nghiệp ô tô",
         questionType = QuestionType.TEXT,
         answer = listOf("electric", " vehicles", " are", " becoming", " a", " trend", " in", " the", " automotive", " industry"),
         answerType = AnswerType.WORD_PICKER_FILLING,
@@ -147,7 +147,7 @@ val vehicleChallenges = listOf(
     ),
     ChallengeForm(
         title = "Hoàn thiện câu sau",
-        questionContent = "Xe bus công cộng là một cách tuyệt vời để giảm ùn tắc giao thông (Public buses are a great way to reduce traffic congestion).",
+        questionContent = "Xe bus công cộng là một cách tuyệt vời để giảm ùn tắc giao thông",
         questionType = QuestionType.TEXT,
         answer = listOf("public", " buses", " are", " a", " great", " way", " to", " reduce", " traffic", " congestion"),
         answerType = AnswerType.WORD_PICKER_FILLING,
