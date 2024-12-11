@@ -1,4 +1,3 @@
-
 import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
@@ -22,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -29,14 +29,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
@@ -46,8 +52,11 @@ import com.example.spreng.AuthActivity
 import com.example.spreng.MainActivity
 import com.example.spreng.R
 import com.example.spreng.preferences.UserManager
+import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import com.example.spreng.ui.mainscreen.info.ProfileViewModel
 import com.example.spreng.ui.mainscreen.ranking.Card
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun InfoScreen(
@@ -81,6 +90,7 @@ fun InfoScreen(
         )
     }
 }
+
 @Composable
 private fun ProfileHeader(
     username: String,
@@ -119,7 +129,8 @@ private fun ProfileHeader(
             Text(
                 text = username,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
             )
             Text(
                 text = fullName,
@@ -129,184 +140,148 @@ private fun ProfileHeader(
         }
     }
 }
+
 @Composable
-fun SelectCourseScreen(onSelect: (String) -> Unit) {
-    val courses = listOf("Tiếng Anh", "Tiếng Trung", "Tiếng Việt")
+private fun ActionButtons() {
+    val context = LocalContext.current
+    var addFriendIsPressed by remember { mutableStateOf(false) }
+    var editProfileIsPressed by remember { mutableStateOf(false) }
+    var logOutIsPressed by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Chọn Khoá Học", fontWeight = FontWeight.Bold, fontSize = 20.sp)
-        courses.forEach { course ->
-            Button(
-                onClick = { onSelect(course) },
-                modifier = Modifier.fillMaxWidth()
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            CustomRoundedBorderBox(
+                modifier = Modifier
+                    .padding(
+                        top = if (addFriendIsPressed) {
+                            4.dp
+                        } else {
+                            0.dp
+                        }
+                    ),
+                cornerRadius = 16.dp,
+                bottomBorderWidth = if (addFriendIsPressed) 0.dp else 4.dp,
+                borderColor = Color(100, 151, 177),
+                containerColor = Color(75, 134, 180)
             ) {
-                Text(course)
+                Button(
+                    onClick = { /* Handle add friends */
+                        addFriendIsPressed = true
+                        coroutineScope.launch {
+                            delay(125)
+                            addFriendIsPressed = false
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(Color(75, 134, 180))
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Star,
+                        contentDescription = "Thêm Bạn Bè"
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Thêm Bạn Bè", color = Color.White)
+                }
+            }
+        }
+
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            CustomRoundedBorderBox(
+                modifier = Modifier
+                    .padding(
+                        top = if (editProfileIsPressed) {
+                            4.dp
+                        } else {
+                            0.dp
+                        }
+                    ),
+                cornerRadius = 16.dp,
+                bottomBorderWidth = if (editProfileIsPressed) 0.dp else 4.dp,
+                borderColor = Color(100, 151, 177),
+                containerColor = Color(75, 134, 180)
+            ) {
+                Button(
+                    onClick = {
+                        editProfileIsPressed = true
+                        coroutineScope.launch {
+                            delay(125)
+                            editProfileIsPressed = false
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(Color(75, 134, 180))
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Chỉnh Sửa Hồ Sơ"
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Chỉnh Sửa Hồ Sơ", color = Color.White)
+                }
+            }
+        }
+
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            CustomRoundedBorderBox(
+                modifier = Modifier
+                    .padding(
+                        top = if (logOutIsPressed) {
+                            4.dp
+                        } else {
+                            0.dp
+                        }
+                    ),
+                cornerRadius = 16.dp,
+                bottomBorderWidth = if (logOutIsPressed) 0.dp else 4.dp,
+                borderColor = Color(100, 151, 177),
+                containerColor = Color(75, 134, 180)
+            ) {
+                Button(
+                    onClick = {
+                        logOutIsPressed = true
+                        coroutineScope.launch {
+                            delay(125)
+                            logOutIsPressed = false
+                            UserManager.saveLoginState(context = context, isLoggedIn = false)
+                            val intent = Intent(context, AuthActivity::class.java)
+                            context.startActivity(intent)
+                            (context as? ComponentActivity)?.finish()
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(Color(75, 134, 180))
+
+                ) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Đăng xuất", color = Color.White)
+                }
             }
         }
     }
 }
-@Composable
-private fun ActionButtons(
-    navController: NavController,
-    onSelectCourse: () -> Unit,
-    onAddFriend: () -> Unit,
-    onEditProfile: () -> Unit
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Button(
-            onClick = onAddFriend,
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Star,
-                contentDescription = "Thêm bạn bè"
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Thêm bạn bè")
-        }
-        Button(
-            onClick = {navController.navigate("edit")},
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Edit,
-                contentDescription = "Chỉnh sửa hồ sơ"
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Chỉnh sửa hồ sơ")
-        }
-    }
-}
-@Composable
-private fun ProfileHeader(
-    username: String,
-    fullName: String,
-    onEditProfile: () -> Unit,
-    onEditProfilePicture: () -> Unit
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box(
-            modifier = Modifier
-                .size(100.dp)
-                .clip(CircleShape)
-                .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
-                .clickable { onEditProfilePicture() }
-        ) {
-            Image(
-                painter = painterResource(id = android.R.drawable.ic_menu_gallery),
-                contentDescription = "Profile picture",
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = username,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = fullName,
-            fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-        )
-    }
-}
-@Composable
-private fun StatItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    label: String,
-    value: String
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(8.dp)
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = label,
-            tint = MaterialTheme.colorScheme.primary
-        )
-        Text(
-            text = value,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp
-        )
-        Text(
-            text = label,
-            fontSize = 14.sp,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-        )
-    }
-}
-@Composable
-private fun ActionButtons() {
-    val context = LocalContext.current
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Button(
-            onClick = { /* Handle add friends */ },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Star,
-                contentDescription = "Thêm Bạn Bè"
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Thêm Bạn Bè")
-        }
-        Button(
-            onClick = {},
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Edit,
-                contentDescription = "Chỉnh Sửa Hồ Sơ"
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Chỉnh Sửa Hồ Sơ")
-        }
-        Button(
-            onClick = {
-                UserManager.saveLoginState(context = context, isLoggedIn = false)
-                val intent = Intent(context, AuthActivity::class.java)
-                context.startActivity(intent)
-                (context as? ComponentActivity)?.finish()
-            },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Đăng xuất")
-        }
-    }
-}
+
 @Composable
 internal fun StatsSection(streak: String, xp: String, rank: String, top3count: String) {
-    Column() {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = "Thống kê",
-            fontSize = 32.sp
+            fontSize = 32.sp,
+            color = Color.Black,
         )
         Row() {
-            Card(streak, "Streak", R.drawable.streak,modifier = Modifier.weight(1f))
+            Card(streak, "Streak", R.drawable.streak, modifier = Modifier.weight(1f))
             Card(xp, "Tổng Xp", R.drawable.xp, modifier = Modifier.weight(1f))
         }
         Row() {
@@ -315,6 +290,7 @@ internal fun StatsSection(streak: String, xp: String, rank: String, top3count: S
         }
     }
 }
+
 @Composable
 fun Follower(follow: Int, followed: Int) {
     Row(
@@ -329,6 +305,7 @@ fun Follower(follow: Int, followed: Int) {
         Text(
             text = "Được theo dõi $followed",
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+
         )
     }
 }

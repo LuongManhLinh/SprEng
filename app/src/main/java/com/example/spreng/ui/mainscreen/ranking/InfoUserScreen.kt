@@ -40,6 +40,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -57,6 +61,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
 import com.example.spreng.preferences.UserManager
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @SuppressLint("SuspiciousIndentation")
@@ -70,11 +77,13 @@ fun InfoUserScreen(
     val context = LocalContext.current
     val currentUserId = UserManager.getUserId(context)
     val uiState by viewModel.userDetail.collectAsState()
+    
     val isLoading by viewModel.isLoading.collectAsState()
 
     LaunchedEffect(uiState.isFollow) {
         viewModel.fetchUserDetail(context, visitedUserId)
     }
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = modifier
@@ -92,7 +101,7 @@ fun InfoUserScreen(
                 cornerRadius = dimensionResource(R.dimen.medium),
                 bottomBorderWidth = 6.dp,
                 containerColor = Color(135, 183, 239),
-                borderColor = Color(160, 171, 200),
+                borderColor = Color(185, 215, 245),
             ) {
                 Header(
                     username = it.username,
@@ -110,6 +119,7 @@ fun InfoUserScreen(
                 xp = it.xp.toString(),
                 rank = it.rank,
                 top3count = it.top3Count.toString(),
+                coroutineScope = coroutineScope,
                 follow = it.followers.size,
                 followed = it.followedUsers.size,
                 isFollow = it.isFollow,
@@ -136,6 +146,7 @@ fun DetailScreen(
     xp: String,
     rank: String,
     top3count: String,
+    coroutineScope = coroutineScope,
     follow: Int,
     followed: Int,
     isFollow: Boolean,
@@ -144,10 +155,13 @@ fun DetailScreen(
     onDeleteFollowClick: () -> Unit,
     showButtonAddFollow: Boolean,
 ) {
+    var isPressed by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .padding(8.dp)
     ) {
+      
         Text(
             text = "Đã tham gia vào ngày 20/11/2024",
             fontSize = 22.sp,
@@ -166,17 +180,31 @@ fun DetailScreen(
                     .align(Alignment.CenterHorizontally)
             ) {
                 CustomRoundedBorderBox(
+                  modifier = Modifier
+                    .padding(
+                        top = if (isPressed) {
+                            4.dp
+                        } else {
+                            0.dp
+                        }
+                    ),
                     cornerRadius = 28.dp,
-                    bottomBorderWidth = 4.dp,
+                  bottomBorderWidth = if(isPressed) 0.dp else 4.dp,
                     borderColor = Color(120, 240, 230),
                     containerColor = colorResource(R.color.teal_200)
                 ) {
                     Button(
                         onClick = {
+                          isPressed = true;
+                        coroutineScope.launch {
+                            delay(125)
+                            isPressed = false
                             if (!isLoading) {
                                 if (!isFollow) onAddFollowClick()
                                 else onDeleteFollowClick()
                             }
+                        }
+                            
                         },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.teal_200)),
@@ -305,7 +333,7 @@ fun Card(amount: String, type: String, img: Int, modifier: Modifier = Modifier) 
         contentWidthDp = 180.dp,
         containerColor = Color(95, 210, 185),
         borderColor = Color(207, 244, 210),
-        )
+    )
     {
         Row(
             modifier = modifier
