@@ -70,7 +70,7 @@ fun InfoScreen(
             //onEditProfile = { /* Handle edit profile */ }
         )
         Spacer(modifier = Modifier.height(24.dp))
-        JoinDateSection()
+        Follower(uiState.followers.size, uiState.followedUsers.size)
         ActionButtons()
         Spacer(modifier = Modifier.height(24.dp))
         StatsSection(
@@ -316,19 +316,18 @@ internal fun StatsSection(streak: String, xp: String, rank: String, top3count: S
     }
 }
 @Composable
-fun JoinDateSection() {
+fun Follower(follow: Int, followed: Int) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = Icons.Default.Star,
-            contentDescription = "Join date",
-            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+        Text(
+            text = "Đang theo dõi $follow",
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = "Since December 2024",
+            text = "Được theo dõi $followed",
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
         )
     }
