@@ -29,6 +29,10 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
@@ -44,6 +48,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
 import com.example.spreng.text2speech.TTS
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,6 +64,8 @@ fun ReviewVocabsScreen(
     val filteredList by vocabViewModel.filteredList.collectAsState()
     val query by vocabViewModel.query.collectAsState()
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
 
     Scaffold(
         modifier = modifier,
@@ -71,7 +80,7 @@ fun ReviewVocabsScreen(
                 cornerRadius = dimensionResource(R.dimen.medium),
                 bottomBorderWidth = 6.dp,
                 containerColor = Color(135, 183, 239),
-                borderColor = Color(160, 171, 200),
+                borderColor = Color(185, 215, 245),
                 contentHeightDp = 64.dp
             ) {
                 ReviewVocabTopBar(
@@ -152,6 +161,7 @@ fun ReviewVocabsScreen(
                             vocab = vocab,
                             context = context,
                             onToggleCheck = { vocabViewModel.toggleChecked(it) },
+                            coroutineScope = coroutineScope,
                         )
                         HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
                     }
@@ -168,24 +178,48 @@ fun VocabItem(
     context: Context,
     modifier: Modifier = Modifier,
     onToggleCheck: (Vocab) -> Unit,
+    coroutineScope: CoroutineScope
 //    onToggleVolume: (Vocab) -> Unit
 ) {
+    var isPressed by remember { mutableStateOf(false) }
     Row(
         modifier = modifier
             .padding(top = 16.dp, bottom = 16.dp, start = 8.dp, end = 8.dp)
             .fillMaxWidth()
     ) {
-
-        Image(
-            painter = painterResource(R.drawable.volume),
-            contentDescription = "volume",
+        Box(
             modifier = modifier
                 .padding(top = 4.dp)
                 .weight(1f)
-                .clickable {
-                    TTS(context = context, sentence = vocab.word)
-                }
-        )
+        ) {
+            CustomRoundedBorderBox(
+                modifier = modifier
+                    .padding(
+                        top = if (isPressed) {
+                            dimensionResource(R.dimen.tiny)
+                        } else {
+                            0.dp
+                        }
+                    ),
+                cornerRadius = dimensionResource(R.dimen.medium_large),
+                bottomBorderWidth = if (isPressed) 0.dp else dimensionResource(R.dimen.tiny),
+                borderColor = Color(173, 216, 230),
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.volume),
+                    contentDescription = "volume",
+                    modifier = modifier
+                        .clickable {
+                            isPressed = true
+                            coroutineScope.launch {
+                                delay(125)
+                                isPressed = false
+                                TTS(context = context, sentence = vocab.word)
+                            }
+                        },
+                )
+            }
+        }
 
         Column(
             modifier = Modifier

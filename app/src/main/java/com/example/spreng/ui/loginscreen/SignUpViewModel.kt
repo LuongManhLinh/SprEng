@@ -20,6 +20,8 @@ class SignUpViewModel(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SignUpUIState())
     val uiState = _uiState.asStateFlow()
+    private val _passwordVisible = MutableStateFlow(false)
+    val passwordVisible = _passwordVisible.asStateFlow()
 
     fun updateUsername(username: String) {
         _uiState.update {
@@ -47,6 +49,10 @@ class SignUpViewModel(
 
     fun updateTermsAccepted(isAccepted: Boolean) {
         _uiState.update { it.copy(isTermsAccepted = isAccepted) }
+    }
+
+    fun togglePasswordVisibility() {
+        _passwordVisible.update { !it }
     }
 
     sealed class SignUpState {
