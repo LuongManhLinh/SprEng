@@ -2,7 +2,6 @@ package com.example.spreng.ui.studyscreen
 
 import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -14,9 +13,8 @@ import com.example.spreng.form.AnswerType
 import com.example.spreng.form.ChallengeForm
 import com.example.spreng.form.QuestionType
 import com.example.spreng.repository.LessonBbRepository
-import com.example.spreng.repository.UserRepository
-import com.example.spreng.ui.mainscreen.home.HomeViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -47,6 +45,10 @@ class StudyFlowViewModel(
         )
     )
     val uiState = _uiState.asStateFlow()
+
+    private var canChangePopupVisibility = true
+    private var _popupUiState = MutableStateFlow(false)
+    val popupUiState = _popupUiState.asStateFlow()
 
     fun initialize(lessonId: Int) {
         if (!this::lesson.isInitialized) { // Chỉ khởi tạo nếu chưa được khởi tạo
@@ -92,6 +94,10 @@ class StudyFlowViewModel(
                     answerUIState.answerWriting
                 )
             }
+
+            is AnswerUIState.MultiChoice -> {
+                isCorrect = answerUIState.selectedIdx == currentLesson.answer
+            }
         }
 
         val correctAnswer = if (isCorrect) {
@@ -110,6 +116,10 @@ class StudyFlowViewModel(
                 AnswerType.TALKING -> {
                     currentLesson.answer as String
                 }
+
+                AnswerType.MULTI_CHOICE -> {
+                    currentLesson.answerOptions!![currentLesson.answer as Int]
+                }
             }
         }
 
@@ -117,9 +127,12 @@ class StudyFlowViewModel(
             it.copy(
                 isDone = true,
                 isCorrect = isCorrect,
-                isShowingResultPopup = true,
                 correctAnswer = correctAnswer
             )
+        }
+
+        _popupUiState.update {
+            true
         }
 
         if (isCorrect) {
@@ -141,6 +154,12 @@ class StudyFlowViewModel(
             return
         }
 
+        if (_popupUiState.value) {
+            _popupUiState.update {
+                false
+            }
+        }
+
         _uiState.update { oldState ->
             val newState = StudyFlowUIState.buildFromChallengeForm(
                 lesson[currentChallengeIndex],
@@ -151,6 +170,8 @@ class StudyFlowViewModel(
                 isCorrect = oldState.isCorrect
             )
         }
+
+
     }
 
 
@@ -277,11 +298,39 @@ class StudyFlowViewModel(
         }
     }
 
-    fun changeResultPopupVisibility() {
+    fun updateAnswerMultiChoice(selectedIdx: Int) {
+        val oldAnswerUIState = _uiState.value.answerUIState as AnswerUIState.MultiChoice
+
+        val idxToUpdate = if (selectedIdx == oldAnswerUIState.selectedIdx) {
+            null
+        } else {
+            selectedIdx
+        }
+
         _uiState.update {
-            it.copy(isShowingResultPopup = !it.isShowingResultPopup)
+            it.copy(
+                answerUIState = AnswerUIState.MultiChoice(
+                    choices = oldAnswerUIState.choices,
+                    selectedIdx = idxToUpdate
+                )
+            )
         }
     }
+
+
+    fun changeResultPopupVisibility() {
+        if (canChangePopupVisibility) {
+            _popupUiState.update {
+                !it
+            }
+            canChangePopupVisibility = false
+            viewModelScope.launch {
+                delay(500)
+                canChangePopupVisibility = true
+            }
+        }
+    }
+
 
     private fun checkWordPickerFillingAnswer(
         sentenceUI: MutableList<Any?>,
@@ -365,7 +414,6 @@ data class StudyFlowUIState(
     val answerUIState: AnswerUIState,
     val isDone: Boolean = false,
     val isCorrect: Boolean = false,
-    val isShowingResultPopup: Boolean = false,
     val correctAnswer: String? = null,
     val isLessonDone: Boolean = false,
     val numCorrect: Int = 0,
@@ -419,6 +467,11 @@ data class StudyFlowUIState(
                 AnswerType.TALKING -> AnswerUIState.Talking(
                     answerTalking = ""
                 )
+
+                AnswerType.MULTI_CHOICE -> AnswerUIState.MultiChoice(
+                    choices = challengeForm.answerOptions!!,
+                    selectedIdx = null
+                )
             }
 
             return StudyFlowUIState(
@@ -452,12 +505,17 @@ sealed interface AnswerUIState {
         val unselectedWords: List<UnselectedWord>,
     ) : AnswerUIState
 
-    class TextTyping(
+    data class TextTyping(
         val answerWriting: String,
     ) : AnswerUIState
 
-    class Talking(
+    data class Talking(
         val answerTalking: String,
+    ) : AnswerUIState
+
+    data class MultiChoice(
+        val choices: List<String> = emptyList(),
+        val selectedIdx: Int? = null
     ) : AnswerUIState
 }
 

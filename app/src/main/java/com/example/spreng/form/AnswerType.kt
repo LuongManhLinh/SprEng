@@ -4,5 +4,6 @@ enum class AnswerType {
     TYPING,
     WORD_PICKER_FILLING,
     WORD_PICKER_SEQUENCE,
-    TALKING
+    TALKING,
+    MULTI_CHOICE
 }

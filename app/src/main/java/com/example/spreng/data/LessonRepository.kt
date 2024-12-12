@@ -11,6 +11,19 @@ interface LessonRepository {
 //bài 1
 val environmentalChallenges = listOf(
     ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Why is recycling important?",
+        questionType = QuestionType.TEXT,
+        answer = 1,
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "It is a waste of time",
+            "It helps reduce waste",
+            "It is conducted by alien",
+            "All of the above"
+        ),
+    ),
+    ChallengeForm(
         title = "Nghe và điền lại câu",
         questionContent = "Water is essential for life",
         questionType = QuestionType.LISTENING,

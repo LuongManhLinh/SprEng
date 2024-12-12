@@ -19,13 +19,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,6 +33,7 @@ import com.example.spreng.R
 import com.example.spreng.preferences.UserManager
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import com.example.spreng.ui.studyscreen.answer.micro.SpeakingScreen
+import com.example.spreng.ui.studyscreen.answer.multichoice.MultiChoiceScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerFillingScreen
 import com.example.spreng.ui.studyscreen.answer.wordpicker.WordPickerSequenceScreen
 import com.example.spreng.ui.studyscreen.answer.writing.BaseWritingScreen
@@ -52,6 +53,7 @@ fun StudyFlowScreen(
     }
 
     val uiState by viewModel.uiState.collectAsState()
+    val popupUIState by viewModel.popupUiState.collectAsState()
     val context = LocalContext.current
 
     val userId = UserManager.getUserId(context)
@@ -174,25 +176,32 @@ fun StudyFlowScreen(
 
                     }
 
+                    is AnswerUIState.MultiChoice -> {
+                        val answerUIState = uiState.answerUIState as AnswerUIState.MultiChoice
+                        MultiChoiceScreen(
+                            modifier = Modifier.fillMaxWidth().weight(1f),
+                            choices = answerUIState.choices,
+                            selectedIndex = answerUIState.selectedIdx,
+                            onChoiceClick = { viewModel.updateAnswerMultiChoice(it) }
+                        )
+                    }
                 }
 
             }
-            
+
             PopupResult(
                 modifier = Modifier
                     .padding(
                         start = dimensionResource(R.dimen.large),
                         end = dimensionResource(R.dimen.large),
                     )
-                    .align(Alignment.BottomCenter)
-                    .clickable(
-                        interactionSource = null,
-                        indication = null
-                    ) {
-                    },
-                isVisible = uiState.isShowingResultPopup,
+                    .align(Alignment.BottomCenter),
+                isVisible = popupUIState,
                 isCorrect = uiState.isCorrect,
-                correctAnswer = uiState.correctAnswer
+                correctAnswer = uiState.correctAnswer,
+                onClicked = {
+                    viewModel.changeResultPopupVisibility()
+                }
             )
 
         }
@@ -205,7 +214,8 @@ private fun PopupResult(
     modifier: Modifier = Modifier,
     isVisible: Boolean,
     isCorrect: Boolean,
-    correctAnswer: String? = null
+    correctAnswer: String? = null,
+    onClicked: () -> Unit = {}
 ) {
     AnimatedVisibility(
         visible = isVisible,
@@ -213,46 +223,51 @@ private fun PopupResult(
         exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
         modifier = modifier
             .fillMaxWidth()
+            .clickable(
+                interactionSource = null,
+                indication = null,
+            ) { onClicked() }
     ) {
-        CustomRoundedBorderBox(
-            cornerRadius = dimensionResource(R.dimen.medium),
-            borderColor = if (isCorrect) {
-                colorResource(R.color.success_border)
-            } else {
-                colorResource(R.color.error_border)
-            },
-            bottomBorderWidth = dimensionResource(R.dimen.small)
-        ) {
-            Column (
-                modifier = Modifier
-                    .height(dimensionResource(R.dimen.popup_height))
-                    .fillMaxWidth()
-                    .background(
-                        if (isCorrect) {
-                            colorResource(R.color.success)
-                        } else {
-                            colorResource(R.color.error)
-                        }
-                    ),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+        key(isVisible) {
+            CustomRoundedBorderBox(
+                cornerRadius = dimensionResource(R.dimen.medium),
+                borderColor = if (isCorrect) {
+                    colorResource(R.color.success_border)
+                } else {
+                    colorResource(R.color.error_border)
+                },
+                bottomBorderWidth = dimensionResource(R.dimen.small)
             ) {
-                Text(
-                    text = if (isCorrect) "Chính xác" else "Không chính xác",
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = Color.White,
+                Column(
                     modifier = Modifier
-                        .padding(dimensionResource(R.dimen.small))
-                )
-                if (!isCorrect && correctAnswer != null) {
+                        .height(dimensionResource(R.dimen.popup_height))
+                        .fillMaxWidth()
+                        .background(
+                            if (isCorrect) {
+                                colorResource(R.color.success)
+                            } else {
+                                colorResource(R.color.error)
+                            }
+                        ),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Text(
-                        text = "\"$correctAnswer\"",
-                        style = MaterialTheme.typography.titleLarge,
+                        text = if (isCorrect) "Chính xác" else "Không chính xác",
+                        style = MaterialTheme.typography.headlineLarge,
                         color = Color.White,
                         modifier = Modifier
-                            .padding(dimensionResource(R.dimen.small)),
-                        textAlign = TextAlign.Justify
+                            .padding(dimensionResource(R.dimen.small))
                     )
+                    if (!isCorrect && correctAnswer != null) {
+                        Text(
+                            text = "\"$correctAnswer\"",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = Color.White,
+                            modifier = Modifier
+                                .padding(dimensionResource(R.dimen.medium)),
+                        )
+                    }
                 }
             }
         }

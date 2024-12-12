@@ -138,7 +138,8 @@ private fun Blank(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.height(containerHeight)
+        modifier = Modifier
+            .height(containerHeight)
     ) {
         Column(
             verticalArrangement = Arrangement.Bottom,
@@ -147,7 +148,12 @@ private fun Blank(
             Box(
                 modifier = Modifier
                     .size(length, 1.dp)
+                    .padding(
+                        start = dimensionResource(R.dimen.tiny),
+                        end = dimensionResource(R.dimen.tiny)
+                    )
                     .background(Color.Gray)
+
             )
         }
     }
@@ -165,8 +171,8 @@ private fun WordPickerFillPreview() {
             UnselectedWord("expensive"),
             UnselectedWord("beautiful"),
         ),
-        sentenceUI = listOf(null, ", ", "I ", "went ", "to ", "the ", null,
-            " and ", "bought ", "a ", "very ", "big ", null),
+        sentenceUI = listOf(null, ", ", "I ", "went ", "to ", null, null,
+            null, "bought ", "a ", "very ", "big ", null),
         onUnselectedWordClick = {},
         onSelectedWordClick = {}
     )
