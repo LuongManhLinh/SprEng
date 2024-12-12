@@ -97,7 +97,7 @@ private fun LessonImage(
     onPressChanged: (Int, Boolean) -> Unit
 ) {
     Row(
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
     ) {
         Spacer(Modifier.weight(lessonUIState.leftWeight))
 

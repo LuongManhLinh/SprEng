@@ -1,12 +1,10 @@
 package com.example.spreng.ui.mainscreen.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -21,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -95,7 +92,7 @@ fun HomeScreen(
                         },
                         onOpeningCompleted = { viewModel.onCardOpeningCompleted(idx) },
                         onClosingCompleted = { viewModel.onCardClosingCompleted(idx) },
-                        modifier = Modifier
+                        modifier = Modifier.fillMaxWidth()
                     )
 
                     if (isCurrentLesson) {
@@ -104,8 +101,13 @@ fun HomeScreen(
                         ) {
                             Spacer(Modifier.weight(lessonUI.leftWeight))
                             Box(
-                                modifier = Modifier.width(84.dp).height(20.dp).background(Color.Black),
-                                contentAlignment = Alignment.CenterEnd
+                                modifier = Modifier
+                                    .padding(
+                                        start = dimensionResource(R.dimen.medium),
+                                        end = dimensionResource(R.dimen.medium)
+                                    )
+                                    .width(84.dp),
+                                contentAlignment = Alignment.Center
                             ) {
                                 FireAnimation()
                             }

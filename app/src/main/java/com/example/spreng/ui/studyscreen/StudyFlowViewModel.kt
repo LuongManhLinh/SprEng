@@ -24,9 +24,8 @@ import kotlinx.coroutines.launch
 class StudyFlowViewModel(
     private val lessonBbRepository: LessonBbRepository,
     private val lessonRepository: LessonRepository = DemoLessonRepository(),
-    lessonId: Int = 0
-
 ) : ViewModel() {
+
     private lateinit var lesson: List<ChallengeForm>
 
     private var currentChallengeIndex = 0
@@ -47,7 +46,7 @@ class StudyFlowViewModel(
     val uiState = _uiState.asStateFlow()
 
     private var canChangePopupVisibility = true
-    private var _popupUiState = MutableStateFlow(false)
+    private var _popupUiState = MutableStateFlow(PopupUIState())
     val popupUiState = _popupUiState.asStateFlow()
 
     fun initialize(lessonId: Int) {
@@ -60,6 +59,7 @@ class StudyFlowViewModel(
             )
         }
     }
+
     fun complete() {
 
         var isCorrect = true
@@ -125,14 +125,16 @@ class StudyFlowViewModel(
 
         _uiState.update {
             it.copy(
-                isDone = true,
-                isCorrect = isCorrect,
-                correctAnswer = correctAnswer
+                isDone = true
             )
         }
 
         _popupUiState.update {
-            true
+            it.copy(
+                isVisible = true,
+                isCorrect = isCorrect,
+                correctAnswer = correctAnswer
+            )
         }
 
         if (isCorrect) {
@@ -154,24 +156,21 @@ class StudyFlowViewModel(
             return
         }
 
-        if (_popupUiState.value) {
+        if (_popupUiState.value.isVisible) {
             _popupUiState.update {
-                false
+                it.copy(
+                    isVisible = false
+                )
             }
         }
 
-        _uiState.update { oldState ->
-            val newState = StudyFlowUIState.buildFromChallengeForm(
+        _uiState.update {
+            StudyFlowUIState.buildFromChallengeForm(
                 lesson[currentChallengeIndex],
                 currentChallengeIndex,
                 lesson.size,
             )
-            newState.copy(
-                isCorrect = oldState.isCorrect
-            )
         }
-
-
     }
 
 
@@ -321,7 +320,9 @@ class StudyFlowViewModel(
     fun changeResultPopupVisibility() {
         if (canChangePopupVisibility) {
             _popupUiState.update {
-                !it
+                it.copy(
+                    isVisible = !it.isVisible
+                )
             }
             canChangePopupVisibility = false
             viewModelScope.launch {
@@ -413,8 +414,6 @@ data class StudyFlowUIState(
     val questionUIState: QuestionUIState,
     val answerUIState: AnswerUIState,
     val isDone: Boolean = false,
-    val isCorrect: Boolean = false,
-    val correctAnswer: String? = null,
     val isLessonDone: Boolean = false,
     val numCorrect: Int = 0,
     val totalChallenge: Int = 0,
@@ -518,6 +517,12 @@ sealed interface AnswerUIState {
         val selectedIdx: Int? = null
     ) : AnswerUIState
 }
+
+data class PopupUIState(
+    val isVisible: Boolean = false,
+    val isCorrect: Boolean = false,
+    val correctAnswer: String? = null,
+)
 
 data class UnselectedWord(
     val word: String,

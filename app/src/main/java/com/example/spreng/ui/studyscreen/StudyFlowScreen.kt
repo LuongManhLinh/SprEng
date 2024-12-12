@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -81,15 +80,17 @@ fun StudyFlowScreen(
             }
         },
         modifier = modifier
-            .clickable(
-                interactionSource = null,
-                indication = null
-            ) {
-                if (uiState.isDone) viewModel.changeResultPopupVisibility()
-            }
     ) {
 
-        Box {
+        Box(
+            modifier = Modifier
+                .clickable(
+                    interactionSource = null,
+                    indication = null
+                ) {
+                    if (uiState.isDone) viewModel.changeResultPopupVisibility()
+                }
+        ) {
 
             Column {
 
@@ -196,9 +197,9 @@ fun StudyFlowScreen(
                         end = dimensionResource(R.dimen.large),
                     )
                     .align(Alignment.BottomCenter),
-                isVisible = popupUIState,
-                isCorrect = uiState.isCorrect,
-                correctAnswer = uiState.correctAnswer,
+                isVisible = popupUIState.isVisible,
+                isCorrect = popupUIState.isCorrect,
+                correctAnswer = popupUIState.correctAnswer,
                 onClicked = {
                     viewModel.changeResultPopupVisibility()
                 }
@@ -228,49 +229,49 @@ private fun PopupResult(
                 indication = null,
             ) { onClicked() }
     ) {
-        key(isVisible) {
-            CustomRoundedBorderBox(
-                cornerRadius = dimensionResource(R.dimen.medium),
-                borderColor = if (isCorrect) {
-                    colorResource(R.color.success_border)
-                } else {
-                    colorResource(R.color.error_border)
-                },
-                bottomBorderWidth = dimensionResource(R.dimen.small)
+
+        CustomRoundedBorderBox(
+            cornerRadius = dimensionResource(R.dimen.medium),
+            borderColor = if (isCorrect) {
+                colorResource(R.color.success_border)
+            } else {
+                colorResource(R.color.error_border)
+            },
+            bottomBorderWidth = dimensionResource(R.dimen.small)
+        ) {
+            Column(
+                modifier = Modifier
+                    .height(dimensionResource(R.dimen.popup_height))
+                    .fillMaxWidth()
+                    .background(
+                        if (isCorrect) {
+                            colorResource(R.color.success)
+                        } else {
+                            colorResource(R.color.error)
+                        }
+                    ),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
+                Text(
+                    text = if (isCorrect) "Chính xác" else "Không chính xác",
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = Color.White,
                     modifier = Modifier
-                        .height(dimensionResource(R.dimen.popup_height))
-                        .fillMaxWidth()
-                        .background(
-                            if (isCorrect) {
-                                colorResource(R.color.success)
-                            } else {
-                                colorResource(R.color.error)
-                            }
-                        ),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+                        .padding(dimensionResource(R.dimen.small))
+                )
+                if (!isCorrect && correctAnswer != null) {
                     Text(
-                        text = if (isCorrect) "Chính xác" else "Không chính xác",
-                        style = MaterialTheme.typography.headlineLarge,
+                        text = "\"$correctAnswer\"",
+                        style = MaterialTheme.typography.titleLarge,
                         color = Color.White,
                         modifier = Modifier
-                            .padding(dimensionResource(R.dimen.small))
+                            .padding(dimensionResource(R.dimen.medium)),
                     )
-                    if (!isCorrect && correctAnswer != null) {
-                        Text(
-                            text = "\"$correctAnswer\"",
-                            style = MaterialTheme.typography.titleLarge,
-                            color = Color.White,
-                            modifier = Modifier
-                                .padding(dimensionResource(R.dimen.medium)),
-                        )
-                    }
                 }
             }
         }
+
     }
 }
 
