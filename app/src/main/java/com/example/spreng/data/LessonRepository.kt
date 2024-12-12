@@ -91,7 +91,6 @@ val environmentalChallenges = listOf(
     )
 )
 
-// Bai 2
 val vehicleChallenges = listOf(
     ChallengeForm(
         title = "Nhắc lại câu sau",

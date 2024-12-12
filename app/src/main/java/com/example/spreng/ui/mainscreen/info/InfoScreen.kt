@@ -274,7 +274,7 @@ private fun ActionButtons() {
 
 @Composable
 internal fun StatsSection(streak: String, xp: String, rank: String, top3count: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column() {
         Text(
             text = "Thống kê",
             fontSize = 32.sp,

@@ -169,7 +169,6 @@ fun DetailScreen(
             color = Color.Black,
             modifier = Modifier
                 .padding(start = 8.dp, top = 16.dp, bottom = 16.dp)
-                .align(Alignment.CenterHorizontally)
         )
         Follower(follow, followed)
         if (showButtonAddFollow) {
@@ -237,7 +236,6 @@ fun DetailScreen(
             color = Color.Black,
             modifier = Modifier
                 .padding(8.dp)
-                .align(Alignment.CenterHorizontally)
         )
         Spacer(Modifier.height(16.dp))
         Row {
@@ -370,7 +368,9 @@ fun Card(amount: String, type: String, img: Int, modifier: Modifier = Modifier) 
 @Composable
 fun Follower(follow: Int, followed: Int) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
