@@ -24,6 +24,19 @@ val environmentalChallenges = listOf(
         ),
     ),
     ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "What is the main benefit of planting trees?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index của "It improves air quality"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "It uses up space",
+            "It improves air quality",
+            "It causes deforestation",
+            "It makes cities more crowded"
+        ),
+    ),
+    ChallengeForm(
         title = "Nghe và điền lại câu",
         questionContent = "Water is essential for life",
         questionType = QuestionType.LISTENING,
@@ -104,6 +117,7 @@ val environmentalChallenges = listOf(
     )
 )
 
+//bài 2
 val vehicleChallenges = listOf(
     ChallengeForm(
         title = "Nhắc lại câu sau",
@@ -126,6 +140,19 @@ val vehicleChallenges = listOf(
         answer = listOf("motorcycles", "are", "popular", "in", "many", "Asian", "countries"),
         answerType = AnswerType.WORD_PICKER_SEQUENCE,
         answerOptions = listOf()
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "What is the main advantage of electric vehicles?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index của "They reduce carbon emissions"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "They are more expensive",
+            "They reduce carbon emissions",
+            "They require fossil fuels",
+            "They increase noise pollution"
+        ),
     ),
     ChallengeForm(
         title = "Nghe và sắp xếp lại câu sau",
@@ -166,6 +193,19 @@ val vehicleChallenges = listOf(
         answerType = AnswerType.WORD_PICKER_FILLING,
         answerOptions = listOf("cars", "motorbikes", "trucks", "congestion"),
         maskedAnswer = listOf("public", " congestion")
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Why is public transportation important?",
+        questionType = QuestionType.TEXT,
+        answer = 2, // Index của "It helps reduce traffic congestion"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "It promotes private vehicle use",
+            "It helps reduce traffic congestion",
+            "It increases fuel consumption",
+            "It is only useful for short distances"
+        ),
     ),
     ChallengeForm(
         title = "Sắp xếp lại câu sau",
@@ -223,7 +263,19 @@ val travellingChallenges = listOf(
         answerType = AnswerType.WORD_PICKER_SEQUENCE,
         answerOptions = listOf("short", "carry", "bags", "expensive")
     ),
-
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "What is one of the main benefits of traveling?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index của "It broadens your perspective"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "It increases stress",
+            "It broadens your perspective",
+            "It wastes time",
+            "It makes you forget your home"
+        ),
+    ),
     ChallengeForm(
         title = "Nghe và sắp xếp lại câu sau",
         questionContent = "Booking hotels early is always a good idea",
@@ -267,6 +319,19 @@ val travellingChallenges = listOf(
         questionType = QuestionType.TEXT,
         answer = "taking photos helps you remember your trips better",
         answerType = AnswerType.TALKING
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Why do people prefer traveling by plane?",
+        questionType = QuestionType.TEXT,
+        answer = 0, // Index của "It is faster"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "It is faster",
+            "It is cheaper",
+            "It is more comfortable than a train",
+            "It allows more luggage"
+        ),
     )
 )
 
@@ -280,6 +345,19 @@ val foodChallenges = listOf(
         answerType = AnswerType.WORD_PICKER_FILLING,
         answerOptions = listOf("junk", "food", "exercise", "body"),
         maskedAnswer = listOf("eating", " healthy")
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Why is it important to eat a balanced diet?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index của "It helps maintain good health"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "It helps maintain good health",
+            "It makes you eat more",
+            "It increases your sugar intake",
+            "It is only necessary for athletes"
+        ),
     ),
     ChallengeForm(
         title = "Sắp xếp lại câu sau",
@@ -297,6 +375,19 @@ val foodChallenges = listOf(
         answerType = AnswerType.WORD_PICKER_FILLING,
         answerOptions = listOf("lunch", "snack", "healthy", "important"),
         maskedAnswer = listOf("breakfast", " important")
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Vegetarian diets are typically rich in which type of nutrients?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index của "Vitamins and fiber"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Proteins and fats",
+            "Vitamins and fiber",
+            "Sugars and preservatives",
+            "Carbs and salt"
+        ),
     ),
     ChallengeForm(
         title = "Sắp xếp lại câu sau",
@@ -356,6 +447,19 @@ val foodChallenges = listOf(
 //bai 5
 val cultureChallenges = listOf(
     ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Cultural diversity enriches society in many ways.",
+        questionType = QuestionType.TEXT,
+        answer = 0, // Index của "True"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "True",
+            "False",
+            "Sometimes",
+            "It depends on the region"
+        ),
+    ),
+    ChallengeForm(
         title = "Hoàn thiện câu sau",
         questionContent = "Tết Nguyên Đán là dịp lễ quan trọng nhất ở Việt Nam",
         questionType = QuestionType.TEXT,
@@ -387,6 +491,19 @@ val cultureChallenges = listOf(
         answer = listOf("every", "country", "has", "its", "own", "unique", "festivals"),
         answerType = AnswerType.WORD_PICKER_SEQUENCE,
         answerOptions = listOf("traditions", "common", "celebrations", "own")
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Which of the following is an example of cultural expression?",
+        questionType = QuestionType.TEXT,
+        answer = 2, // Index của "Traditional music"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Technology",
+            "Sports",
+            "Traditional music",
+            "Economic systems"
+        ),
     ),
     ChallengeForm(
         title = "Nghe và sắp xếp lại câu sau",
@@ -447,6 +564,19 @@ val historyChallenges = listOf(
         answerType = AnswerType.TALKING
     ),
     ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Who was the first emperor of the Lý dynasty?",
+        questionType = QuestionType.TEXT,
+        answer = 0, // Index of "Lý Thái Tổ"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Lý Thái Tổ",
+            "Trần Hưng Đạo",
+            "Nguyễn Huệ",
+            "Lý Thái Bạch"
+        ),
+    ),
+    ChallengeForm(
         title = "Hoàn thiện câu sau",
         questionContent = "Chiến tranh thế giới thứ hai bắt đầu vào năm 1939",
         questionType = QuestionType.TEXT,
@@ -471,6 +601,19 @@ val historyChallenges = listOf(
         answerType = AnswerType.WORD_PICKER_FILLING,
         answerOptions = listOf("temples", "ancient", "modern", "culture"),
         maskedAnswer = listOf("ancient", " pyramids")
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "When did the Battle of Dien Bien Phu take place?",
+        questionType = QuestionType.TEXT,
+        answer = 2, // Index of "1954"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "1945",
+            "1950",
+            "1954",
+            "1960"
+        ),
     ),
     ChallengeForm(
         title = "Sắp xếp lại câu sau",
@@ -529,6 +672,19 @@ val technologyChallenges = listOf(
         answerType = AnswerType.TALKING
     ),
     ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Which company developed the first personal computer?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index of "IBM"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Microsoft",
+            "IBM",
+            "Apple",
+            "Dell"
+        ),
+    ),
+    ChallengeForm(
         title = "Hoàn thiện câu sau",
         questionContent = "Internet giúp kết nối mọi người trên toàn cầu",
         questionType = QuestionType.TEXT,
@@ -544,6 +700,19 @@ val technologyChallenges = listOf(
         answer = listOf("smartphones", "have", "become", "a", "part", "of", "daily", "life"),
         answerType = AnswerType.WORD_PICKER_SEQUENCE,
         answerOptions = listOf("phones", "technology", "life", "smartphones")
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "What is the main function of an operating system?",
+        questionType = QuestionType.TEXT,
+        answer = 0, // Index of "To manage computer hardware and software"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "To manage computer hardware and software",
+            "To store files",
+            "To make the computer run faster",
+            "To connect to the internet"
+        ),
     ),
     ChallengeForm(
         title = "Sắp xếp lại câu sau",
@@ -605,6 +774,19 @@ val technologyChallenges = listOf(
 //bai 8
 val healthChallenges = listOf(
     ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Regular exercise can help improve which aspect of health?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index of "Physical fitness"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Physical fitness",
+            "Vision",
+            "Hair growth",
+            "Memory loss"
+        ),
+    ),
+    ChallengeForm(
         title = "Nhắc lại câu sau",
         questionContent = "Washing hands prevents the spread of germs",
         questionType = QuestionType.TEXT,
@@ -627,6 +809,19 @@ val healthChallenges = listOf(
         answer = listOf("getting", "enough", "sleep", "helps", "the", "body", "recover", "better"),
         answerType = AnswerType.WORD_PICKER_SEQUENCE,
         answerOptions = listOf("better", "recover", "sleep", "enough")
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "What is the recommended amount of water intake per day for an adult?",
+        questionType = QuestionType.TEXT,
+        answer = 2, // Index of "8 glasses"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "2 glasses",
+            "4 glasses",
+            "8 glasses",
+            "12 glasses"
+        ),
     ),
     ChallengeForm(
         title = "Sắp xếp lại câu sau",
@@ -696,6 +891,19 @@ val sportsChallenges = listOf(
         maskedAnswer = listOf("soccer", " sport")
     ),
     ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Which sport is known as the 'king of sports'?",
+        questionType = QuestionType.TEXT,
+        answer = 0, // Index of "Football"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Football",
+            "Basketball",
+            "Tennis",
+            "Cricket"
+        ),
+    ),
+    ChallengeForm(
         title = "Sắp xếp lại câu sau",
         questionContent = "Bơi lội là một cách tuyệt vời để rèn luyện cơ thể",
         questionType = QuestionType.TEXT,
@@ -711,6 +919,19 @@ val sportsChallenges = listOf(
         answerType = AnswerType.WORD_PICKER_FILLING,
         answerOptions = listOf("cardiovascular", "running", "exercise", "health"),
         maskedAnswer = listOf("running", " health")
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "How many players are on a standard basketball team?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index of "5"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "3",
+            "5",
+            "7",
+            "11"
+        ),
     ),
     ChallengeForm(
         title = "Sắp xếp lại câu sau",
@@ -778,6 +999,19 @@ val musicChallenges = listOf(
         maskedAnswer = listOf("classical", " history")
     ),
     ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Which instrument is known as the 'king of instruments'?",
+        questionType = QuestionType.TEXT,
+        answer = 3, // Index of "Organ"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Piano",
+            "Guitar",
+            "Violin",
+            "Organ"
+        ),
+    ),
+    ChallengeForm(
         title = "Sắp xếp lại câu sau",
         questionContent = "Pop music là thể loại phổ biến nhất hiện nay",
         questionType = QuestionType.TEXT,
@@ -801,6 +1035,19 @@ val musicChallenges = listOf(
         answer = listOf("jazz", "is", "famous", "for", "its", "improvisation"),
         answerType = AnswerType.WORD_PICKER_SEQUENCE,
         answerOptions = listOf("improvisation", "famous", "jazz", "music")
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Who is known as the 'King of Pop'?",
+        questionType = QuestionType.TEXT,
+        answer = 0, // Index of "Michael Jackson"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Michael Jackson",
+            "Elvis Presley",
+            "John Lennon",
+            "Freddie Mercury"
+        ),
     ),
     ChallengeForm(
         title = "Nghe và sắp xếp lại câu sau",
@@ -852,6 +1099,19 @@ val musicChallenges = listOf(
 //bai 11
 val artChallenges = listOf(
     ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Who painted the famous artwork 'Starry Night'?",
+        questionType = QuestionType.TEXT,
+        answer = 2, // Index of "Vincent van Gogh"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Pablo Picasso",
+            "Leonardo da Vinci",
+            "Vincent van Gogh",
+            "Claude Monet"
+        ),
+    ),
+    ChallengeForm(
         title = "Hoàn thiện câu sau",
         questionContent = "Hội họa là một hình thức biểu đạt sáng tạo",
         questionType = QuestionType.TEXT,
@@ -875,6 +1135,19 @@ val artChallenges = listOf(
         answer = listOf("photography", "is", "the", "art", "of", "storytelling", "through", "images"),
         answerType = AnswerType.WORD_PICKER_SEQUENCE,
         answerOptions = listOf("photography", "art", "images", "storytelling")
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Which art movement is associated with artists like Pablo Picasso and Georges Braque?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index of "Cubism"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Surrealism",
+            "Cubism",
+            "Impressionism",
+            "Expressionism"
+        ),
     ),
     ChallengeForm(
         title = "Sắp xếp lại câu sau",
@@ -942,6 +1215,19 @@ val scienceChallenges = listOf(
         answerType = AnswerType.TYPING
     ),
     ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "What is the chemical symbol for water?",
+        questionType = QuestionType.TEXT,
+        answer = 0, // Index of "H2O"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "H2O",
+            "CO2",
+            "O2",
+            "NaCl"
+        ),
+    ),
+    ChallengeForm(
         title = "Hoàn thiện câu sau",
         questionContent = "Hóa học nghiên cứu các nguyên tố và hợp chất",
         questionType = QuestionType.TEXT,
@@ -958,6 +1244,19 @@ val scienceChallenges = listOf(
         answerType = AnswerType.WORD_PICKER_FILLING,
         answerOptions = listOf("astronomy", "physics", "universe", "stars"),
         maskedAnswer = listOf("astronomy", " universe")
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "What is the main gas found in Earth's atmosphere?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index of "Nitrogen"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Oxygen",
+            "Nitrogen",
+            "Carbon dioxide",
+            "Hydrogen"
+        ),
     ),
     ChallengeForm(
         title = "Nghe và điền lại câu",
@@ -1065,6 +1364,19 @@ val literatureChallenges = listOf(
         answerOptions = listOf("lessons", "fairy", "provide", "moral")
     ),
     ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Who wrote the play 'Romeo and Juliet'?",
+        questionType = QuestionType.TEXT,
+        answer = 0, // Index of "William Shakespeare"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "William Shakespeare",
+            "Charles Dickens",
+            "Jane Austen",
+            "George Orwell"
+        ),
+    ),
+    ChallengeForm(
         title = "Nghe và sắp xếp lại câu sau",
         questionContent = "Epic poetry tells grand stories of heroes",
         questionType = QuestionType.LISTENING,
@@ -1100,11 +1412,37 @@ val literatureChallenges = listOf(
         answer = listOf("shakespeare", "wrote", "famous", "plays", "and", "sonnets"),
         answerType = AnswerType.WORD_PICKER_SEQUENCE,
         answerOptions = listOf()
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Which novel is written by George Orwell?",
+        questionType = QuestionType.TEXT,
+        answer = 2, // Index of "1984"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Pride and Prejudice",
+            "Moby-Dick",
+            "1984",
+            "The Great Gatsby"
+        ),
     )
 )
 
 //bai 14
 val geographyChallenges = listOf(
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "What is the capital of France?",
+        questionType = QuestionType.TEXT,
+        answer = 0, // Index of "Paris"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Paris",
+            "Berlin",
+            "Madrid",
+            "Rome"
+        ),
+    ),
     ChallengeForm(
         title = "Hoàn thiện câu sau",
         questionContent = "Dãy Himalaya có đỉnh Everest cao nhất thế giới",
@@ -1128,6 +1466,19 @@ val geographyChallenges = listOf(
         answer = listOf("africa", "has", "many", "large", "deserts"),
         answerType = AnswerType.WORD_PICKER_SEQUENCE,
         answerOptions = listOf("africa", "deserts", "large", "many")
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Which river is the longest in the world?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index of "Amazon River"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Nile River",
+            "Amazon River",
+            "Yangtze River",
+            "Mississippi River"
+        ),
     ),
     ChallengeForm(
         title = "Sắp xếp lại câu sau",
@@ -1205,6 +1556,19 @@ val economyChallenges = listOf(
         maskedAnswer = listOf(" global", " trade")
     ),
     ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "What is GDP an acronym for in economics?",
+        questionType = QuestionType.TEXT,
+        answer = 0, // Index of "Gross Domestic Product"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Gross Domestic Product",
+            "General Domestic Price",
+            "Global Development Plan",
+            "Government Department Policy"
+        ),
+    ),
+    ChallengeForm(
         title = "Nghe và điền lại câu",
         questionContent = "A strong economy benefits everyone",
         questionType = QuestionType.LISTENING,
@@ -1235,6 +1599,19 @@ val economyChallenges = listOf(
         answer = listOf("investments", "drive", "economic", "growth"),
         answerType = AnswerType.WORD_PICKER_SEQUENCE,
         answerOptions = listOf()
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Which of the following is considered a primary industry?",
+        questionType = QuestionType.TEXT,
+        answer = 2, // Index of "Mining"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Banking",
+            "Manufacturing",
+            "Mining",
+            "Retail"
+        ),
     ),
     ChallengeForm(
         title = "Nhắc lại câu sau",
@@ -1269,6 +1646,19 @@ val economyChallenges = listOf(
 
 //bai 16
 val politicsChallenges = listOf(
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Who is known as the 'Father of India' for his role in India's independence movement?",
+        questionType = QuestionType.TEXT,
+        answer = 0, // Index of "Mahatma Gandhi"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Mahatma Gandhi",
+            "Jawaharlal Nehru",
+            "Subhas Chandra Bose",
+            "Indira Gandhi"
+        ),
+    ),
     ChallengeForm(
         title = "Hoàn thiện câu sau",
         questionContent = "Dân chủ cho phép mọi người có quyền bầu cử",
@@ -1344,6 +1734,19 @@ val politicsChallenges = listOf(
         answerType = AnswerType.TYPING
     ),
     ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "What is the primary function of the legislative branch of government?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index of "To make laws"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "To interpret laws",
+            "To make laws",
+            "To enforce laws",
+            "To represent citizens"
+        ),
+    ),
+    ChallengeForm(
         title = "Nghe và điền lại câu",
         questionContent = "Leaders are elected to represent the people",
         questionType = QuestionType.LISTENING,
@@ -1362,6 +1765,19 @@ val educationChallenges = listOf(
         answerType = AnswerType.WORD_PICKER_FILLING,
         answerOptions = listOf("education", "key", "future", "unlocking"),
         maskedAnswer = listOf("education", " future")
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "What is the primary purpose of higher education?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index of "To provide advanced knowledge and skills"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "To provide basic literacy",
+            "To provide advanced knowledge and skills",
+            "To prepare students for work",
+            "To socialize individuals"
+        ),
     ),
     ChallengeForm(
         title = "Nghe và sắp xếp lại câu sau",
@@ -1431,11 +1847,37 @@ val educationChallenges = listOf(
         questionType = QuestionType.TEXT,
         answer = "learning is a lifelong process",
         answerType = AnswerType.TALKING
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Which of the following is an example of a STEM field?",
+        questionType = QuestionType.TEXT,
+        answer = 2, // Index of "Engineering"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "History",
+            "Literature",
+            "Engineering",
+            "Psychology"
+        ),
     )
 )
 
 //bai 18
 val fashionChallenges = listOf(
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Which designer is known for the fashion brand 'Chanel'?",
+        questionType = QuestionType.TEXT,
+        answer = 0, // Index of "Coco Chanel"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Coco Chanel",
+            "Gianni Versace",
+            "Karl Lagerfeld",
+            "Donatella Versace"
+        ),
+    ),
     ChallengeForm(
         title = "Nghe và điền lại câu",
         questionContent = "Fast fashion has environmental consequences",
@@ -1476,6 +1918,19 @@ val fashionChallenges = listOf(
         answerType = AnswerType.WORD_PICKER_FILLING,
         answerOptions = listOf("trends", "fashion", "change", "seasons"),
         maskedAnswer = listOf("fashion", " seasons")
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "What is the fashion term for a type of shoe with a high heel and a pointed toe?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index of "Stiletto"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Boots",
+            "Stiletto",
+            "Loafers",
+            "Sneakers"
+        ),
     ),
     ChallengeForm(
         title = "Nghe và sắp xếp lại câu sau",
@@ -1545,6 +2000,34 @@ val mediaChallenges = listOf(
         answerOptions = listOf()
     ),
     ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Which social media platform is known for its 'tweets'?",
+        questionType = QuestionType.TEXT,
+        answer = 0, // Index of "Twitter"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Twitter",
+            "Facebook",
+            "Instagram",
+            "TikTok"
+        ),
+    ),
+
+            ChallengeForm(
+            title = "Chọn đáp án phù hợp nhất",
+    questionContent = "What is the primary purpose of the news media?",
+    questionType = QuestionType.TEXT,
+    answer = 1, // Index of "To inform the public"
+    answerType = AnswerType.MULTI_CHOICE,
+    answerOptions = listOf(
+        "To entertain",
+        "To inform the public",
+        "To promote products",
+        "To provide opinions"
+    ),
+),
+
+ChallengeForm(
         title = "Sắp xếp lại câu sau",
         questionContent = "Quảng cáo là một phần lớn của truyền thông",
         questionType = QuestionType.TEXT,
@@ -1630,7 +2113,19 @@ val travelChallenges = listOf(
         answerType = AnswerType.WORD_PICKER_SEQUENCE,
         answerOptions = listOf("different", "cultures", "exploring", "fascinating")
     ),
-
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "Which of these countries is a popular travel destination for its beaches?",
+        questionType = QuestionType.TEXT,
+        answer = 1, // Index of "Thailand"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Switzerland",
+            "Thailand",
+            "Germany",
+            "Russia"
+        ),
+    ),
     ChallengeForm(
         title = "Nghe và sắp xếp lại câu sau",
         questionContent = "Traveling by train can be very scenic",
@@ -1655,6 +2150,19 @@ val travelChallenges = listOf(
         answer = listOf("tourism", "boosts", "the", "local", "economy"),
         answerType = AnswerType.WORD_PICKER_SEQUENCE,
         answerOptions = listOf()
+    ),
+    ChallengeForm(
+        title = "Chọn đáp án phù hợp nhất",
+        questionContent = "What is the capital city of Australia?",
+        questionType = QuestionType.TEXT,
+        answer = 2, // Index of "Canberra"
+        answerType = AnswerType.MULTI_CHOICE,
+        answerOptions = listOf(
+            "Sydney",
+            "Melbourne",
+            "Canberra",
+            "Brisbane"
+        ),
     ),
 
     ChallengeForm(
