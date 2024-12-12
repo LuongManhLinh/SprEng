@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.spreng.MainActivity
-import com.example.spreng.data.DemoLessonRepository
-import com.example.spreng.data.LessonRepository
+import com.example.spreng.data.repository.DemoLessonRepository
+import com.example.spreng.data.repository.LessonRepository
 import com.example.spreng.data.database.UserApplication
 import com.example.spreng.data.form.AnswerType
 import com.example.spreng.data.form.ChallengeForm

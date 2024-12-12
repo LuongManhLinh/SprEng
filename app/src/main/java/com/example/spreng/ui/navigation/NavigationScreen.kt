@@ -33,12 +33,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.spreng.R
 import com.example.spreng.StudyActivity
-import com.example.spreng.data.DefaultMainNavItemRepo
-import com.example.spreng.data.MainNavItem
-import com.example.spreng.data.MainNavRoute
-import com.example.spreng.data.NavLogin
-import com.example.spreng.data.NavRanking
-import com.example.spreng.data.RevisionRoute
+import com.example.spreng.data.repository.DefaultMainNavItemRepo
+import com.example.spreng.data.repository.MainNavItem
+import com.example.spreng.data.repository.MainNavRoute
+import com.example.spreng.data.repository.NavRanking
+import com.example.spreng.data.repository.RevisionRoute
 import com.example.spreng.ui.mainscreen.home.HomeScreen
 import com.example.spreng.ui.mainscreen.info.EditScreen
 import com.example.spreng.ui.mainscreen.ranking.AllRankingScreen
@@ -136,7 +135,9 @@ private fun NavigationScreen(
 
         composable(route = NavRanking.AllRank.name) {
             AllRankingScreen(
-                showRankingScreen = {navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING))}
+                showRankingScreen = {navController.navigate(
+                    DefaultMainNavItemRepo.getRoute(
+                        MainNavRoute.RANKING))}
             )
         }
 
@@ -149,7 +150,9 @@ private fun NavigationScreen(
             userId?.let {
                 InfoUserScreen(
                     visitedUserId = it,
-                    showRankingScreen = { navController.navigate(DefaultMainNavItemRepo.getRoute(MainNavRoute.RANKING)) }
+                    showRankingScreen = { navController.navigate(
+                        DefaultMainNavItemRepo.getRoute(
+                            MainNavRoute.RANKING)) }
                 )
             }
         }

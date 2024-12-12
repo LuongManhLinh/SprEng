@@ -1,4 +1,4 @@
-package com.example.spreng.data
+package com.example.spreng.data.repository
 
 import com.example.spreng.data.form.AnswerType
 import com.example.spreng.data.form.ChallengeForm

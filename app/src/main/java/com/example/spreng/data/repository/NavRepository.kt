@@ -1,4 +1,4 @@
-package com.example.spreng.data
+package com.example.spreng.data.repository
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

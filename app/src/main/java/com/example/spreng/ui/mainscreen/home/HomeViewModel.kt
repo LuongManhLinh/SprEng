@@ -1,12 +1,10 @@
 package com.example.spreng.ui.mainscreen.home
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.spreng.data.DemoLessonSummarizationRepository
-import com.example.spreng.data.LessonSummarizationRepository
+import com.example.spreng.data.repository.DemoLessonSummarizationRepository
+import com.example.spreng.data.repository.LessonSummarizationRepository
 import com.example.spreng.data.form.LessonSummarizationForm
 import com.example.spreng.data.repository.LessonBbRepository
 import com.example.spreng.data.database.UserApplication

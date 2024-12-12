@@ -1,4 +1,4 @@
-package com.example.spreng.data
+package com.example.spreng.data.repository
 
 import android.util.Log
 import com.example.spreng.data.form.LessonSummarizationForm
