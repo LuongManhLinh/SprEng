@@ -3,9 +3,9 @@ package com.example.spreng.ui.mainscreen.ranking
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.spreng.repository.LessonBbRepository
-import com.example.spreng.database.UserApplication
-import com.example.spreng.repository.UserRepository
+import com.example.spreng.data.repository.LessonBbRepository
+import com.example.spreng.data.database.UserApplication
+import com.example.spreng.data.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull

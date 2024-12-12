@@ -31,7 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
-import com.example.spreng.preferences.UserManager
+import com.example.spreng.data.preferences.UserManager
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import com.example.spreng.ui.studyscreen.answer.micro.SpeakingScreen
 import com.example.spreng.ui.studyscreen.answer.multichoice.MultiChoiceScreen

@@ -1,8 +1,8 @@
-package com.example.spreng.repository
+package com.example.spreng.data.repository
 
-import com.example.spreng.database.Follow
-import com.example.spreng.database.FollowDao
-import com.example.spreng.database.User
+import com.example.spreng.data.database.Follow
+import com.example.spreng.data.database.FollowDao
+import com.example.spreng.data.database.User
 
 class FollowRepository(private val followDao: FollowDao) {
     suspend fun followUser(followerId: Long, followedId: Long) {

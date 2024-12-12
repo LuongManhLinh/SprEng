@@ -1,4 +1,4 @@
-package com.example.spreng.text2speech
+package com.example.spreng.utils
 
 import android.content.Context
 import android.speech.tts.TextToSpeech

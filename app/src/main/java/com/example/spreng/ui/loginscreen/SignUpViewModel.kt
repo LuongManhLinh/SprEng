@@ -3,11 +3,11 @@ package com.example.spreng.ui.loginscreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.spreng.database.Lesson
-import com.example.spreng.database.User
-import com.example.spreng.database.UserApplication
-import com.example.spreng.repository.LessonBbRepository
-import com.example.spreng.repository.UserRepository
+import com.example.spreng.data.database.Lesson
+import com.example.spreng.data.database.User
+import com.example.spreng.data.database.UserApplication
+import com.example.spreng.data.repository.LessonBbRepository
+import com.example.spreng.data.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

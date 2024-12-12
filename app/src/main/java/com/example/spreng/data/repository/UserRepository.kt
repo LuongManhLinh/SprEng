@@ -1,7 +1,7 @@
-package com.example.spreng.repository
+package com.example.spreng.data.repository
 
-import com.example.spreng.database.User
-import com.example.spreng.database.UserDao
+import com.example.spreng.data.database.User
+import com.example.spreng.data.database.UserDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map

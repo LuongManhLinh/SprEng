@@ -1,4 +1,4 @@
-package com.example.spreng.speech2Text
+package com.example.spreng.utils
 
 import android.content.Context
 import android.content.Intent

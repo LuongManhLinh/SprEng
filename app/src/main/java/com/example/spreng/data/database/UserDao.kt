@@ -1,7 +1,7 @@
-package com.example.spreng.database
+package com.example.spreng.data.database
 
 import androidx.room.*
-import com.example.spreng.repository.UserWithExp
+import com.example.spreng.data.repository.UserWithExp
 import kotlinx.coroutines.flow.Flow
 
 @Dao

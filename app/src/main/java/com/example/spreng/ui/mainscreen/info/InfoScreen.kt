@@ -51,7 +51,7 @@ import androidx.navigation.NavController
 import com.example.spreng.AuthActivity
 import com.example.spreng.MainActivity
 import com.example.spreng.R
-import com.example.spreng.preferences.UserManager
+import com.example.spreng.data.preferences.UserManager
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import com.example.spreng.ui.mainscreen.info.ProfileViewModel
 import com.example.spreng.ui.mainscreen.ranking.Card

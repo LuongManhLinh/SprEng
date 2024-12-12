@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
-import com.example.spreng.preferences.UserManager
+import com.example.spreng.data.preferences.UserManager
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import com.example.spreng.ui.custom.pressHandling
 import kotlinx.coroutines.delay

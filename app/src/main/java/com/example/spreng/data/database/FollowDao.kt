@@ -1,4 +1,4 @@
-package com.example.spreng.database
+package com.example.spreng.data.database
 
 import androidx.room.Dao
 import androidx.room.Delete

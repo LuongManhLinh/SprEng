@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.spreng.data.DemoLessonSummarizationRepository
 import com.example.spreng.data.LessonSummarizationRepository
-import com.example.spreng.form.LessonSummarizationForm
-import com.example.spreng.repository.LessonBbRepository
-import com.example.spreng.database.UserApplication
-import com.example.spreng.repository.UserRepository
+import com.example.spreng.data.form.LessonSummarizationForm
+import com.example.spreng.data.repository.LessonBbRepository
+import com.example.spreng.data.database.UserApplication
+import com.example.spreng.data.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

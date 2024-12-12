@@ -1,4 +1,4 @@
-package com.example.spreng.database
+package com.example.spreng.data.database
 
 import android.content.Context
 import androidx.room.Database

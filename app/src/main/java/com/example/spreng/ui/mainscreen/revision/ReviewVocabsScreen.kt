@@ -46,7 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.spreng.R
-import com.example.spreng.text2speech.TTS
+import com.example.spreng.utils.TTS
 import com.example.spreng.ui.custom.CustomRoundedBorderBox
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay

@@ -1,4 +1,4 @@
-package com.example.spreng.form
+package com.example.spreng.data.form
 
 data class LessonSummarizationForm(
     val id: Int,

@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.spreng.database.UserApplication
-import com.example.spreng.preferences.UserManager
-import com.example.spreng.repository.UserRepository
+import com.example.spreng.data.database.UserApplication
+import com.example.spreng.data.preferences.UserManager
+import com.example.spreng.data.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

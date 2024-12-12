@@ -13,7 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.spreng.MainActivity
 import com.example.spreng.R
 import com.example.spreng.data.NavLogin
-import com.example.spreng.preferences.UserManager
+import com.example.spreng.data.preferences.UserManager
 import com.example.spreng.ui.loginscreen.SignInScreen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 

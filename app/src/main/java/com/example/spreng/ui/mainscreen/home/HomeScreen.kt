@@ -30,7 +30,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.spreng.R
-import com.example.spreng.preferences.UserManager
+import com.example.spreng.data.preferences.UserManager
 
 
 @Composable

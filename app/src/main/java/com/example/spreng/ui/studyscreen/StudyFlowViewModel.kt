@@ -8,11 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.spreng.MainActivity
 import com.example.spreng.data.DemoLessonRepository
 import com.example.spreng.data.LessonRepository
-import com.example.spreng.database.UserApplication
-import com.example.spreng.form.AnswerType
-import com.example.spreng.form.ChallengeForm
-import com.example.spreng.form.QuestionType
-import com.example.spreng.repository.LessonBbRepository
+import com.example.spreng.data.database.UserApplication
+import com.example.spreng.data.form.AnswerType
+import com.example.spreng.data.form.ChallengeForm
+import com.example.spreng.data.form.QuestionType
+import com.example.spreng.data.repository.LessonBbRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

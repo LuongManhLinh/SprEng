@@ -1,7 +1,7 @@
 package com.example.spreng.data
 
 import android.util.Log
-import com.example.spreng.form.LessonSummarizationForm
+import com.example.spreng.data.form.LessonSummarizationForm
 
 interface LessonSummarizationRepository {
     fun getAllLessonSummarization(numCompleteLesson: Int): List<LessonSummarizationForm>

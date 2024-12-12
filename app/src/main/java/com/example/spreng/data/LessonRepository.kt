@@ -1,8 +1,8 @@
 package com.example.spreng.data
 
-import com.example.spreng.form.AnswerType
-import com.example.spreng.form.ChallengeForm
-import com.example.spreng.form.QuestionType
+import com.example.spreng.data.form.AnswerType
+import com.example.spreng.data.form.ChallengeForm
+import com.example.spreng.data.form.QuestionType
 
 interface LessonRepository {
     fun getLesson(lessonId: Int): List<ChallengeForm>
