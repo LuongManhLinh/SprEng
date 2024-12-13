@@ -101,16 +101,17 @@ internal fun HomeTopBar(
                 painter = painterResource(R.drawable.xp),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(dimensionResource(R.dimen.middle_large))
-                    .clip(RoundedCornerShape(dimensionResource(R.dimen.large))),
-                contentScale = ContentScale.Crop
+                    .size(dimensionResource(R.dimen.middle_large)),
             )
             Text(
                 text = userXp,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleLarge,
                 color = colorResource(R.color.xp),
-                modifier = Modifier.padding(start = dimensionResource(R.dimen.small))
+                modifier = Modifier.padding(
+                    start = dimensionResource(R.dimen.tiny),
+                    end = dimensionResource(R.dimen.tiny)
+                )
             )
         }
 
