@@ -118,14 +118,39 @@ fun MistakeItem(
         ) {
             Text(
                 text = mistake.questionDescription,
-                fontSize = 18.sp,
-                color = Color.Black
+                fontSize = 16.sp,
+                color = Color.DarkGray
             )
             Text(
                 text = mistake.question,
-                fontSize = 22.sp,
+                fontSize = 20.sp,
                 color = Color.Black
             )
+            Column {
+                Text(
+                    text = "Đáp án của bạn",
+                    fontSize = 16.sp,
+                    color = Color.DarkGray
+                )
+                Text(
+                    text = mistake.yourAnswer,
+                    fontSize = 20.sp,
+                    color = Color(200, 0, 0)
+                )
+            }
+
+            Column {
+                Text(
+                    text = "Đáp án đúng",
+                    fontSize = 16.sp,
+                    color = Color.DarkGray
+                )
+                Text(
+                    text = mistake.answer,
+                    fontSize = 20.sp,
+                    color = Color(0, 200, 0)
+                )
+            }
         }
     }
 }
