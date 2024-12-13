@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -266,7 +265,6 @@ private fun PopupResult(
                         text = "\"$correctAnswer\"",
                         style = MaterialTheme.typography.titleLarge,
                         color = Color.White,
-                        textAlign = TextAlign.Justify,
                         modifier = Modifier
                             .padding(dimensionResource(R.dimen.medium)),
                     )

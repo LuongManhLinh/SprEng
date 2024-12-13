@@ -557,13 +557,6 @@ val cultureChallenges = listOf(
 // bài 6
 val historyChallenges = listOf(
     ChallengeForm(
-        title = "Nhắc lại câu sau",
-        questionContent = "The invention of the printing press revolutionized knowledge",
-        questionType = QuestionType.TEXT,
-        answer = "the invention of the printing press revolutionized knowledge",
-        answerType = AnswerType.TALKING
-    ),
-    ChallengeForm(
         title = "Chọn đáp án phù hợp nhất",
         questionContent = "Who was the first emperor of the Lý dynasty?",
         questionType = QuestionType.TEXT,
@@ -580,48 +573,10 @@ val historyChallenges = listOf(
         title = "Hoàn thiện câu sau",
         questionContent = "Chiến tranh thế giới thứ hai bắt đầu vào năm 1939",
         questionType = QuestionType.TEXT,
-        answer = listOf("world", " war", " ii", " began", " in", " 1939"),
+        answer = listOf("World", " War", " II", " began", " in", " 1939"),
         answerType = AnswerType.WORD_PICKER_FILLING,
-        answerOptions = listOf("1950", "battle", "history", "1939"),
-        maskedAnswer = listOf("world", " 1939")
-    ),
-    ChallengeForm(
-        title = "Sắp xếp lại câu sau",
-        questionContent = "Cách mạng công nghiệp đã thay đổi thế giới",
-        questionType = QuestionType.TEXT,
-        answer = listOf("the", "industrial", "revolution", "changed", "the", "world"),
-        answerType = AnswerType.WORD_PICKER_SEQUENCE,
-        answerOptions = listOf("war", "revolution", "changed", "industry")
-    ),
-    ChallengeForm(
-        title = "Hoàn thiện câu sau",
-        questionContent = "Ai Cập cổ đại nổi tiếng với các kim tự tháp",
-        questionType = QuestionType.TEXT,
-        answer = listOf("ancient", " egypt", " is", " famous", " for", " its", " pyramids"),
-        answerType = AnswerType.WORD_PICKER_FILLING,
-        answerOptions = listOf("temples", "ancient", "modern", "culture"),
-        maskedAnswer = listOf("ancient", " pyramids")
-    ),
-    ChallengeForm(
-        title = "Chọn đáp án phù hợp nhất",
-        questionContent = "When did the Battle of Dien Bien Phu take place?",
-        questionType = QuestionType.TEXT,
-        answer = 2, // Index of "1954"
-        answerType = AnswerType.MULTI_CHOICE,
-        answerOptions = listOf(
-            "1945",
-            "1950",
-            "1954",
-            "1960"
-        ),
-    ),
-    ChallengeForm(
-        title = "Sắp xếp lại câu sau",
-        questionContent = "La Mã cổ đại là nền văn minh lớn ở châu Âu",
-        questionType = QuestionType.TEXT,
-        answer = listOf("ancient", "Rome", "was", "a", "major", "civilization", "in", "Europe"),
-        answerType = AnswerType.WORD_PICKER_SEQUENCE,
-        answerOptions = listOf("history", "Rome", "Europe", "civilization")
+        answerOptions = listOf("1950", "battle", "history", "1938"),
+        maskedAnswer = listOf("World", " 1939")
     ),
     ChallengeForm(
         title = "Nghe và sắp xếp lại câu sau",
@@ -632,17 +587,10 @@ val historyChallenges = listOf(
         answerOptions = listOf()
     ),
     ChallengeForm(
-        title = "Nghe và điền lại câu",
-        questionContent = "The French Revolution began in 1789",
-        questionType = QuestionType.LISTENING,
+        title = "Viết lại câu sau bằng tiếng Anh",
+        questionContent = "Cách mạng Pháp bắt đầu vào năm 1789",
+        questionType = QuestionType.TEXT,
         answer = "The French Revolution began in 1789",
-        answerType = AnswerType.TYPING
-    ),
-    ChallengeForm(
-        title = "Nghe và điền lại câu",
-        questionContent = "The discovery of America changed history forever",
-        questionType = QuestionType.LISTENING,
-        answer = "The discovery of America changed history forever",
         answerType = AnswerType.TYPING
     ),
     ChallengeForm(
@@ -652,14 +600,6 @@ val historyChallenges = listOf(
         answer = "world war i ended in 1918",
         answerType = AnswerType.TALKING
     ),
-    ChallengeForm(
-        title = "Nghe và sắp xếp lại câu sau",
-        questionContent = "The Great Wall of China was built to protect the empire",
-        questionType = QuestionType.LISTENING,
-        answer = listOf("the", "great", "wall", "of", "china", "was", "built", "to", "protect", "the", "empire"),
-        answerType = AnswerType.WORD_PICKER_SEQUENCE,
-        answerOptions = listOf()
-    )
 )
 
 //bai 7
