@@ -16,7 +16,7 @@ SprEng là một ứng dụng di động học tiếng anh được viết bằn
 - Bước 1 : Clone hoặc tải file zip về [tại đây](https://github.com/LuongManhLinh/SprEng/archive/refs/heads/main.zip)
 - Bước 2 : Giải nén file zip và mở ứng dụng android studio để chạy chương trình
 ### Chạy trên thiết bị Android
-Truy cập vào thư mục [/release](release), tải file APK xuống và cài đặt
+Truy cập vào thư mục [release](release), tải file `APK` xuống và cài đặt
 ## Một số hình ảnh trong SprEng
 ### Home (giao diện chính) 
 <img src="https://github.com/user-attachments/assets/9f81241b-54f0-40d7-94db-890df1bebdcd" width="100" />
