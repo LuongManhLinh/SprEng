@@ -1,5 +1,5 @@
 # SprEng - Ứng dụng học tiếng anh
-# Link Video Demo: [SprEng](https://youtu.be/HR2lkGXogVY)
+## Link Video Demo: [SprEng](https://youtu.be/HR2lkGXogVY)
 ## Giới thiệu
 Thành viên nhóm 4 
 - Lương Mạnh Linh - 22021215 (nhóm trưởng)
@@ -12,8 +12,11 @@ Thành viên nhóm 4
 SprEng là một ứng dụng di động học tiếng anh được viết bằng ngôn ngữ lập trình Kotlin và Framework Jetpack Compose. Ứng dụng được sử dụng với mục đích chính là làm cho việc học ngôn ngữ trở nên dễ dàng hơn qua các bài học được trò chơi hoá bên cạnh với tính cạnh tranh trong hệ thống xếp hạng. Giao diện đơn giản và dễ sử dụng phù hợp với mọi người dùng. 
 
 ## Cách cài đặt SprEng 
+### Chạy trên Android Studio
 - Bước 1 : Clone hoặc tải file zip về [tại đây](https://github.com/LuongManhLinh/SprEng/archive/refs/heads/main.zip)
 - Bước 2 : Giải nén file zip và mở ứng dụng android studio để chạy chương trình
+### Chạy trên thiết bị Android
+Truy cập vào thư mục `release`, tải file APK xuống và cài đặt
 ## Một số hình ảnh trong SprEng
 ### Home (giao diện chính) 
 <img src="https://github.com/user-attachments/assets/9f81241b-54f0-40d7-94db-890df1bebdcd" width="100" />
